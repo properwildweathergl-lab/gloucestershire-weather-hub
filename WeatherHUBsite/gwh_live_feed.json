@@ -1,0 +1,21 @@
+{
+  "metAlert": {
+    "color": "white",
+    "type": "No Active Warnings",
+    "title": "No Current Met Office Warnings for Gloucestershire",
+    "from": "Live",
+    "to": "Continuous",
+    "desc": "There are currently no severe weather warnings in force for the county."
+  },
+  "ukhsaAlert": {
+    "color": "white",
+    "type": "Green / No Alert",
+    "title": "No Current UKHSA Health Alerts for Gloucestershire",
+    "from": "Live",
+    "to": "Continuous",
+    "desc": "No significant heat-health or cold-health impacts expected."
+  },
+  "gallery": [],
+  "youtube": [],
+  "communityPosts": []
+}
