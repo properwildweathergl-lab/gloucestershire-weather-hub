@@ -218,7 +218,7 @@
 
     <!-- PAGE 3: WARNING DESK -->
     <div id="page-warnings" class="page-view" style="padding: 16px;">
-        <div class="section-heading">Active Warning Desk</div>
+        <div class="section-heading">UKHSA and MET OFFICE ALERTS</div>
         <div id="dynamic-alerts-container"></div>
     </div>
 
@@ -226,15 +226,15 @@
     <div id="page-community" class="page-view" style="padding: 16px;">
         <div class="section-heading">Share Local Report</div>
         <div class="feed-card" style="margin-bottom: 20px;">
-            <form id="comm-form" onsubmit="handleDirectVisitorPost(event)" style="display: flex; flex-direction: column; gap: 10px;">
-                <input type="text" id="visitor-sub-name" placeholder="Your Name / Town" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px;">
-                <textarea rows="2" id="visitor-sub-desc" placeholder="What are sky conditions like near you?" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px;"></textarea>
-                <input type="file" id="visitor-sub-file" accept="image/*" onchange="previewVisitorFile(this)" style="font-size: 12px; color: var(--text-muted);">
-                <button type="submit" style="background: var(--accent-color); color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer;">Post Report</button>
-            </form>
+            <form id="comm-form" action="https://formbold.com/s/6M5B7" method="POST" enctype="multipart/form-data" onsubmit="handleDirectVisitorPost(event)" style="display: flex; flex-direction: column; gap: 10px;">
+    <input type="text" name="name" id="visitor-sub-name" placeholder="Your Name / Town" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px;">
+    <textarea rows="2" name="contents" id="visitor-sub-desc" placeholder="What are sky conditions like near you?" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px;"></textarea>
+    <input type="file" name="image" id="visitor-sub-file" accept="image/*" onchange="previewVisitorFile(this)" style="font-size: 12px; color: var(--text-muted);">
+    <button type="submit" style="background: var(--accent-color); color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer;">Post to the HUB</button>
+</form>
         </div>
 
-        <div class="section-heading">Recent Reports</div>
+        <div class="section-heading">Recent Activity</div>
         <div id="public-feed-timeline"></div>
     </div>
 
@@ -247,11 +247,11 @@
     <!-- Bottom Navigation Dock -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchPage('home', this)"><i class="fa-solid fa-house"></i> Home</button>
-        <button class="nav-item" onclick="switchPage('map', this)"><i class="fa-solid fa-map"></i> Matrix</button>
+        <button class="nav-item" onclick="switchPage('map', this)"><i class="fa-solid fa-map"></i> Live Map</button>
         <button class="nav-item" onclick="switchPage('warnings', this)"><i class="fa-solid fa-triangle-exclamation"></i> Warnings</button>
-        <button class="nav-item" onclick="switchPage('community', this)"><i class="fa-solid fa-users"></i> Community</button>
-        <button class="nav-item" onclick="switchPage('archive', this)"><i class="fa-solid fa-video"></i> Archive</button>
-        <a href="weatherhub.apk" class="nav-item app-download" download><i class="fa-solid fa-download"></i> App</a>
+        <button class="nav-item" onclick="switchPage('community', this)"><i class="fa-solid fa-users"></i> Community HUB</button>
+        <button class="nav-item" onclick="switchPage('archive', this)"><i class="fa-solid fa-video"></i> Youtube Archive</button>
+        <a href="weatherhub.apk" class="nav-item app-download" download><i class="fa-solid fa-download"></i> Get The App</a>
     </nav>
 
     <script>
@@ -386,37 +386,49 @@
         }
 
         function handleDirectVisitorPost(e) {
-            e.preventDefault();
-            const name = document.getElementById('visitor-sub-name').value.trim();
-            const desc = document.getElementById('visitor-sub-desc').value.trim();
+    e.preventDefault();
+    const form = document.getElementById('comm-form');
+    const name = document.getElementById('visitor-sub-name').value.trim();
+    const desc = document.getElementById('visitor-sub-desc').value.trim();
 
-            let savedData = { communityPosts: [] };
-            try {
-                const raw = localStorage.getItem('gwh_master_live_data');
-                if (raw) savedData = JSON.parse(raw);
-            } catch(err) {}
+    // Sends the report and photo directly to your FormBold email inbox
+    if (form.action && !form.action.includes('YOUR_ID_HERE')) {
+        const formData = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        }).catch(() => {});
+    }
 
-            savedData.communityPosts = savedData.communityPosts || [];
-            savedData.communityPosts.unshift({
-                id: Date.now(),
-                author: name,
-                meta: 'Just now',
-                caption: desc,
-                imageUrl: visitorTempImage || ""
-            });
+    // Displays an instant local preview on the user's screen
+    let savedData = { communityPosts: [] };
+    try {
+        const raw = localStorage.getItem('gwh_master_live_data');
+        if (raw) savedData = JSON.parse(raw);
+    } catch(err) {}
 
-            try {
-                localStorage.setItem('gwh_master_live_data', JSON.stringify(savedData));
-            } catch(err) {}
+    savedData.communityPosts = savedData.communityPosts || [];
+    savedData.communityPosts.unshift({
+        id: Date.now(),
+        author: name,
+        meta: 'Just now',
+        caption: desc,
+        imageUrl: visitorTempImage || ""
+    });
 
-            visitorTempImage = "";
-            document.getElementById('visitor-sub-file').value = "";
-            document.getElementById('visitor-sub-name').value = "";
-            document.getElementById('visitor-sub-desc').value = "";
+    try {
+        localStorage.setItem('gwh_master_live_data', JSON.stringify(savedData));
+    } catch(err) {}
 
-            loadBackendJSON();
-            alert("Report posted to community feed!");
-        }
+    visitorTempImage = "";
+    document.getElementById('visitor-sub-file').value = "";
+    document.getElementById('visitor-sub-name').value = "";
+    document.getElementById('visitor-sub-desc').value = "";
+
+    loadBackendJSON();
+    alert("Report sent to the Weather HUB team!");
+}
 
         async function loadBackendJSON() {
             let data = {
