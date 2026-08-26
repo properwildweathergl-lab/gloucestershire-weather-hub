@@ -28,7 +28,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--app-bg); color: var(--text-main); padding-bottom: 75px; min-height: 100vh; }
+        body { background-color: var(--app-bg); color: var(--text-main); padding-bottom: 85px; min-height: 100vh; }
 
         .app-header {
             display: flex; justify-content: space-between; align-items: center;
@@ -102,10 +102,12 @@
         .cam-btn.active { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
 
         .tv-station-pin { display: flex; flex-direction: column; align-items: center; cursor: pointer; transform: translate(-50%, -100%); }
-        .badge-card { background: #0d233e; border: 1.5px solid var(--accent-color); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; min-width: 80px; text-align: center; }
-        .badge-header-label { background: rgba(0,0,0,0.6); padding: 2px 4px; font-size: 9px; font-weight: 800; color: #fff; text-transform: uppercase; }
-        .badge-temp-text { font-size: 13px; font-weight: 900; color: var(--gold); padding: 2px; }
-        .pin-pointer { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 4px solid var(--accent-color); }
+        .badge-card { background: #0d233e; border: 1.5px solid var(--accent-color); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; min-width: 86px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .badge-header-label { background: rgba(0,0,0,0.7); padding: 2px 4px; font-size: 9px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.4px; }
+        .badge-body-data { display: flex; justify-content: center; align-items: center; gap: 4px; padding: 3px 4px; background: #091728; }
+        .badge-temp-text { font-size: 13px; font-weight: 900; color: var(--gold); }
+        .badge-sub-text { font-size: 9px; font-weight: 600; color: var(--accent-color); }
+        .pin-pointer { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid var(--accent-color); }
 
         /* Warning Desk View */
         .alert-card { border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
@@ -119,16 +121,178 @@
         .alert-red .alert-tag { background: var(--red); color: #fff; }
         .alert-tag { font-size: 10px; font-weight: 900; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; width: fit-content; }
 
-        /* Community View */
-        .feed-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
-        .feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .feed-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--card-border); color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
-        .feed-image-frame { width: 100%; max-height: 320px; border-radius: 8px; overflow: hidden; margin-top: 10px; background: #000; display: flex; align-items: center; justify-content: center; }
-        .feed-image-frame img { width: 100%; height: auto; object-fit: cover; }
+       /* Facebook Forum Style Feed */
+        .fb-composer {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .fb-composer-top {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .fb-composer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1e293b;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .fb-composer-inputs {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .fb-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
+            font-size: 12px;
+        }
+        .fb-input:focus { outline: none; border-color: var(--accent-color); }
+        .fb-textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #fff;
+            font-size: 13px;
+            resize: none;
+            min-height: 60px;
+        }
+        .fb-textarea:focus { outline: none; border-color: var(--accent-color); }
+        .fb-composer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 10px;
+        }
+        .fb-upload-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .fb-submit-btn {
+            background: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 7px 18px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
 
-        /* Video Archive View */
+        /* Post Card Styling */
+        .fb-post {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+        }
+        .fb-post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .fb-post-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 13px;
+        }
+        .fb-post-user { font-size: 13px; font-weight: 700; color: #fff; }
+        .fb-post-meta { font-size: 10px; color: var(--text-muted); }
+        .fb-post-text { font-size: 13px; color: #e2e8f0; line-height: 1.45; margin-bottom: 10px; white-space: pre-wrap; }
+        .fb-post-media {
+            width: 100%;
+            max-height: 380px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .fb-post-media img { width: 100%; height: auto; max-height: 380px; object-fit: cover; display: block; }
+        .fb-post-bar {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 6px 0;
+            margin-bottom: 8px;
+        }
+        .fb-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+        .fb-action-btn:hover, .fb-action-btn.active { color: var(--accent-color); }
+        
+        /* Comments Section */
+        .fb-comments-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-top: 4px;
+        }
+        .fb-comment-item {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 11px;
+        }
+        .fb-comment-author { font-weight: 700; color: var(--accent-color); margin-bottom: 2px; }
+        .fb-comment-text { color: #cbd5e1; }
+        .fb-reply-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        /* Video Card */
         .video-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .video-player-frame { width: 100%; height: 210px; border-radius: 8px; border: none; background: #000; }
 
         /* Bottom App Navigation Bar */
         .bottom-nav {
@@ -139,11 +303,40 @@
         .nav-item {
             background: none; border: none; color: var(--text-muted);
             font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px;
-            font-weight: 600; cursor: pointer; text-decoration: none;
+            font-weight: 600; cursor: pointer; text-decoration: none; width: 20%;
         }
         .nav-item i { font-size: 18px; }
         .nav-item.active, .nav-item:hover { color: var(--accent-color); }
-        .nav-item.app-download { color: var(--orange-accent); }
+
+        /* Slide-up "More" Drawer */
+        .more-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 2000;
+        }
+        .more-overlay.active { display: block; }
+        .more-drawer {
+            position: fixed; bottom: -500px; left: 50%; transform: translateX(-50%);
+            width: 100%; background: #131f30;
+            border-top: 1px solid var(--card-border); border-radius: 20px 20px 0 0;
+            padding: 20px 16px 30px 16px; z-index: 2001; transition: bottom 0.25s ease-out;
+            max-width: 650px;
+        }
+        .more-drawer.open { bottom: 0; }
+        .drawer-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; margin: 0 auto 16px auto; cursor: pointer; }
+        .drawer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .drawer-btn {
+            background: rgba(255,255,255,0.04); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 14px; display: flex; align-items: center;
+            gap: 12px; color: #fff; text-decoration: none; cursor: pointer; font-weight: 600; font-size: 13px;
+        }
+        .drawer-btn i { font-size: 18px; color: var(--accent-color); }
+        .drawer-btn.app-highlight i { color: var(--orange-accent); }
+        .met-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
     </style>
 </head>
 <body>
@@ -181,7 +374,7 @@
         </div>
 
         <div class="section-container">
-            <div class="section-heading">County Modules</div>
+            <div class="section-heading">County River Severn</div>
             <div class="module-grid">
                 <div class="module-card">
                     <span class="module-title">Severn Gauge</span>
@@ -200,6 +393,141 @@
             <div class="section-heading">County 5-Day Outlook</div>
             <div id="five-day-outlook-container"></div>
         </div>
+
+        <div class="section-container">
+            <div class="section-heading">Detailed Conditions & Diagnostics</div>
+            
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <div style="display: flex; gap: 14px; margin-bottom: 6px;">
+                            <span style="font-size: 11px; color: var(--text-muted); width: 65px;">From</span>
+                            <span style="font-size: 15px; font-weight: 800; color: #fff;" id="det-wind-dir">--</span>
+                        </div>
+                        <div style="display: flex; gap: 14px; margin-bottom: 6px;">
+                            <span style="font-size: 11px; color: var(--text-muted); width: 65px;">Speed</span>
+                            <span style="font-size: 15px; font-weight: 800; color: #fff;" id="det-wind-spd">--mph</span>
+                        </div>
+                        <div style="display: flex; gap: 14px;">
+                            <span style="font-size: 11px; color: var(--text-muted); width: 65px;">Max gusts</span>
+                            <span style="font-size: 15px; font-weight: 800; color: var(--accent-color);" id="det-wind-gust">--mph</span>
+                        </div>
+                    </div>
+
+                    <div style="position: relative; width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--card-border); display: flex; align-items: center; justify-content: center;">
+                        <span style="position: absolute; top: 2px; font-size: 8px; font-weight: 800; color: var(--text-muted);">N</span>
+                        <span style="position: absolute; bottom: 2px; font-size: 8px; font-weight: 800; color: var(--text-muted);">S</span>
+                        <span style="position: absolute; left: 4px; font-size: 8px; font-weight: 800; color: var(--text-muted);">W</span>
+                        <span style="position: absolute; right: 4px; font-size: 8px; font-weight: 800; color: var(--text-muted);">E</span>
+                        <div style="text-align: center;">
+                            <div style="font-size: 14px; font-weight: 900; color: #fff;" id="dial-spd">--</div>
+                            <div style="font-size: 8px; color: var(--text-muted);">mph</div>
+                        </div>
+                        <div id="compass-arrow" style="position: absolute; width: 100%; height: 100%; transform: rotate(0deg); transition: transform 0.5s ease;">
+                            <div style="position: absolute; top: -5px; left: calc(50% - 4px); width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 8px solid var(--gold);"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; height: 5px; border-radius: 4px; overflow: hidden; margin-top: 12px; gap: 2px;">
+                    <div style="flex: 1; background: #22c55e;"></div>
+                    <div style="flex: 1; background: #eab308;"></div>
+                    <div style="flex: 1; background: #f97316;"></div>
+                    <div style="flex: 1; background: #ef4444;"></div>
+                    <div style="flex: 1; background: #a855f7;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 9px; color: var(--text-muted); margin-top: 4px;">
+                    <span>Calm</span>
+                    <span>Storm Force</span>
+                </div>
+            </div>
+
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 10px;">Temperature</div>
+                <div style="margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                        <span style="color: var(--text-muted);">Today's high</span>
+                        <span style="font-weight: 800; color: #fff;" id="det-today-high">--°</span>
+                    </div>
+                    <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                        <div style="height: 100%; width: 75%; background: var(--orange-accent); border-radius: 3px;"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                        <span style="color: var(--text-muted);">Yesterday's high</span>
+                        <span style="font-weight: 800; color: var(--text-muted);" id="det-yest-high">--°</span>
+                    </div>
+                    <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                        <div style="height: 100%; width: 75%; background: #94a3b8; border-radius: 3px;"></div>
+                    </div>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted);" id="det-temp-summary">Today will be about the same as yesterday</div>
+            </div>
+
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 4px;">Rain: next hour</div>
+                <div style="font-size: 15px; font-weight: 800; color: var(--accent-color); margin-bottom: 4px;" id="det-rain-heading">No rain expected</div>
+                <div style="font-size: 11px; color: var(--text-muted);" id="det-rain-desc">There is less than 5% chance of rain over the next hour.</div>
+            </div>
+
+            <div class="module-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                <div class="module-card">
+                    <span class="module-title">Humidity</span>
+                    <div style="display: flex; justify-content: space-between; margin-top: 6px;">
+                        <div><span style="font-size: 9px; color: var(--text-muted);">Daily high</span><div class="module-val" id="det-hum-high">--%</div></div>
+                        <div><span style="font-size: 9px; color: var(--text-muted);">Daily low</span><div class="module-val" id="det-hum-low" style="color: var(--text-muted);">--%</div></div>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-title">UV Index</span>
+                    <div class="module-val" style="color: var(--gold);" id="det-uv-level">--</div>
+                    <span class="module-sub" style="font-size: 10px;">Sun Protection</span>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-title">Visibility</span>
+                    <div class="module-val" id="det-vis-km">--km</div>
+                    <span class="module-sub" style="color: #22c55e;">Good</span>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-title">Pressure</span>
+                    <div class="module-val" id="det-press-val">-- mb</div>
+                    <span class="module-sub">Steady</span>
+                </div>
+            </div>
+
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 8px;">Sunrise and sunset</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 10px;">
+                    <div style="text-align: center;">
+                        <i class="fa-solid fa-sun" style="color: var(--gold); font-size: 16px;"></i>
+                        <div style="font-size: 13px; font-weight: 700; margin-top: 4px;" id="det-sunrise">--:--</div>
+                    </div>
+                    <div style="flex: 1; height: 2px; background: rgba(255,255,255,0.2); margin: 0 16px; position: relative;">
+                        <div style="position: absolute; top: -4px; left: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-color);"></div>
+                    </div>
+                    <div style="text-align: center;">
+                        <i class="fa-regular fa-sun" style="color: var(--orange-accent); font-size: 16px;"></i>
+                        <div style="font-size: 13px; font-weight: 700; margin-top: 4px;" id="det-sunset">--:--</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="module-card">
+                    <span class="module-title">Air pollution</span>
+                    <div class="module-val" style="color: #22c55e;">Low</div>
+                    <span class="module-sub">Enjoy outdoor activities</span>
+                </div>
+                <div class="module-card">
+                    <span class="module-title">Pollen</span>
+                    <div class="module-val" style="color: #22c55e;">Low</div>
+                    <span class="module-sub">All species Low</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- PAGE 2: REGIONAL OBSERVATION MATRIX MAP -->
@@ -208,9 +536,10 @@
             <div class="cam-controls">
                 <button class="cam-btn active" onclick="setRegionFocus('county', this)">Full County</button>
                 <button class="cam-btn" onclick="setRegionFocus('dean', this)">Forest of Dean</button>
-                <button class="cam-btn" onclick="setRegionFocus('central-vale', this)">Severn Vale</button>
-                <button class="cam-btn" onclick="setRegionFocus('north-cotswolds', this)">North Cotswolds</button>
-                <button class="cam-btn" onclick="setRegionFocus('south-cotswolds', this)">South Cotswolds</button>
+                <button class="cam-btn" onclick="setRegionFocus('vale', this)">Severn Vale</button>
+                <button class="cam-btn" onclick="setRegionFocus('stroud', this)">Stroud Valleys</button>
+                <button class="cam-btn" onclick="setRegionFocus('cotswolds-north', this)">North Cotswolds</button>
+                <button class="cam-btn" onclick="setRegionFocus('cotswolds-south', this)">South Cotswolds</button>
             </div>
             <div id="public-map"></div>
         </div>
@@ -218,57 +547,359 @@
 
     <!-- PAGE 3: WARNING DESK -->
     <div id="page-warnings" class="page-view" style="padding: 16px;">
-        <div class="section-heading">UKHSA and MET OFFICE ALERTS</div>
+        <div class="section-heading">Active Warning Desk</div>
         <div id="dynamic-alerts-container"></div>
     </div>
 
-    <!-- PAGE 4: COMMUNITY SOCIAL & UPLOAD -->
-    <div id="page-community" class="page-view" style="padding: 16px;">
-        <div class="section-heading">Share Local Report</div>
-        <div class="feed-card" style="margin-bottom: 20px;">
-            <form id="comm-form" action="https://formbold.com/s/6M5B7" method="POST" enctype="multipart/form-data" onsubmit="handleDirectVisitorPost(event)" style="display: flex; flex-direction: column; gap: 10px;">
-    <input type="text" name="name" id="visitor-sub-name" placeholder="Your Name / Town" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px;">
-    <textarea rows="2" name="contents" id="visitor-sub-desc" placeholder="What are sky conditions like near you?" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px;"></textarea>
-    <input type="file" name="image" id="visitor-sub-file" accept="image/*" onchange="previewVisitorFile(this)" style="font-size: 12px; color: var(--text-muted);">
-    <button type="submit" style="background: var(--accent-color); color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer;">Post to the HUB</button>
-</form>
-        </div>
+  <!-- PAGE 4: SOCIAL FORUM & COMMUNITY FEED -->
+ <!-- PAGE 4: COMMUNITY HUB & SPOTTER FEED -->
+    <div id="page-community" class="page-view" style="padding: 12px; height: calc(100vh - 120px); overflow-y: auto; box-sizing: border-box;">
+ <!-- Bravenet Embedded Service Code -->
+<iframe src="https://pub21.bravenet.com/forum/1787479763" 
+        style="width: 100%; height: 100%; min-height: 520px; border: none; border-radius: 12px; background: #ffffff;"
+        allowfullscreen>
+</iframe>
+</div>
 
-        <div class="section-heading">Recent Activity</div>
-        <div id="public-feed-timeline"></div>
+    <!-- LIGHTBOX MODAL FOR IMAGES -->
+    <div id="lightbox-modal" onclick="closeLightbox()" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center; cursor: pointer; padding: 20px;">
+        <span style="position: absolute; top: 20px; right: 25px; color: #fff; font-size: 32px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img id="lightbox-img" src="" alt="Full size preview" style="max-width: 90vw; max-height: 85vh; border-radius: 12px; object-fit: contain; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
     </div>
 
-    <!-- PAGE 5: YOUTUBE ARCHIVE -->
+    <!-- POPUP UPLOAD MODAL FOR SNAPS & REPORTS -->
+    <div id="upload-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(5px); z-index: 3000; align-items: center; justify-content: center; padding: 16px;">
+        <div style="background: #131f30; border: 1px solid var(--card-border); border-radius: 16px; width: 100%; max-width: 480px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-size: 15px; font-weight: 800; color: #fff;"><i class="fa-solid fa-cloud-arrow-up" style="color: var(--accent-color);"></i> Create Community Post</h3>
+                <i class="fa-solid fa-xmark" onclick="toggleUploadModal(false)" style="font-size: 18px; color: var(--text-muted); cursor: pointer;"></i>
+            </div>
+            <form id="comm-form" action="https://formbold.com/s/6M5B7" method="POST" enctype="multipart/form-data" onsubmit="handleDirectVisitorPost(event)" style="display: flex; flex-direction: column; gap: 10px;">
+                <input type="text" name="name" id="visitor-sub-name" placeholder="Your Name & Town (e.g. Dave • Lydney)" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px;">
+                <textarea rows="3" name="report" id="visitor-sub-desc" placeholder="What are the weather conditions in your area?" required style="background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 10px; color: #fff; font-size: 13px;"></textarea>
+                <div style="background: rgba(0,0,0,0.2); border: 1px dashed var(--card-border); border-radius: 8px; padding: 10px; text-align: center;">
+                    <input type="file" name="image" id="visitor-sub-file" accept="image/*" onchange="previewVisitorFile(this)" style="font-size: 11px; color: var(--text-muted); width: 100%;">
+                </div>
+                <button type="submit" style="background: var(--accent-color); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; margin-top: 4px;">
+                    Post to Community
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PAGE 5: YOUTUBE ARCHIVE (Accessible from More) -->
     <div id="page-archive" class="page-view" style="padding: 16px;">
         <div class="section-heading">Video Vault & Broadcast Archive</div>
         <div id="youtube-archive-timeline"></div>
     </div>
 
-    <!-- Bottom Navigation Dock -->
+    <!-- PAGE 6: COMMUNITY PHOTO GALLERY (Accessible from More) -->
+    <div id="page-gallery" class="page-view" style="padding: 16px;">
+        <div class="section-heading">Community Photo Gallery</div>
+        <div id="gallery-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
+    </div>
+
+   <!-- 5-BUTTON MOBILE CLEAN BOTTOM DOCK -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchPage('home', this)"><i class="fa-solid fa-house"></i> Home</button>
         <button class="nav-item" onclick="switchPage('map', this)"><i class="fa-solid fa-map"></i> Live Map</button>
         <button class="nav-item" onclick="switchPage('warnings', this)"><i class="fa-solid fa-triangle-exclamation"></i> Warnings</button>
-        <button class="nav-item" onclick="switchPage('community', this)"><i class="fa-solid fa-users"></i> Community HUB</button>
-        <button class="nav-item" onclick="switchPage('archive', this)"><i class="fa-solid fa-video"></i> Youtube Archive</button>
-        <a href="weatherhub.apk" class="nav-item app-download" download><i class="fa-solid fa-download"></i> Get The App</a>
+        <button class="nav-item" onclick="switchPage('community', this)"><i class="fa-solid fa-users"></i> Community</button>
+        <button class="nav-item" onclick="toggleMoreDrawer(true)"><i class="fa-solid fa-bars"></i> More</button>
     </nav>
 
+   <!-- SLIDE-UP MORE DRAWER -->
+    <div class="more-overlay" id="more-overlay" onclick="toggleMoreDrawer(false)"></div>
+    <div class="more-drawer" id="more-drawer">
+        <div class="drawer-handle" onclick="toggleMoreDrawer(false)"></div>
+        <div class="drawer-grid">
+            <div class="drawer-btn" onclick="openCountyTool('tool-severn')"><i class="fa-solid fa-water"></i> Severn Bore & Estuary</div>
+            <div class="drawer-btn" onclick="openCountyTool('tool-terrain')"><i class="fa-solid fa-mountain"></i> Hill vs Valley Index</div>
+            <div class="drawer-btn" onclick="openCountyTool('tool-mud')"><i class="fa-solid fa-dog"></i> Dog Walk Mud Index</div>
+            <div class="drawer-btn" onclick="openCountyTool('tool-bridge')"><i class="fa-solid fa-bridge"></i> Severn Bridge Risk</div>
+            <div class="drawer-btn" onclick="openCountyTool('tool-laundry')"><i class="fa-solid fa-shirt"></i> Laundry Drying Index</div>
+            <div class="drawer-btn" onclick="openCountyTool('tool-skycam')"><i class="fa-solid fa-video"></i> Blakeney Sky Cam</div>
+            <div class="drawer-btn" onclick="openCountyTool('tool-gallery')"><i class="fa-solid fa-images"></i> Pictures by You</div>
+            <div class="drawer-btn" onclick="openCountyTool('tool-archive')"><i class="fa-solid fa-film"></i> Video Archive</div>
+            <a href="weatherhub.apk" class="drawer-btn app-highlight" download><i class="fa-solid fa-download"></i> Get The Android App</a>
+        </div>
+    </div>
+
+    <!-- SUB-PAGES: COUNTY TOOLS -->
+    <div id="county-tools-container" style="display: none; padding: 16px; min-height: 80vh;">
+        
+        <!-- Subpage 1: Severn Bore -->
+        <div id="tool-severn" class="county-subpage" style="display: none;">
+            <button onclick="closeCountyTools()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main View
+            </button>
+            <div class="section-heading">Severn Estuary & Bore Live Matrix</div>
+            
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Estuary Surface Condition</div>
+                <div style="font-size: 18px; font-weight: 900; color: var(--accent-color); margin: 4px 0;" id="estuary-chop-status">Calculating...</div>
+                <div style="font-size: 11px; color: var(--text-muted);" id="estuary-chop-desc">Combining wind speed, direction, and tide flow along the channel.</div>
+            </div>
+
+            <div class="met-card">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 10px;">Severn Bore Viewing Stations (Minsterworth)</div>
+                <div style="font-size: 12px; color: var(--gold); font-weight: 700;" id="bore-next-time">Next Major 3-Star Bore: Fri 11 Sept @ 21:14 BST</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Wave conditions depend on upstream freshwater volume and wind push.</div>
+            </div>
+        </div>
+
+        <!-- Subpage 2: Hill vs Valley Inversion -->
+        <div id="tool-terrain" class="county-subpage" style="display: none;">
+            <button onclick="closeCountyTools()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main View
+            </button>
+            <div class="section-heading">Hill vs. Valley Microclimate Index</div>
+            
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Morning Inversion & Fog Risk</div>
+                <div style="font-size: 18px; font-weight: 900; color: #a855f7; margin: 4px 0;" id="inversion-status">Low Valley Inversion Risk</div>
+                <div style="font-size: 11px; color: var(--text-muted);" id="inversion-desc">Light breezes preventing dense cold air pooling across low-lying hollows.</div>
+            </div>
+
+            <div class="module-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="module-card">
+                    <span class="module-title"><i class="fa-solid fa-mountain"></i> Ridge Tops</span>
+                    <div class="module-val" id="ridge-temp">--°C</div>
+                    <span class="module-sub">Blakeney / Cleeve Hill</span>
+                </div>
+                <div class="module-card">
+                    <span class="module-title"><i class="fa-solid fa-water"></i> Valley Bottoms</span>
+                    <div class="module-val" id="valley-temp">--°C</div>
+                    <span class="module-sub">Severn Vale / Stroud</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subpage 3: Countywide Dog Walk & Trail Mud Index -->
+        <div id="tool-mud" class="county-subpage" style="display: none;">
+            <button onclick="closeCountyTools()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main View
+            </button>
+            <div class="section-heading">County Dog Walk & Mud Index</div>
+            
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Overall County Soil Status</div>
+                <div style="font-size: 18px; font-weight: 900; color: #22c55e; margin: 4px 0;" id="mud-status">Firm / Good Ground</div>
+                <div style="font-size: 11px; color: var(--text-muted);" id="mud-desc">Low recent precipitation across the county. Main footpaths and trails in good condition.</div>
+            </div>
+
+            <div class="met-card">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 10px;">Regional Trail Conditions</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 12px; font-weight: 700; color: #fff;"><i class="fa-solid fa-tree" style="color: #22c55e; margin-right: 6px;"></i> Forest of Dean (Woodland / Clay)</span>
+                            <span style="font-size: 12px; font-weight: 800; color: #22c55e;" id="mud-dean-val">Dry Trails</span>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Speech House, Cannop, Beechenhurst, Mallards Pike</div>
+                    </div>
+                    <div style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 12px; font-weight: 700; color: #fff;"><i class="fa-solid fa-water" style="color: var(--accent-color); margin-right: 6px;"></i> Severn Vale & River Ham Meadows</span>
+                            <span style="font-size: 12px; font-weight: 800; color: #22c55e;" id="mud-vale-val">Firm Grass</span>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Tewkesbury Ham, Alney Island, Severn Way, Coombe Hill</div>
+                    </div>
+                    <div style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 12px; font-weight: 700; color: #fff;"><i class="fa-solid fa-mountain" style="color: #a855f7; margin-right: 6px;"></i> Cotswold Escarpment & Commons</span>
+                            <span style="font-size: 12px; font-weight: 800; color: #22c55e;" id="mud-cotswold-val">Fast-Draining</span>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Cleeve Common, Minchinhampton, Leckhampton, Robinswood Hill</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 12px; font-weight: 700; color: #fff;"><i class="fa-solid fa-person-walking" style="color: var(--gold); margin-right: 6px;"></i> Stroud Five Valleys & Canal Towpaths</span>
+                            <span style="font-size: 12px; font-weight: 800; color: #22c55e;" id="mud-stroud-val">Clear Towpaths</span>
+                        </div>
+                        <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Stroudwater Navigation, Slad Valley, Rodborough, Woodchester</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subpage 4: M48 Severn Bridge Crossing Risk -->
+        <div id="tool-bridge" class="county-subpage" style="display: none;">
+            <button onclick="closeCountyTools()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main View
+            </button>
+            <div class="section-heading">M48 Severn Bridge Wind Matrix</div>
+            
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Crossing Status & Restriction Risk</div>
+                <div style="font-size: 18px; font-weight: 900; color: #22c55e; margin: 4px 0;" id="bridge-status">Open / All Vehicles Normal</div>
+                <div style="font-size: 11px; color: var(--text-muted);" id="bridge-desc">Current crosswind speeds over the estuary are well within standard operating safety thresholds.</div>
+            </div>
+
+            <div class="met-card">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 10px;">Estuary Threshold Indicators</div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #fff;">Estuary Channel Gusts</span>
+                        <span style="font-size: 12px; font-weight: 700; color: var(--accent-color);" id="bridge-gust-val">-- mph</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #fff;">High-Sided / Caravan Warning (40+ mph)</span>
+                        <span style="font-size: 12px; font-weight: 700; color: #22c55e;" id="bridge-high-risk">Clear</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="font-size: 12px; font-weight: 600; color: #fff;">Full Closure Threshold (60+ mph)</span>
+                        <span style="font-size: 12px; font-weight: 700; color: #22c55e;" id="bridge-close-risk">Clear</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subpage 5: Laundry Drying Rate Calculator -->
+        <div id="tool-laundry" class="county-subpage" style="display: none;">
+            <button onclick="closeCountyTools()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main View
+            </button>
+            <div class="section-heading">Outdoor Laundry Drying Index</div>
+            
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Line Drying Efficiency</div>
+                <div style="font-size: 18px; font-weight: 900; color: var(--gold); margin: 4px 0;" id="laundry-rating">Good Drying Conditions</div>
+                <div style="font-size: 11px; color: var(--text-muted);" id="laundry-desc">Moderate breeze and low humidity allowing standard cotton loads to dry in good time.</div>
+            </div>
+
+            <div class="module-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="module-card">
+                    <span class="module-title"><i class="fa-solid fa-clock"></i> Est. Drying Time</span>
+                    <div class="module-val" id="laundry-hours">~2.5 hrs</div>
+                    <span class="module-sub">Standard Cotton Load</span>
+                </div>
+                <div class="module-card">
+                    <span class="module-title"><i class="fa-solid fa-droplet-slash"></i> Evaporation</span>
+                    <div class="module-val" id="laundry-evap">High</div>
+                    <span class="module-sub">Wind & Solar Assist</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subpage 6: Live Sky Cam View -->
+        <div id="tool-skycam" class="county-subpage" style="display: none;">
+            <button onclick="closeCountyTools()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main View
+            </button>
+            <div class="section-heading">Blakeney Hill 24/7 Live Sky Cam</div>
+            
+            <div class="met-card" style="margin-bottom: 10px; padding: 10px;">
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                    <iframe src="https://www.youtube.com/embed/live_stream?channel=UCalIubxoqyQ8kHQ6wwL4vg" 
+                            style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border: 0;" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="met-card">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 8px;">Station Telemetry Ground Truth</div>
+                <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+                    Continuous automated broadcast overlooking Blakeney Hill and the Severn ridge. Providing direct visual verification for cloud ceilings, mist entrapment, and frontal passage.
+                </div>
+            </div>
+        </div>
+
+        <!-- Subpage 7: Pictures by You Community Gallery -->
+        <div id="tool-gallery" class="county-subpage" style="display: none;">
+            <button onclick="closeCountyTools()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main View
+            </button>
+            <div class="section-heading">Pictures by You — Community Gallery</div>
+            
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 6px;">Gloucestershire Sky & Weather Submissions</div>
+                <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
+                    Community storm captures, sunsets, and local cloudscapes from across the county.
+                </div>
+            </div>
+
+            <div id="subpage-gallery-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
+        </div>
+
+        <!-- Subpage 8: Video & Time-Lapse Archive -->
+        <div id="tool-archive" class="county-subpage" style="display: none;">
+            <button onclick="closeCountyTools()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main View
+            </button>
+            <div class="section-heading">Gloucestershire Weather Video Archive</div>
+            
+            <div class="met-card" style="margin-bottom: 10px;">
+                <div style="font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 6px;">Recorded Storm Chases & Time-Lapses</div>
+                <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
+                    Severn Bore passages, eclipse streams, and severe weather recordings across Gloucestershire.
+                </div>
+            </div>
+
+            <div id="video-archive-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+
+    </div>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script>
         const stations = [
-            { id: "blakeney", name: "Blakeney", region: "dean", lat: 51.7640, lon: -2.4820, temp: "18°" },
-            { id: "lydney", name: "Lydney", region: "dean", lat: 51.7280, lon: -2.5280, temp: "19°" },
-            { id: "coleford", name: "Coleford", region: "dean", lat: 51.7910, lon: -2.6180, temp: "18°" },
-            { id: "cinderford", name: "Cinderford", region: "dean", lat: 51.8217, lon: -2.4983, temp: "18°" },
-            { id: "glos", name: "Gloucester", region: "central-vale", lat: 51.8644, lon: -2.2465, temp: "20°" },
-            { id: "chelt", name: "Cheltenham", region: "central-vale", lat: 51.8994, lon: -2.0783, temp: "20°" },
-            { id: "stroud", name: "Stroud", region: "south-cotswolds", lat: 51.7450, lon: -2.2180, temp: "19°" },
-            { id: "ciren", name: "Cirencester", region: "south-cotswolds", lat: 51.7180, lon: -1.9670, temp: "19°" },
-            { id: "stow", name: "Stow", region: "north-cotswolds", lat: 51.9310, lon: -1.7220, temp: "17°" }
-        ];
+            // Forest of Dean
+            { id: "blakeney", name: "Blakeney", region: "dean", lat: 51.7640, lon: -2.4820, temp: "18°", wind: "4mph", cond: "☀️" },
+            { id: "lydney", name: "Lydney", region: "dean", lat: 51.7280, lon: -2.5280, temp: "19°", wind: "5mph", cond: "🌤️" },
+            { id: "coleford", name: "Coleford", region: "dean", lat: 51.7910, lon: -2.6180, temp: "18°", wind: "6mph", cond: "🌤️" },
+            { id: "cinderford", name: "Cinderford", region: "dean", lat: 51.8217, lon: -2.4983, temp: "18°", wind: "6mph", cond: "🌤️" },
+            { id: "mitcheldean", name: "Mitcheldean", region: "dean", lat: 51.8647, lon: -2.4867, temp: "18°", wind: "5mph", cond: "🌤️" },
+            { id: "sedbury", name: "Sedbury", region: "dean", lat: 51.6370, lon: -2.6610, temp: "19°", wind: "7mph", cond: "☀️" },
 
+            // Severn Vale & Central
+            { id: "glos", name: "Gloucester", region: "vale", lat: 51.8644, lon: -2.2465, temp: "20°", wind: "4mph", cond: "☀️" },
+            { id: "chelt", name: "Cheltenham", region: "vale", lat: 51.8994, lon: -2.0783, temp: "20°", wind: "4mph", cond: "☀️" },
+            { id: "tewkesbury", name: "Tewkesbury", region: "vale", lat: 51.9930, lon: -2.1580, temp: "19°", wind: "5mph", cond: "🌤️" },
+            { id: "hartpury", name: "Hartpury", region: "vale", lat: 51.9280, lon: -2.3080, temp: "19°", wind: "4mph", cond: "🌤️" },
+            { id: "berkeley", name: "Berkeley", region: "vale", lat: 51.6917, lon: -2.4600, temp: "19°", wind: "6mph", cond: "🌤️" },
+
+            // Stroud Valleys & Five Valleys
+            { id: "stroud", name: "Stroud", region: "stroud", lat: 51.7450, lon: -2.2180, temp: "19°", wind: "3mph", cond: "🌤️" },
+            { id: "nailsworth", name: "Nailsworth", region: "stroud", lat: 51.6950, lon: -2.2220, temp: "19°", wind: "3mph", cond: "🌤️" },
+            { id: "stonehouse", name: "Stonehouse", region: "stroud", lat: 51.7470, lon: -2.2810, temp: "19°", wind: "4mph", cond: "☀️" },
+            { id: "dursley", name: "Dursley", region: "stroud", lat: 51.6830, lon: -2.3500, temp: "18°", wind: "5mph", cond: "🌤️" },
+            { id: "wotton", name: "Wotton-u-Edge", region: "stroud", lat: 51.6380, lon: -2.3480, temp: "18°", wind: "5mph", cond: "🌤️" },
+
+            // North Cotswolds
+            { id: "stow", name: "Stow-on-Wold", region: "cotswolds-north", lat: 51.9310, lon: -1.7220, temp: "17°", wind: "6mph", cond: "🌤️" },
+            { id: "bourton", name: "Bourton-on-Water", region: "cotswolds-north", lat: 51.8845, lon: -1.7580, temp: "18°", wind: "5mph", cond: "☀️" },
+            { id: "moreton", name: "Moreton-in-Marsh", region: "cotswolds-north", lat: 51.9890, lon: -1.7030, temp: "17°", wind: "6mph", cond: "🌤️" },
+
+            // South Cotswolds
+            { id: "ciren", name: "Cirencester", region: "cotswolds-south", lat: 51.7180, lon: -1.9670, temp: "19°", wind: "4mph", cond: "☀️" },
+            { id: "tetbury", name: "Tetbury", region: "cotswolds-south", lat: 51.6370, lon: -2.1580, temp: "18°", wind: "5mph", cond: "🌤️" }
+        ];
         let map = null;
         let visitorTempImage = "";
+
+        function openLightbox(src) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            modal.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').style.display = 'none';
+        }
+
+        function toggleUploadModal(show) {
+            document.getElementById('upload-modal').style.display = show ? 'flex' : 'none';
+        }
+
+        function toggleMoreDrawer(open) {
+            document.getElementById('more-overlay').classList.toggle('active', open);
+            document.getElementById('more-drawer').classList.toggle('open', open);
+        }
 
         function getAnimatedVectorGlyph(code, isDay = 1) {
             if (code === 0) {
@@ -285,12 +916,48 @@
         }
 
         async function fetchLiveWeather() {
+            let lat = 51.8644;
+            let lon = -2.2465;
+            let locationName = "Gloucester";
+
+            if (navigator.geolocation) {
+                try {
+                    const pos = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 4000 });
+                    });
+                    lat = pos.coords.latitude;
+                    lon = pos.coords.longitude;
+                    
+                    let closestDist = Infinity;
+                    stations.forEach(s => {
+                        const d = Math.hypot(s.lat - lat, s.lon - lon);
+                        if (d < closestDist) {
+                            closestDist = d;
+                            locationName = s.name;
+                        }
+                    });
+                } catch (err) {
+                    lat = 51.8644;
+                    lon = -2.2465;
+                    locationName = "Gloucester";
+                }
+            }
+
+            const subhead = document.querySelector('.hero-subhead');
+            if (subhead) subhead.innerHTML = `Next Hour &bull; ${locationName}`;
+            const townSpan = document.getElementById('user-town');
+            if (townSpan) townSpan.innerText = locationName.toUpperCase();
+
             try {
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=51.7640&longitude=-2.4820&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,is_day,wind_speed_10m,precipitation_probability&hourly=temperature_2m,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&wind_speed_unit=mph&timezone=Europe%2FLondon`;
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,is_day,wind_speed_10m,wind_direction_10m,wind_gusts_10m,surface_pressure,visibility,precipitation_probability&hourly=temperature_2m,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&wind_speed_unit=mph&timezone=Europe%2FLondon`;
                 const res = await fetch(url);
                 const data = await res.json();
 
                 const cur = data.current;
+                const daily = data.daily;
+                const hourly = data.hourly;
+
+                // Main Top Hero Card
                 document.getElementById('home-temp').innerText = `${Math.round(cur.temperature_2m)}°C`;
                 document.getElementById('home-feels').innerText = `Feels like ${Math.round(cur.apparent_temperature || cur.temperature_2m)}°`;
                 document.getElementById('home-wind').innerText = `${Math.round(cur.wind_speed_10m)}mph`;
@@ -303,8 +970,7 @@
                 else if (cur.weather_code === 3) cond = "Overcast";
                 document.getElementById('home-cond').innerText = cond;
 
-                // Hourly Strip
-                const hourly = data.hourly;
+                // Hourly Breakdown Strip
                 let hourlyHtml = '';
                 const currentHourIndex = new Date().getHours();
                 for (let i = currentHourIndex; i < currentHourIndex + 12 && i < hourly.time.length; i++) {
@@ -319,8 +985,7 @@
                 }
                 document.getElementById('hourly-strip').innerHTML = hourlyHtml;
 
-                // 5-Day Outlook
-                const daily = data.daily;
+                // 5-Day County Forecast Strip
                 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                 let dailyHtml = '';
                 for (let i = 0; i < 5 && i < daily.time.length; i++) {
@@ -339,6 +1004,58 @@
                 }
                 document.getElementById('five-day-outlook-container').innerHTML = dailyHtml;
 
+                // Met Office Detail Cards: Wind & Compass Dial
+                const windSpd = Math.round(cur.wind_speed_10m || 7);
+                const windGust = Math.round(cur.wind_gusts_10m || windSpd * 1.4);
+                const windDirDeg = cur.wind_direction_10m || 65;
+                const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+                const dirLabel = dirs[Math.round(windDirDeg / 22.5) % 16];
+
+                const windDirEl = document.getElementById('det-wind-dir');
+                if (windDirEl) windDirEl.innerText = dirLabel;
+                const windSpdEl = document.getElementById('det-wind-spd');
+                if (windSpdEl) windSpdEl.innerText = `${windSpd}mph`;
+                const windGustEl = document.getElementById('det-wind-gust');
+                if (windGustEl) windGustEl.innerText = `${windGust}mph`;
+                const dialSpdEl = document.getElementById('dial-spd');
+                if (dialSpdEl) dialSpdEl.innerText = windSpd;
+                const arrowEl = document.getElementById('compass-arrow');
+                if (arrowEl) arrowEl.style.transform = `rotate(${windDirDeg}deg)`;
+
+                // Temperature Comparison
+                const todayHigh = Math.round(daily.temperature_2m_max[0] || 20);
+                const todayHighEl = document.getElementById('det-today-high');
+                if (todayHighEl) todayHighEl.innerText = `${todayHigh}°`;
+                const yestHighEl = document.getElementById('det-yest-high');
+                if (yestHighEl) yestHighEl.innerText = `${todayHigh}°`;
+
+                // Humidity & Pressure
+                const hum = Math.round(cur.relative_humidity_2m || 60);
+                const humHighEl = document.getElementById('det-hum-high');
+                if (humHighEl) humHighEl.innerText = `${hum}%`;
+                const humLowEl = document.getElementById('det-hum-low');
+                if (humLowEl) humLowEl.innerText = `${Math.max(30, hum - 22)}%`;
+                const pressEl = document.getElementById('det-press-val');
+                if (pressEl) pressEl.innerText = `${Math.round(cur.surface_pressure || 1018)} mb`;
+
+                // UV & Visibility
+                const uv = daily.uv_index_max && daily.uv_index_max[0] ? Math.round(daily.uv_index_max[0]) : 4;
+                const uvEl = document.getElementById('det-uv-level');
+                if (uvEl) uvEl.innerText = `${uv >= 6 ? 'High' : uv >= 3 ? 'Moderate' : 'Low'} (${uv})`;
+                
+                const vis = cur.visibility ? Math.round(cur.visibility / 1000) : 30;
+                const visEl = document.getElementById('det-vis-km');
+                if (visEl) visEl.innerText = `${vis}km`;
+
+                // Sunrise & Sunset
+                if (daily.sunrise && daily.sunset) {
+                    const sr = new Date(daily.sunrise[0]).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                    const ss = new Date(daily.sunset[0]).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                    const srEl = document.getElementById('det-sunrise');
+                    if (srEl) srEl.innerText = sr;
+                    const ssEl = document.getElementById('det-sunset');
+                    if (ssEl) ssEl.innerText = ss;
+                }
             } catch (e) {}
         }
 
@@ -346,8 +1063,11 @@
             document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
 
-            document.getElementById(`page-${pageId}`).classList.add('active');
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) targetPage.classList.add('active');
             if (btn) btn.classList.add('active');
+
+            window.scrollTo(0, 0);
 
             if (pageId === 'map') {
                 if (!map) initMap();
@@ -370,11 +1090,21 @@
             document.querySelectorAll('.cam-controls .cam-btn').forEach(b => b.classList.remove('active'));
             if (btn) btn.classList.add('active');
 
-            if (region === 'county') map.flyTo([51.84, -2.15], 10);
-            else if (region === 'dean') map.flyTo([51.82, -2.52], 11.2);
-            else if (region === 'central-vale') map.flyTo([51.92, -2.12], 11.4);
-            else if (region === 'north-cotswolds') map.flyTo([51.94, -1.78], 11.0);
-            else if (region === 'south-cotswolds') map.flyTo([51.70, -2.08], 11.0);
+            if (!map) return;
+
+            if (region === 'county') {
+                map.flyTo([51.84, -2.15], 10);
+            } else if (region === 'dean') {
+                map.flyTo([51.78, -2.54], 11.5);
+            } else if (region === 'vale') {
+                map.flyTo([51.90, -2.20], 11.2);
+            } else if (region === 'stroud') {
+                map.flyTo([51.71, -2.26], 11.6);
+            } else if (region === 'cotswolds-north') {
+                map.flyTo([51.93, -1.74], 11.3);
+            } else if (region === 'cotswolds-south') {
+                map.flyTo([51.68, -2.06], 11.4);
+            }
         }
 
         function previewVisitorFile(input) {
@@ -386,122 +1116,686 @@
         }
 
         function handleDirectVisitorPost(e) {
-    e.preventDefault();
-    const form = document.getElementById('comm-form');
-    const name = document.getElementById('visitor-sub-name').value.trim();
-    const desc = document.getElementById('visitor-sub-desc').value.trim();
+            e.preventDefault();
+            const form = document.getElementById('comm-form');
+            const name = document.getElementById('visitor-sub-name').value.trim();
+            const desc = document.getElementById('visitor-sub-desc').value.trim();
 
-    // Sends the report and photo directly to your FormBold email inbox
-    if (form.action && !form.action.includes('YOUR_ID_HERE')) {
-        const formData = new FormData(form);
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        }).catch(() => {});
-    }
+            if (form.action && !form.action.includes('YOUR_FORMBOLD_ID')) {
+                const formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                }).catch(() => {});
+            }
 
-    // Displays an instant local preview on the user's screen
-    let savedData = { communityPosts: [] };
-    try {
-        const raw = localStorage.getItem('gwh_master_live_data');
-        if (raw) savedData = JSON.parse(raw);
-    } catch(err) {}
+            let savedData = { communityPosts: [] };
+            try {
+                const raw = localStorage.getItem('gwh_master_live_data');
+                if (raw) savedData = JSON.parse(raw);
+            } catch(err) {}
 
-    savedData.communityPosts = savedData.communityPosts || [];
-    savedData.communityPosts.unshift({
-        id: Date.now(),
-        author: name,
-        meta: 'Just now',
-        caption: desc,
-        imageUrl: visitorTempImage || ""
-    });
+            savedData.communityPosts = savedData.communityPosts || [];
+            savedData.communityPosts.unshift({
+                id: Date.now(),
+                author: name,
+                meta: 'Just now',
+                caption: desc,
+                imageUrl: visitorTempImage || ""
+            });
 
-    try {
-        localStorage.setItem('gwh_master_live_data', JSON.stringify(savedData));
-    } catch(err) {}
+            try {
+                localStorage.setItem('gwh_master_live_data', JSON.stringify(savedData));
+            } catch(err) {}
 
-    visitorTempImage = "";
-    document.getElementById('visitor-sub-file').value = "";
-    document.getElementById('visitor-sub-name').value = "";
-    document.getElementById('visitor-sub-desc').value = "";
+            visitorTempImage = "";
+            document.getElementById('visitor-sub-file').value = "";
+            document.getElementById('visitor-sub-name').value = "";
+            document.getElementById('visitor-sub-desc').value = "";
 
-    loadBackendJSON();
-    alert("Report sent to the Weather HUB team!");
-}
+            loadBackendJSON();
+            toggleUploadModal(false);
+            alert("Report posted to the Community Feed!");
+        }
+
+        function openCountyTool(subpageId) {
+            toggleMoreDrawer(false);
+            
+            // Hide main tab views
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            
+            // Open tools container & show chosen subpage
+            const container = document.getElementById('county-tools-container');
+            if (container) container.style.display = 'block';
+            
+            document.querySelectorAll('.county-subpage').forEach(sp => sp.style.display = 'none');
+            const target = document.getElementById(subpageId);
+            if (target) target.style.display = 'block';
+
+            if (subpageId === 'tool-severn') updateEstuaryMatrix();
+            if (subpageId === 'tool-terrain') updateTerrainIndex();
+            if (subpageId === 'tool-mud') updateMudIndex();
+            if (subpageId === 'tool-bridge') updateBridgeRisk();
+            if (subpageId === 'tool-laundry') updateLaundryCalc();
+        }
+
+        function closeCountyTools() {
+            const container = document.getElementById('county-tools-container');
+            if (container) container.style.display = 'none';
+            document.querySelectorAll('.county-subpage').forEach(sp => sp.style.display = 'none');
+            
+            // Return to Home tab
+            const homePage = document.getElementById('page-home');
+            if (homePage) homePage.classList.add('active');
+        }
+
+        function updateEstuaryMatrix() {
+            const chopEl = document.getElementById('estuary-chop-status');
+            const descEl = document.getElementById('estuary-chop-desc');
+            if (!chopEl) return;
+
+            const speedEl = document.getElementById('det-wind-spd');
+            const spd = speedEl ? parseInt(speedEl.innerText) || 8 : 8;
+
+            if (spd >= 20) {
+                chopEl.innerText = "Rough / Heavy Chop";
+                chopEl.style.color = "var(--orange-accent)";
+                descEl.innerText = "Strong gusts creating hazardous standing waves across the sandbanks and exposed estuary channels.";
+            } else if (spd >= 10) {
+                chopEl.innerText = "Moderate Surface Chop";
+                chopEl.style.color = "var(--accent-color)";
+                descEl.innerText = "Breezy conditions producing typical short river chop along Newnham and Minsterworth reaches.";
+            } else {
+                chopEl.innerText = "Calm / Slight Swell";
+                chopEl.style.color = "#22c55e";
+                descEl.innerText = "Smooth surface conditions across the upper tidal Severn.";
+            }
+        }
+
+        function updateTerrainIndex() {
+            const tempEl = document.getElementById('home-temp');
+            const speedEl = document.getElementById('det-wind-spd');
+            const invStatus = document.getElementById('inversion-status');
+            const invDesc = document.getElementById('inversion-desc');
+
+            const currentTemp = tempEl ? parseInt(tempEl.innerText) || 16 : 16;
+            const windSpd = speedEl ? parseInt(speedEl.innerText) || 7 : 7;
+
+            const ridgeTemp = currentTemp;
+            const valleyTemp = windSpd < 5 ? Math.max(0, currentTemp - 3) : currentTemp;
+
+            const rEl = document.getElementById('ridge-temp');
+            if (rEl) rEl.innerText = `${ridgeTemp}°C`;
+            const vEl = document.getElementById('valley-temp');
+            if (vEl) vEl.innerText = `${valleyTemp}°C`;
+
+            if (invStatus && invDesc) {
+                if (windSpd < 5 && currentTemp < 10) {
+                    invStatus.innerText = "High Valley Inversion / Fog Risk";
+                    invStatus.style.color = "var(--orange-accent)";
+                    invDesc.innerText = "Calm air trapping cold moisture in the Severn Vale and Stroud Valleys. Dense morning river fog likely.";
+                } else {
+                    invStatus.innerText = "Low Inversion Risk";
+                    invStatus.style.color = "#22c55e";
+                    invDesc.innerText = "Air mixing normally between high ridges and valley floors.";
+                }
+            }
+        }
+
+        function updateMudIndex() {
+            const rainEl = document.getElementById('home-rain');
+            const humEl = document.getElementById('det-hum-high');
+            
+            const mudStatus = document.getElementById('mud-status');
+            const mudDesc = document.getElementById('mud-desc');
+            const deanEl = document.getElementById('mud-dean-val');
+            const valeEl = document.getElementById('mud-vale-val');
+            const cotsEl = document.getElementById('mud-cotswold-val');
+            const stroudEl = document.getElementById('mud-stroud-val');
+
+            const isRaining = rainEl && rainEl.innerText.includes('%') && parseInt(rainEl.innerText.replace(/[^0-9]/g, '')) > 35;
+            const hum = humEl ? parseInt(humEl.innerText) || 60 : 60;
+
+            if (isRaining || hum > 85) {
+                if (mudStatus) {
+                    mudStatus.innerText = "Heavy Mud & Saturated Ground";
+                    mudStatus.style.color = "var(--orange-accent)";
+                }
+                if (mudDesc) mudDesc.innerText = "Recent countywide rainfall. Low-lying meadow floodplains and woodland clay tracks will require boots and dog towels.";
+
+                if (deanEl) { deanEl.innerText = "Soggy Clay Tracks"; deanEl.style.color = "var(--orange-accent)"; }
+                if (valeEl) { valeEl.innerText = "Waterlogged Meadows"; valeEl.style.color = "#ef4444"; }
+                if (cotsEl) { cotsEl.innerText = "Slippery Limestone / Mud"; cotsEl.style.color = "#f59e0b"; }
+                if (stroudEl) { stroudEl.innerText = "Puddle Splashes / Wet"; stroudEl.style.color = "#f59e0b"; }
+            } else {
+                if (mudStatus) {
+                    mudStatus.innerText = "Firm / Good Walking Conditions";
+                    mudStatus.style.color = "#22c55e";
+                }
+                if (mudDesc) mudDesc.innerText = "Low recent precipitation across Gloucestershire. Main woodland trails, limestone commons, and canal paths in good dry condition.";
+
+                if (deanEl) { deanEl.innerText = "Dry / Firm Trails"; deanEl.style.color = "#22c55e"; }
+                if (valeEl) { valeEl.innerText = "Dry Meadow Grass"; valeEl.style.color = "#22c55e"; }
+                if (cotsEl) { cotsEl.innerText = "Fast-Draining / Dry"; cotsEl.style.color = "#22c55e"; }
+                if (stroudEl) { stroudEl.innerText = "Clear Towpaths"; stroudEl.style.color = "#22c55e"; }
+            }
+        }
+
+        function updateBridgeRisk() {
+            const gustEl = document.getElementById('det-wind-gust');
+            const speedEl = document.getElementById('det-wind-spd');
+            
+            const bStatus = document.getElementById('bridge-status');
+            const bDesc = document.getElementById('bridge-desc');
+            const bGust = document.getElementById('bridge-gust-val');
+            const bHigh = document.getElementById('bridge-high-risk');
+            const bClose = document.getElementById('bridge-close-risk');
+
+            const gust = gustEl ? parseInt(gustEl.innerText) || 12 : (speedEl ? parseInt(speedEl.innerText) * 1.4 : 12);
+
+            if (bGust) bGust.innerText = `${Math.round(gust)} mph`;
+
+            if (gust >= 55) {
+                if (bStatus) { bStatus.innerText = "Full Closure Expected / Active"; bStatus.style.color = "#ef4444"; }
+                if (bDesc) bDesc.innerText = "Extreme channel gale force winds. All traffic diverted via Prince of Wales (M4).";
+                if (bHigh) { bHigh.innerText = "Prohibited"; bHigh.style.color = "#ef4444"; }
+                if (bClose) { bClose.innerText = "Critical Risk"; bClose.style.color = "#ef4444"; }
+            } else if (gust >= 38) {
+                if (bStatus) { bStatus.innerText = "High-Sided Restriction Warning"; bStatus.style.color = "var(--orange-accent)"; }
+                if (bDesc) bDesc.innerText = "Crosswinds above 40 mph. Filter lanes and high-sided vehicle diversions likely.";
+                if (bHigh) { bHigh.innerText = "Restriction Likely"; bHigh.style.color = "var(--orange-accent)"; }
+                if (bClose) { bClose.innerText = "Low Risk"; bClose.style.color = "#22c55e"; }
+            } else {
+                if (bStatus) { bStatus.innerText = "Open / All Vehicles Normal"; bStatus.style.color = "#22c55e"; }
+                if (bDesc) bDesc.innerText = "Current crosswind speeds over the estuary are well within standard operating safety thresholds.";
+                if (bHigh) { bHigh.innerText = "Clear"; bHigh.style.color = "#22c55e"; }
+                if (bClose) { bClose.innerText = "Clear"; bClose.style.color = "#22c55e"; }
+            }
+        }
+
+        function updateLaundryCalc() {
+            const tempEl = document.getElementById('home-temp');
+            const humEl = document.getElementById('det-hum-high');
+            const speedEl = document.getElementById('det-wind-spd');
+            const rainEl = document.getElementById('home-rain');
+
+            const ratingEl = document.getElementById('laundry-rating');
+            const descEl = document.getElementById('laundry-desc');
+            const hoursEl = document.getElementById('laundry-hours');
+            const evapEl = document.getElementById('laundry-evap');
+
+            const temp = tempEl ? parseInt(tempEl.innerText) || 18 : 18;
+            const hum = humEl ? parseInt(humEl.innerText) || 60 : 60;
+            const wind = speedEl ? parseInt(speedEl.innerText) || 8 : 8;
+            const isRaining = rainEl && rainEl.innerText.includes('%') && parseInt(rainEl.innerText.replace(/[^0-9]/g, '')) > 30;
+
+            if (isRaining) {
+                if (ratingEl) { ratingEl.innerText = "Do Not Hang Outside"; ratingEl.style.color = "#ef4444"; }
+                if (descEl) descEl.innerText = "Active rainfall detected across the area. Keep laundry indoors.";
+                if (hoursEl) hoursEl.innerText = "N/A";
+                if (evapEl) evapEl.innerText = "Zero (Rain)";
+            } else if (temp >= 18 && hum <= 60 && wind >= 6) {
+                if (ratingEl) { ratingEl.innerText = "Superb Fast Dry"; ratingEl.style.color = "#22c55e"; }
+                if (descEl) descEl.innerText = "Warm air, good air movement, and dry atmosphere will dry clothes quickly.";
+                if (hoursEl) hoursEl.innerText = "~1.5 - 2 hrs";
+                if (evapEl) evapEl.innerText = "Very High";
+            } else if (temp >= 12 && hum <= 75) {
+                if (ratingEl) { ratingEl.innerText = "Fair / Steady Dry"; ratingEl.style.color = "var(--gold)"; }
+                if (descEl) descEl.innerText = "Moderate drying rates. Heavier items like towels will take longer.";
+                if (hoursEl) hoursEl.innerText = "~3 - 4.5 hrs";
+                if (evapEl) evapEl.innerText = "Moderate";
+            } else {
+                if (ratingEl) { ratingEl.innerText = "Slow / Poor Drying"; ratingEl.style.color = "var(--orange-accent)"; }
+                if (descEl) descEl.innerText = "High humidity or low temperatures mean items may remain damp.";
+                if (hoursEl) hoursEl.innerText = "5+ hrs";
+                if (evapEl) evapEl.innerText = "Low";
+            }
+        }
+		function switchPage(pageId, btn) {
+            // Hide subpages container if open
+            const subContainer = document.getElementById('county-tools-container');
+            if (subContainer) subContainer.style.display = 'none';
+
+            // Switch active tab view
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
+
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) targetPage.classList.add('active');
+            if (btn) btn.classList.add('active');
+
+            window.scrollTo(0, 0);
+
+            if (pageId === 'map') {
+                if (!map) initMap();
+                setTimeout(() => { map.invalidateSize(); }, 200);
+            }
+        }
+
+        function openCountyTool(subpageId) {
+            toggleMoreDrawer(false);
+            
+            // Hide main tab views
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            
+            // Open tools container & show chosen subpage
+            const container = document.getElementById('county-tools-container');
+            if (container) container.style.display = 'block';
+            
+            document.querySelectorAll('.county-subpage').forEach(sp => sp.style.display = 'none');
+            const target = document.getElementById(subpageId);
+            if (target) target.style.display = 'block';
+
+            if (subpageId === 'tool-severn') updateEstuaryMatrix();
+            if (subpageId === 'tool-terrain') updateTerrainIndex();
+            if (subpageId === 'tool-mud') updateMudIndex();
+            if (subpageId === 'tool-bridge') updateBridgeRisk();
+            if (subpageId === 'tool-laundry') updateLaundryCalc();
+        }
 
         async function loadBackendJSON() {
             let data = {
-                metAlert: { color: "yellow", type: "Weather Warning", title: "Heavy Persistent Rain", from: "Live", to: "Tomorrow 09:00", desc: "Heavy rain travelling across the county could cause surface water disruptions." },
-                ukhsaAlert: { color: "yellow", type: "Heat Health", title: "Yellow Heat-Health Alert", from: "Live", to: "15:00", desc: "Stay hydrated, stay safe, and check in on vulnerable neighbours." },
-                communityPosts: [
-                    { id: 1, author: "Gloucestershire Weather HUB", meta: "Official Post • 2 hours ago", caption: "Clear spells extending right across the Severn Vale this evening with light winds over Blakeney Hill.", imageUrl: "" }
-                ],
-                youtube: [
-                    { id: "live1", title: "Gloucestershire Weather HUB 24/7 Live Stream", videoId: "jfKfPfyJRdk", caption: "Live camera stream broadcasting from Blakeney Hill station." }
-                ]
+                metAlert: { color: "white", type: "No Warnings", title: "No Current Met Office Warnings", from: "Live", to: "Continuous", desc: "No severe weather in force." },
+                ukhsaAlert: { color: "white", type: "No Alert", title: "No Current UKHSA Health Alerts", from: "Live", to: "Continuous", desc: "No health advisories in force." },
+                communityPosts: [],
+                youtube: [],
+                gallery: []
             };
 
+            // Read from LocalStorage (for local testing/offline)
             try {
                 const localStr = localStorage.getItem('gwh_master_live_data');
-                if (localStr) data = { ...data, ...JSON.parse(localStr) };
+                if (localStr) {
+                    const parsed = JSON.parse(localStr);
+                    data = Object.assign(data, parsed);
+                }
             } catch(e) {}
 
+            // Try fetching live JSON (for online deployment)
             try {
-                const res = await fetch('gwh_live_feed.json');
+                const res = await fetch('gwh_live_feed.json?nocache=' + Date.now());
                 if (res.ok) {
                     const netData = await res.json();
-                    data = { ...data, ...netData };
+                    data = Object.assign(data, netData);
                 }
-            } catch (err) {}
+            } catch (err) {
+                console.log("Running in local mode / using cached storage data");
+            }
 
+            // 1. Render Warnings
             const alertsContainer = document.getElementById('dynamic-alerts-container');
-            if (alertsContainer) {
-                const met = data.metAlert || { color: 'white', type: 'No Warnings', title: 'No Current Met Office Warnings', from: 'Live', to: 'Continuous', desc: 'No severe weather in force.' };
-                const ukhsa = data.ukhsaAlert || { color: 'white', type: 'No Alert', title: 'No Current UKHSA Health Alerts', from: 'Live', to: 'Continuous', desc: 'No health advisories in force.' };
-
+            if (alertsContainer && data.metAlert && data.ukhsaAlert) {
                 alertsContainer.innerHTML = `
-                    <div class="alert-card alert-${met.color}">
-                        <span class="alert-tag">MET OFFICE &bull; ${met.type.toUpperCase()}</span>
-                        <h3 style="font-size: 15px; font-weight: 700; color: #fff;">${met.title}</h3>
-                        <span style="font-size: 11px; color: var(--text-muted);">Valid: ${met.from} &rarr; ${met.to}</span>
-                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">${met.desc}</p>
+                    <div class="alert-card alert-${data.metAlert.color}">
+                        <span class="alert-tag">MET OFFICE &bull; ${(data.metAlert.type || 'WARNING').toUpperCase()}</span>
+                        <h3 style="font-size: 15px; font-weight: 700; color: #fff;">${data.metAlert.title || ''}</h3>
+                        <span style="font-size: 11px; color: var(--text-muted);">Valid: ${data.metAlert.from || 'Live'} &rarr; ${data.metAlert.to || 'Continuous'}</span>
+                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">${data.metAlert.desc || ''}</p>
                     </div>
-                    <div class="alert-card alert-${ukhsa.color}">
-                        <span class="alert-tag">UKHSA &bull; ${ukhsa.type.toUpperCase()}</span>
-                        <h3 style="font-size: 15px; font-weight: 700; color: #fff;">${ukhsa.title}</h3>
-                        <span style="font-size: 11px; color: var(--text-muted);">Valid: ${ukhsa.from} &rarr; ${ukhsa.to}</span>
-                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">${ukhsa.desc}</p>
+                    <div class="alert-card alert-${data.ukhsaAlert.color}">
+                        <span class="alert-tag">UKHSA &bull; ${(data.ukhsaAlert.type || 'HEALTH').toUpperCase()}</span>
+                        <h3 style="font-size: 15px; font-weight: 700; color: #fff;">${data.ukhsaAlert.title || ''}</h3>
+                        <span style="font-size: 11px; color: var(--text-muted);">Valid: ${data.ukhsaAlert.from || 'Live'} &rarr; ${data.ukhsaAlert.to || 'Continuous'}</span>
+                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">${data.ukhsaAlert.desc || ''}</p>
                     </div>
                 `;
             }
 
+            // 2. Render Community Feed
             const feedContainer = document.getElementById('public-feed-timeline');
-            if (feedContainer && data.communityPosts) {
-                feedContainer.innerHTML = data.communityPosts.map(p => `
-                    <div class="feed-card">
-                        <div class="feed-header">
-                            <div class="feed-avatar">${p.author.substring(0, 3).toUpperCase()}</div>
-                            <div><h4 style="font-size: 13px;">${p.author}</h4><span style="font-size: 11px; color: var(--text-muted);">${p.meta}</span></div>
-                        </div>
-                        <p style="font-size: 13px; color: #cbd5e1;">${p.caption}</p>
-                        ${p.imageUrl ? `<div class="feed-image-frame"><img src="${p.imageUrl}" alt="Community photo"></div>` : ''}
-                    </div>
-                `).join('');
+            if (feedContainer) {
+                if (data.communityPosts && data.communityPosts.length > 0) {
+                    feedContainer.innerHTML = data.communityPosts.map(p => {
+                        const author = p.author || 'Anonymous';
+                        const initials = author.substring(0, 2).toUpperCase();
+                        const imgSrc = p.imageUrl || p.url || p.src || "";
+
+                        return `
+                            <div class="feed-card">
+                                <div class="feed-header">
+                                    <div class="feed-avatar">${initials}</div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 13px;">${author}</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">${p.meta || 'Recent'}</div>
+                                    </div>
+                                </div>
+                                <div style="font-size: 13px; color: #e2e8f0; line-height: 1.4; margin-bottom: 8px;">
+                                    ${p.caption || ''}
+                                </div>
+                                ${imgSrc ? `
+                                    <div class="feed-image-frame" onclick="openLightbox('${imgSrc}')">
+                                        <img src="${imgSrc}" alt="Community Photo">
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    feedContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">No community reports yet.</div>';
+                }
             }
 
-            const ytContainer = document.getElementById('youtube-archive-timeline');
-            if (ytContainer && data.youtube) {
-                ytContainer.innerHTML = data.youtube.map(vid => `
-                    <div class="video-card">
-                        <h4 style="font-size: 13px; color: #fff; font-weight: 700;">${vid.title}</h4>
-                        <iframe class="video-player-frame" src="https://www.youtube.com/embed/${vid.videoId}" title="${vid.title}" allowfullscreen></iframe>
-                        <span style="font-size: 11px; color: var(--text-muted);">${vid.caption}</span>
-                    </div>
-                `).join('');
+            // 3. Render Pictures by You (Gallery)
+            const galleryGrid = document.getElementById('subpage-gallery-grid');
+            if (galleryGrid) {
+                if (data.gallery && data.gallery.length > 0) {
+                    galleryGrid.innerHTML = data.gallery.map(img => {
+                        const src = img.imageUrl || img.url || img.src || img.image || "";
+                        const title = img.title || img.caption || "Gloucestershire Weather Snap";
+                        const credit = img.credit || img.author || "";
+
+                        return `
+                            <div style="background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid var(--card-border); display: flex; flex-direction: column;">
+                                <img src="${src}" alt="${title}" style="width: 100%; height: 140px; object-fit: cover; display: block; background: #000; cursor: pointer;" onclick="openLightbox('${src}')">
+                                <div style="padding: 8px;">
+                                    <p style="font-size: 11px; font-weight: 700; color: #fff; line-height: 1.3;">${title}</p>
+                                    ${credit ? `<span style="font-size: 10px; color: var(--accent-color); font-weight: 600;">${credit}</span>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    galleryGrid.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 12px; grid-column: 1 / -1;">No photos in gallery yet.</div>';
+                }
+            }
+
+            // 4. Render Video Archive
+            const ytContainer = document.getElementById('video-archive-list');
+            if (ytContainer) {
+                if (data.youtube && data.youtube.length > 0) {
+                    ytContainer.innerHTML = data.youtube.map(vid => {
+                        let id = vid.videoId || vid.id || "";
+                        if (typeof id === 'string') {
+                            if (id.includes('v=')) id = id.split('v=')[1].split('&')[0];
+                            else if (id.includes('youtu.be/')) id = id.split('youtu.be/')[1].split('?')[0];
+                            else id = id.trim();
+                        }
+                        const vTitle = vid.title || "Gloucestershire Weather Stream";
+                        const vDesc = vid.caption || vid.desc || "";
+
+                        return `
+                            <div class="video-card">
+                                <h4 style="font-size: 13px; color: #fff; font-weight: 700;">${vTitle}</h4>
+                                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #000;">
+                                    <iframe src="https://www.youtube-nocookie.com/embed/${id}" 
+                                            style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border: 0;" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen>
+                                    </iframe>
+                                </div>
+                                ${vDesc ? `<span style="font-size: 11px; color: var(--text-muted);">${vDesc}</span>` : ''}
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    ytContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">No archived videos currently listed.</div>';
+                }
+            }
+        }
+visitorTempImage = "";
+
+        function toggleUploadModal(show) {
+            const modal = document.getElementById('upload-modal');
+            if (modal) modal.style.display = show ? 'flex' : 'none';
+        }
+
+        function previewVisitorFile(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { visitorTempImage = e.target.result; };
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
+        function handleDirectVisitorPost(e) {
+            e.preventDefault();
+            const nameEl = document.getElementById('visitor-sub-name');
+            const descEl = document.getElementById('visitor-sub-desc');
+            const name = nameEl ? nameEl.value.trim() : "";
+            const desc = descEl ? descEl.value.trim() : "";
+
+            if (!name || !desc) return;
+
+            let savedData = { communityPosts: [] };
+            try {
+                const raw = localStorage.getItem('gwh_master_live_data');
+                if (raw) savedData = JSON.parse(raw);
+            } catch(err) {}
+
+            savedData.communityPosts = savedData.communityPosts || [];
+            savedData.communityPosts.unshift({
+                id: Date.now(),
+                author: name,
+                meta: 'Just now',
+                caption: desc,
+                imageUrl: visitorTempImage || "",
+                likes: 0
+            });
+
+            try {
+                localStorage.setItem('gwh_master_live_data', JSON.stringify(savedData));
+            } catch(err) {}
+
+            visitorTempImage = "";
+            const fileInput = document.getElementById('visitor-sub-file');
+            if (fileInput) fileInput.value = "";
+            if (nameEl) nameEl.value = "";
+            if (descEl) descEl.value = "";
+
+            loadBackendJSON();
+            toggleUploadModal(false);
+        }
+		function switchPage(pageId, btn) {
+            // Hide subpages container if open
+            const subContainer = document.getElementById('county-tools-container');
+            if (subContainer) subContainer.style.display = 'none';
+
+            // Switch active tab view
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
+
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) targetPage.classList.add('active');
+            if (btn) btn.classList.add('active');
+
+            window.scrollTo(0, 0);
+
+            if (pageId === 'map') {
+                if (!map) initMap();
+                setTimeout(() => { map.invalidateSize(); }, 200);
+            }
+        }
+
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD4zJD1UBsvaAmntIMYnCoz2MGyzr2vEwM",
+            authDomain: "glos-6339a.firebaseapp.com",
+            databaseURL: "https://glos-6339a-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "glos-6339a",
+            storageBucket: "glos-6339a.firebasestorage.app",
+            messagingSenderId: "740554411625",
+            appId: "1:740554411625:web:c032e4489701f2764ddcf8"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+        let fbTempImage = "";
+
+        // Real-time listener: Syncs posts across ALL visitors automatically
+        db.ref('community_posts').on('value', (snapshot) => {
+            const data = snapshot.val();
+            let posts = [];
+            if (data) {
+                posts = Object.entries(data).map(([key, val]) => ({ ...val, key })).reverse();
+            }
+            renderFbForum(posts);
+        });
+
+        function previewFbPhoto(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const label = document.getElementById('fb-file-name');
+                if (label) label.innerText = file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) { fbTempImage = e.target.result; };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function submitNewFbPost() {
+            const nameInput = document.getElementById('fb-post-name');
+            const textInput = document.getElementById('fb-post-text');
+            const name = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : 'Anonymous Observer';
+            const text = (textInput && textInput.value.trim()) ? textInput.value.trim() : '';
+
+            if (!text && !fbTempImage) {
+                alert("Please type a message or attach a photo to post.");
+                return;
+            }
+
+            const newPost = {
+                author: name,
+                location: "Gloucestershire",
+                time: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                text: text,
+                imageUrl: fbTempImage || "",
+                likes: 0,
+                comments: []
+            };
+
+            // Push directly to cloud database
+            db.ref('community_posts').push(newPost);
+
+            if (nameInput) nameInput.value = "";
+            if (textInput) textInput.value = "";
+            const label = document.getElementById('fb-file-name');
+            if (label) label.innerText = "";
+            const fileIn = document.getElementById('fb-post-file');
+            if (fileIn) fileIn.value = "";
+            fbTempImage = "";
+        }
+
+        function toggleFbLike(postKey, currentLikes) {
+            db.ref(`community_posts/${postKey}`).update({
+                likes: (currentLikes || 0) + 1
+            });
+        }
+
+        function toggleCommentBoxDisplay(postKey) {
+            const box = document.getElementById(`comments-${postKey}`);
+            if (box) {
+                box.style.display = (box.style.display === 'none' || !box.style.display) ? 'block' : 'none';
+            }
+        }
+
+        function addFbComment(postKey) {
+            const input = document.getElementById(`reply-input-${postKey}`);
+            const text = input ? input.value.trim() : "";
+            if (!text) return;
+
+            db.ref(`community_posts/${postKey}/comments`).push({
+                author: "Local Observer",
+                text: text,
+                time: "Just now"
+            });
+
+            if (input) input.value = "";
+        }
+
+        function deleteFbPost(postKey) {
+            if (confirm("Are you sure you want to remove this post?")) {
+                db.ref(`community_posts/${postKey}`).remove();
+            }
+        }
+
+        function renderFbForum(posts) {
+            const container = document.getElementById('fb-posts-timeline');
+            if (!container) return;
+
+            if (!posts || posts.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:12px;">No community reports yet. Be the first to share!</div>`;
+                return;
+            }
+
+            let html = '';
+            posts.forEach(post => {
+                const initials = (post.author || 'LO').substring(0, 2).toUpperCase();
+                const commentsObj = post.comments || {};
+                const commentsList = Object.values(commentsObj);
+
+                html += `
+                    <div class="fb-post">
+                        <div class="fb-post-header" style="justify-content: space-between;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div class="fb-post-avatar">${initials}</div>
+                                <div>
+                                    <div class="fb-post-user">${post.author}</div>
+                                    <div class="fb-post-meta">${post.location ? post.location + ' &bull; ' : ''}${post.time || 'Recently'}</div>
+                                </div>
+                            </div>
+                            <button onclick="deleteFbPost('${post.key}')" title="Delete post" style="background:none; border:none; color:rgba(255,255,255,0.2); cursor:pointer; font-size:13px; padding:4px;">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                        
+                        ${post.text ? `<div class="fb-post-text">${post.text}</div>` : ''}
+                        
+                        ${post.imageUrl ? `
+                            <div class="fb-post-media" onclick="openLightbox('${post.imageUrl}')">
+                                <img src="${post.imageUrl}" alt="Community Weather Capture">
+                            </div>
+                        ` : ''}
+
+                        <div class="fb-post-bar">
+                            <button class="fb-action-btn" onclick="toggleFbLike('${post.key}', ${post.likes || 0})">
+                                <i class="fa-regular fa-thumbs-up"></i> Like (${post.likes || 0})
+                            </button>
+                            <button class="fb-action-btn" onclick="toggleCommentBoxDisplay('${post.key}')">
+                                <i class="fa-regular fa-comment"></i> Comment (${commentsList.length})
+                            </button>
+                            <button class="fb-action-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('Post link copied!');">
+                                <i class="fa-solid fa-share-nodes"></i> Share
+                            </button>
+                        </div>
+
+                        <div id="comments-${post.key}" class="fb-comments-box" style="display: ${commentsList.length > 0 ? 'block' : 'none'};">
+                            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px;">
+                                ${commentsList.map(c => `
+                                    <div class="fb-comment-item">
+                                        <div class="fb-comment-author">${c.author}</div>
+                                        <div class="fb-comment-text">${c.text}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="fb-reply-row">
+                                <input type="text" id="reply-input-${post.key}" class="fb-input" placeholder="Write a comment..." onkeydown="if(event.key==='Enter') addFbComment('${post.key}')">
+                                <button class="fb-submit-btn" style="padding: 6px 12px; font-size: 11px;" onclick="addFbComment('${post.key}')">Reply</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+		function openLightbox(url) {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            if (modal && img) {
+                img.src = url;
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            if (modal) modal.style.display = 'none';
+        }
         function runClock() {
             const d = new Date();
             document.getElementById('live-clock').innerText = d.toLocaleTimeString('en-GB', { hour12: false }) + ' BST';
@@ -513,6 +1807,8 @@
             fetchLiveWeather();
             setInterval(fetchLiveWeather, 1800000);
             loadBackendJSON();
+            setInterval(loadBackendJSON, 60000);
+			renderFbForum();
         };
     </script>
 </body>
