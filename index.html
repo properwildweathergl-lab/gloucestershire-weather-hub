@@ -1,1 +1,312 @@
-<meta http-equiv="refresh" content="0; url=new_site.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gloucestershire Weather HUB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: #070d18;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 24px 16px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .brand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 2px;
+        }
+
+        .brand-title {
+            color: #38bdf8;
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .live-tag {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .grid-regions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .region-card {
+            background: #111c2e;
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .region-name {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: 0.3px;
+        }
+
+        .temp-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .temp-val {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .cond-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .meta-text {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .notice-card {
+            background: #111c2e;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 16px;
+            padding: 18px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        .notice-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            width: fit-content;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .notice-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.35;
+        }
+
+        .notice-body {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 700;
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .btn-yt {
+            background: #cc0000;
+        }
+
+        .btn-fb {
+            background: #1877f2;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #475569;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="brand-header">
+            <div class="brand-title">📍 GLOUCESTERSHIRE WEATHER HUB</div>
+            <div class="live-tag" id="live-clock">--:-- BST</div>
+        </div>
+
+        <div class="section-label">County Regional Live Feed (Auto-Updating)</div>
+
+        <div class="grid-regions">
+            <div class="region-card">
+                <div class="region-name">FOREST OF DEAN</div>
+                <div class="temp-row"><span class="temp-val" id="temp-fod">--°</span></div>
+                <div class="cond-text" id="cond-fod">Loading...</div>
+                <div class="meta-text" id="wind-fod">Wind: -- mph</div>
+            </div>
+
+            <div class="region-card">
+                <div class="region-name">SEVERN VALE</div>
+                <div class="temp-row"><span class="temp-val" id="temp-vale">--°</span></div>
+                <div class="cond-text" id="cond-vale">Loading...</div>
+                <div class="meta-text" id="wind-vale">Wind: -- mph</div>
+            </div>
+
+            <div class="region-card">
+                <div class="region-name">COTSWOLDS</div>
+                <div class="temp-row"><span class="temp-val" id="temp-cots">--°</span></div>
+                <div class="cond-text" id="cond-cots">Loading...</div>
+                <div class="meta-text" id="wind-cots">Wind: -- mph</div>
+            </div>
+
+            <div class="region-card">
+                <div class="region-name">STROUD VALLEYS</div>
+                <div class="temp-row"><span class="temp-val" id="temp-stroud">--°</span></div>
+                <div class="cond-text" id="cond-stroud">Loading...</div>
+                <div class="meta-text" id="wind-stroud">Wind: -- mph</div>
+            </div>
+        </div>
+
+        <div class="notice-card">
+            <div class="notice-badge">📡 SYSTEM & STREAM UPDATE</div>
+            <div class="notice-title">Platform Notice & Live YouTube Sky Cam</div>
+            <div class="notice-body">
+                Our <strong>YouTube Live Stream remains partly active</strong>, streaming  local sky developments as they happen with coverage of conditiona across Gloucestershire with a simplified live ticker.
+                <br><br>
+                To address ongoing telemetry discrepancies across third-party feeds, our interactive site tools are paused while we transition to a unified, automated data backend system. Should severe weather or high-impact storm events occur across the county during this maintenance period, live radar graphics and emergency warnings will be manually broadcast straight to the YouTube feed AS SOON AS POSSIBLE.
+                <br><br>
+                County forecasts, spotter discussions, our Laundry Meter and photo submissions and conversations continue as usual on our Facebook group. 
+            </div>
+            
+            <div class="button-stack">
+                <a href="https://www.youtube.com" target="https://www.youtube.com/@GloucestershireWeatherHUB/live" class="action-button btn-yt">
+                    ▶ Watch Live YouTube Stream
+                </a>
+                <a href="https://www.facebook.com" target="https://www.facebook.com/share/g/1Q2MT8bwF2/" class="action-button btn-fb">
+                    Join Our Facebook Community Page
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Gloucestershire Weather HUB &copy; 2026 &bull; Our County - Your Community - Everything Weather
+        </div>
+
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Europe/London' });
+            document.getElementById('live-clock').innerText = timeStr + ' BST';
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function parseWMO(code) {
+            if (code === 0) return "Clear Skies";
+            if (code === 1 || code === 2) return "Partly Cloudy";
+            if (code === 3) return "Overcast";
+            if ([45, 48].includes(code)) return "Fog / Mist";
+            if ([51, 53, 55, 56, 57].includes(code)) return "Drizzle";
+            if ([61, 63, 65, 80, 81, 82].includes(code)) return "Rain Showers";
+            if ([71, 73, 75, 77, 85, 86].includes(code)) return "Snow";
+            if ([95, 96, 99].includes(code)) return "Thunderstorm";
+            return "Cloudy";
+        }
+
+        const regions = [
+            { id: 'fod', lat: 51.82, lon: -2.50 },
+            { id: 'vale', lat: 51.86, lon: -2.24 },
+            { id: 'cots', lat: 51.71, lon: -1.96 },
+            { id: 'stroud', lat: 51.74, lon: -2.21 }
+        ];
+
+        async function fetchCountyWeather() {
+            for (const r of regions) {
+                try {
+                    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${r.lat}&longitude=${r.lon}&current=temperature_2m,weather_code,wind_speed_10m&wind_speed_unit=mph`);
+                    const data = await res.json();
+                    if (data && data.current) {
+                        document.getElementById(`temp-${r.id}`).innerText = Math.round(data.current.temperature_2m) + '°C';
+                        document.getElementById(`cond-${r.id}`).innerText = parseWMO(data.current.weather_code);
+                        document.getElementById(`wind-${r.id}`).innerText = 'Wind: ' + Math.round(data.current.wind_speed_10m) + ' mph';
+                    }
+                } catch (e) {
+                    console.error("Fetch error for " + r.id, e);
+                }
+            }
+        }
+
+        fetchCountyWeather();
+        setInterval(fetchCountyWeather, 600000);
+    </script>
+</body>
+</html>
