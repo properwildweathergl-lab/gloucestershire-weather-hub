@@ -712,11 +712,25 @@
             return dirs[Math.round(deg / 22.5) % 16];
         }
 
+       async function getPlaceNameFromCoords(lat, lon) {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
+                const data = await res.json();
+                const addr = data.address;
+                return addr.village || addr.town || addr.city || addr.suburb || addr.hamlet || addr.county || "Gloucestershire";
+            } catch (e) {
+                return "Your Location";
+            }
+        }
+
         function requestUserLocation() {
             if ("geolocation" in navigator) {
                 document.getElementById('loc-status-tag').innerText = "Locating GPS Device...";
                 navigator.geolocation.getCurrentPosition(
-                    pos => { fetchLocationWeather(pos.coords.latitude, pos.coords.longitude, "Your Exact Location"); },
+                    async pos => { 
+                        const detectedTown = await getPlaceNameFromCoords(pos.coords.latitude, pos.coords.longitude);
+                        fetchLocationWeather(pos.coords.latitude, pos.coords.longitude, detectedTown); 
+                    },
                     err => { fetchLocationWeather(51.8644, -2.2465, "Gloucester (Default)"); },
                     { timeout: 8000 }
                 );
