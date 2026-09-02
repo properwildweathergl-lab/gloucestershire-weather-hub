@@ -6,8 +6,8 @@
     <title>Gloucestershire Weather HUB // Official Public Portal</title>
 
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f4b82">
-<link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="theme-color" content="#0f4b82">
+    <link rel="apple-touch-icon" href="icon-192.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -439,7 +439,7 @@
         .badge-temp-text {
             font-size: 1.05rem;
             font-weight: 900;
-            color: #d97706; /* Golden warm amber */
+            color: #d97706;
             line-height: 1;
         }
         .badge-wind-group {
@@ -647,42 +647,42 @@
 
     <script>
         let stations = [
-            { id: "coleford", name: "Coleford", region: "dean", lat: 51.7910, lon: -2.6180, temp: "18°", glyph: 1, wind: "4mph", heading: 20 },
-            { id: "blakeney", name: "Blakeney Hill", region: "dean", lat: 51.7640, lon: -2.4820, temp: "18°", glyph: 1, wind: "4mph", heading: 64 },
-            { id: "cinderford", name: "Cinderford", region: "dean", lat: 51.8217, lon: -2.4983, temp: "18°", glyph: 1, wind: "4mph", heading: 46 },
-            { id: "newent", name: "Newent", region: "leadon-vale", lat: 51.9310, lon: -2.4042, temp: "19°", glyph: 1, wind: "3mph", heading: 90 },
-            { id: "lydney", name: "Lydney", region: "dean", lat: 51.7280, lon: -2.5280, temp: "19°", glyph: 1, wind: "4mph", heading: 96 },
-            { id: "mitcheldean", name: "Mitcheldean", region: "dean", lat: 51.8640, lon: -2.4880, temp: "18°", glyph: 1, wind: "4mph", heading: 52 },
-            { id: "hartpury", name: "Hartpury", region: "leadon-vale", lat: 51.9160, lon: -2.3120, temp: "19°", glyph: 1, wind: "3mph", heading: 34 },
+            { id: "coleford", name: "Coleford", region: "dean", lat: 51.7910, lon: -2.6180, temp: "--°", wind: "--", heading: 0 },
+            { id: "blakeney", name: "Blakeney Hill", region: "dean", lat: 51.7640, lon: -2.4820, temp: "--°", wind: "--", heading: 0 },
+            { id: "cinderford", name: "Cinderford", region: "dean", lat: 51.8217, lon: -2.4983, temp: "--°", wind: "--", heading: 0 },
+            { id: "newent", name: "Newent", region: "leadon-vale", lat: 51.9310, lon: -2.4042, temp: "--°", wind: "--", heading: 0 },
+            { id: "lydney", name: "Lydney", region: "dean", lat: 51.7280, lon: -2.5280, temp: "--°", wind: "--", heading: 0 },
+            { id: "mitcheldean", name: "Mitcheldean", region: "dean", lat: 51.8640, lon: -2.4880, temp: "--°", wind: "--", heading: 0 },
+            { id: "hartpury", name: "Hartpury", region: "leadon-vale", lat: 51.9160, lon: -2.3120, temp: "--°", wind: "--", heading: 0 },
             
             /* Leadon Vale Corridor */
-            { id: "staunton", name: "Staunton", region: "leadon-vale", lat: 51.9560, lon: -2.3360, temp: "19°", glyph: 1, wind: "3mph", heading: 40 },
-            { id: "corse", name: "Corse", region: "leadon-vale", lat: 51.9470, lon: -2.3270, temp: "19°", glyph: 1, wind: "3mph", heading: 45 },
-            { id: "apperley", name: "Apperley", region: "leadon-vale", lat: 51.9480, lon: -2.2020, temp: "20°", glyph: 1, wind: "4mph", heading: 335 },
-            { id: "hasfield", name: "Hasfield", region: "leadon-vale", lat: 51.9400, lon: -2.2530, temp: "19°", glyph: 1, wind: "3mph", heading: 340 },
-            { id: "upleadon", name: "Upleadon", region: "leadon-vale", lat: 51.9280, lon: -2.3650, temp: "19°", glyph: 1, wind: "3mph", heading: 50 },
-            { id: "highleadon", name: "Highleadon", region: "leadon-vale", lat: 51.9050, lon: -2.3480, temp: "19°", glyph: 1, wind: "4mph", heading: 30 },
+            { id: "staunton", name: "Staunton", region: "leadon-vale", lat: 51.9560, lon: -2.3360, temp: "--°", wind: "--", heading: 0 },
+            { id: "corse", name: "Corse", region: "leadon-vale", lat: 51.9470, lon: -2.3270, temp: "--°", wind: "--", heading: 0 },
+            { id: "apperley", name: "Apperley", region: "leadon-vale", lat: 51.9480, lon: -2.2020, temp: "--°", wind: "--", heading: 0 },
+            { id: "hasfield", name: "Hasfield", region: "leadon-vale", lat: 51.9400, lon: -2.2530, temp: "--°", wind: "--", heading: 0 },
+            { id: "upleadon", name: "Upleadon", region: "leadon-vale", lat: 51.9280, lon: -2.3650, temp: "--°", wind: "--", heading: 0 },
+            { id: "highleadon", name: "Highleadon", region: "leadon-vale", lat: 51.9050, lon: -2.3480, temp: "--°", wind: "--", heading: 0 },
 
-            { id: "glos", name: "Gloucester", region: "central-vale", lat: 51.8644, lon: -2.2465, temp: "20°", glyph: 1, wind: "4mph", heading: 10 },
-            { id: "chelt", name: "Cheltenham", region: "central-vale", lat: 51.8994, lon: -2.0783, temp: "20°", glyph: 1, wind: "4mph", heading: 352 },
-            { id: "cleeve", name: "Bishops Cleeve", region: "central-vale", lat: 51.9440, lon: -2.0560, temp: "19°", glyph: 1, wind: "4mph", heading: 346 },
-            { id: "tewk", name: "Tewkesbury", region: "central-vale", lat: 51.9930, lon: -2.1585, temp: "20°", glyph: 1, wind: "3mph", heading: 330 },
-            { id: "churchdown", name: "Churchdown", region: "central-vale", lat: 51.8780, lon: -2.1680, temp: "20°", glyph: 1, wind: "4mph", heading: 342 },
-            { id: "staverton", name: "Staverton", region: "central-vale", lat: 51.9080, lon: -2.1640, temp: "20°", glyph: 1, wind: "4mph", heading: 344 },
-            { id: "winchcombe", name: "Winchcombe", region: "central-vale", lat: 51.9540, lon: -1.9680, temp: "19°", glyph: 1, wind: "4mph", heading: 20 },
-            { id: "campden", name: "Chipping Campden", region: "north-cotswolds", lat: 52.0520, lon: -1.7820, temp: "18°", glyph: 1, wind: "5mph", heading: 360 },
-            { id: "stow", name: "Stow-on-the-Wold", region: "north-cotswolds", lat: 51.9310, lon: -1.7220, temp: "17°", glyph: 1, wind: "5mph", heading: 16 },
-            { id: "bourton", name: "Bourton-on-the-Water", region: "north-cotswolds", lat: 51.8840, lon: -1.7580, temp: "18°", glyph: 1, wind: "5mph", heading: 28 },
-            { id: "moreton", name: "Moreton-in-Marsh", region: "north-cotswolds", lat: 51.9880, lon: -1.7040, temp: "18°", glyph: 1, wind: "4mph", heading: 14 },
-            { id: "broadway", name: "Broadway", region: "north-cotswolds", lat: 52.0360, lon: -1.8560, temp: "19°", glyph: 1, wind: "4mph", heading: 16 },
-            { id: "northleach", name: "Northleach", region: "north-cotswolds", lat: 51.8320, lon: -1.8380, temp: "18°", glyph: 1, wind: "5mph", heading: 30 },
-            { id: "stroud", name: "Stroud", region: "south-cotswolds", lat: 51.7450, lon: -2.2180, temp: "19°", glyph: 1, wind: "4mph", heading: 350 },
-            { id: "ciren", name: "Cirencester", region: "south-cotswolds", lat: 51.7180, lon: -1.9670, temp: "19°", glyph: 1, wind: "4mph", heading: 34 },
-            { id: "tetbury", name: "Tetbury", region: "south-cotswolds", lat: 51.6370, lon: -2.1600, temp: "18°", glyph: 1, wind: "4mph", heading: 20 },
-            { id: "dursley", name: "Dursley", region: "south-cotswolds", lat: 51.6820, lon: -2.3520, temp: "19°", glyph: 1, wind: "4mph", heading: 32 },
-            { id: "wotton", name: "Wotton-under-Edge", region: "south-cotswolds", lat: 51.6380, lon: -2.3480, temp: "18°", glyph: 1, wind: "5mph", heading: 28 },
-            { id: "nailsworth", name: "Nailsworth", region: "south-cotswolds", lat: 51.6960, lon: -2.2220, temp: "19°", glyph: 1, wind: "4mph", heading: 352 },
-            { id: "fairford", name: "Fairford", region: "south-cotswolds", lat: 51.7080, lon: -1.7820, temp: "19°", glyph: 1, wind: "5mph", heading: 40 }
+            { id: "glos", name: "Gloucester", region: "central-vale", lat: 51.8644, lon: -2.2465, temp: "--°", wind: "--", heading: 0 },
+            { id: "chelt", name: "Cheltenham", region: "central-vale", lat: 51.8994, lon: -2.0783, temp: "--°", wind: "--", heading: 0 },
+            { id: "cleeve", name: "Bishops Cleeve", region: "central-vale", lat: 51.9440, lon: -2.0560, temp: "--°", wind: "--", heading: 0 },
+            { id: "tewk", name: "Tewkesbury", region: "central-vale", lat: 51.9930, lon: -2.1585, temp: "--°", wind: "--", heading: 0 },
+            { id: "churchdown", name: "Churchdown", region: "central-vale", lat: 51.8780, lon: -2.1680, temp: "--°", wind: "--", heading: 0 },
+            { id: "staverton", name: "Staverton", region: "central-vale", lat: 51.9080, lon: -2.1640, temp: "--°", wind: "--", heading: 0 },
+            { id: "winchcombe", name: "Winchcombe", region: "central-vale", lat: 51.9540, lon: -1.9680, temp: "--°", wind: "--", heading: 0 },
+            { id: "campden", name: "Chipping Campden", region: "north-cotswolds", lat: 52.0520, lon: -1.7820, temp: "--°", wind: "--", heading: 0 },
+            { id: "stow", name: "Stow-on-the-Wold", region: "north-cotswolds", lat: 51.9310, lon: -1.7220, temp: "--°", wind: "--", heading: 0 },
+            { id: "bourton", name: "Bourton-on-the-Water", region: "north-cotswolds", lat: 51.8840, lon: -1.7580, temp: "--°", wind: "--", heading: 0 },
+            { id: "moreton", name: "Moreton-in-Marsh", region: "north-cotswolds", lat: 51.9880, lon: -1.7040, temp: "--°", wind: "--", heading: 0 },
+            { id: "broadway", name: "Broadway", region: "north-cotswolds", lat: 52.0360, lon: -1.8560, temp: "--°", wind: "--", heading: 0 },
+            { id: "northleach", name: "Northleach", region: "north-cotswolds", lat: 51.8320, lon: -1.8380, temp: "--°", wind: "--", heading: 0 },
+            { id: "stroud", name: "Stroud", region: "south-cotswolds", lat: 51.7450, lon: -2.2180, temp: "--°", wind: "--", heading: 0 },
+            { id: "ciren", name: "Cirencester", region: "south-cotswolds", lat: 51.7180, lon: -1.9670, temp: "--°", wind: "--", heading: 0 },
+            { id: "tetbury", name: "Tetbury", region: "south-cotswolds", lat: 51.6370, lon: -2.1600, temp: "--°", wind: "--", heading: 0 },
+            { id: "dursley", name: "Dursley", region: "south-cotswolds", lat: 51.6820, lon: -2.3520, temp: "--°", wind: "--", heading: 0 },
+            { id: "wotton", name: "Wotton-under-Edge", region: "south-cotswolds", lat: 51.6380, lon: -2.3480, temp: "--°", wind: "--", heading: 0 },
+            { id: "nailsworth", name: "Nailsworth", region: "south-cotswolds", lat: 51.6960, lon: -2.2220, temp: "--°", wind: "--", heading: 0 },
+            { id: "fairford", name: "Fairford", region: "south-cotswolds", lat: 51.7080, lon: -1.7820, temp: "--°", wind: "--", heading: 0 }
         ];
 
         let currentRegionFocus = 'county';
@@ -712,7 +712,7 @@
             return dirs[Math.round(deg / 22.5) % 16];
         }
 
-       async function getPlaceNameFromCoords(lat, lon) {
+        async function getPlaceNameFromCoords(lat, lon) {
             try {
                 const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
                 const data = await res.json();
@@ -760,7 +760,7 @@
                 else if (cur.weather_code >= 80) cond = "Heavy Rain";
                 else if (cur.weather_code === 3) cond = "Overcast";
                 document.getElementById('user-location-cond').innerText = cond;
-                document.getElementById('loc-status-tag').innerText = placeName === "Your Exact Location" ? "Live GPS Active" : "Gloucester (Default)";
+                document.getElementById('loc-status-tag').innerText = (placeName !== "Gloucester (Default)") ? "Live GPS Active" : "Gloucester (Default)";
 
                 // 12 Hours Ahead
                 const hourly = data.hourly;
@@ -809,6 +809,36 @@
 
             } catch (e) {
                 console.error("Error fetching weather data:", e);
+            }
+        }
+
+        /* Bulk fetch real-time data for all county pins in one single call */
+        async function fetchLiveCountyObservations() {
+            try {
+                const lats = stations.map(s => s.lat).join(',');
+                const lons = stations.map(s => s.lon).join(',');
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&current=temperature_2m,wind_speed_10m,wind_direction_10m&wind_speed_unit=mph`;
+                
+                const res = await fetch(url);
+                const results = await res.json();
+                
+                // Open-Meteo returns an array of objects matching the station order
+                if (Array.isArray(results)) {
+                    results.forEach((item, idx) => {
+                        stations[idx].temp = `${Math.round(item.current.temperature_2m)}°`;
+                        stations[idx].wind = `${Math.round(item.current.wind_speed_10m)}mph`;
+                        stations[idx].heading = Math.round(item.current.wind_direction_10m);
+                    });
+                } else if (results.current) {
+                    // In case only one station is queried
+                    stations[0].temp = `${Math.round(results.current.temperature_2m)}°`;
+                    stations[0].wind = `${Math.round(results.current.wind_speed_10m)}mph`;
+                    stations[0].heading = Math.round(results.current.wind_direction_10m);
+                }
+
+                renderPins();
+            } catch (e) {
+                console.error("County observation feed error:", e);
             }
         }
 
@@ -884,16 +914,17 @@
         window.onload = () => {
             initMap();
             requestUserLocation();
+            fetchLiveCountyObservations(); // Triggers the real observation fetch immediately on page load
             setInterval(runClock, 1000);
             runClock();
         };
     </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    });
-  }
-</script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        });
+      }
+    </script>
 </body>
 </html>
