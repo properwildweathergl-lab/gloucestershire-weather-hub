@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gloucestershire Weather HUB // Official Public Portal</title>
+
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f4b82">
+<link rel="apple-touch-icon" href="icon-192.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        :root {
+            /* Exact Colors Sampled from your Logo */
+            --logo-navy: #0f4b82;
+            --logo-cobalt: #1a6cb5;
+            --logo-sun-yellow: #f6b81a;
+            --logo-gold-glow: #fef08a;
+            --logo-cream-bg: #fdfbf7;
+            --logo-hill-green: #3b9b47;
+            --logo-rain-blue: #38bdf8;
+            
+            --card-surface: #ffffff;
+            --card-subtle: #f8fafc;
+            --border-soft: #e2e8f0;
+            --border-gold: rgba(246, 184, 26, 0.4);
+            
+            --text-heading: #0b355d;
+            --text-body: #334155;
+            --text-muted: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--logo-cream-bg);
+            color: var(--text-body);
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(246, 184, 26, 0.12) 0px, transparent 40%),
+                radial-gradient(at 100% 0%, rgba(26, 108, 181, 0.08) 0px, transparent 40%),
+                radial-gradient(at 50% 100%, rgba(59, 155, 71, 0.06) 0px, transparent 50%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 2px solid var(--logo-sun-yellow);
+            backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(15, 75, 130, 0.05);
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .live-tag {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        }
+        .live-tag::before {
+            content: '';
+            width: 5px; height: 5px;
+            background: #fff;
+            border-radius: 50%;
+            animation: tagBlink 1.4s infinite ease-in-out;
+        }
+        @keyframes tagBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: -0.4px;
+            color: var(--logo-navy);
+        }
+        .brand-title span {
+            color: var(--logo-cobalt);
+        }
+
+        .hud-clock {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--logo-navy);
+            background: #fffdf5;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1.5px solid var(--logo-sun-yellow);
+            box-shadow: 0 2px 6px rgba(246, 184, 26, 0.15);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 14px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .clean-card {
+            background: var(--card-surface);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(15, 75, 130, 0.04);
+        }
+
+        /* Top 2-Column Split */
+        .top-split-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 12px;
+        }
+        @media(max-width: 950px) {
+            .top-split-grid { grid-template-columns: 1fr; }
+        }
+
+        .location-hero-card {
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffffff 0%, #fffef8 100%);
+            border: 1.5px solid var(--logo-sun-yellow);
+            box-shadow: 0 8px 24px rgba(246, 184, 26, 0.12);
+        }
+
+        .location-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .location-tag {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #b45309;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pulse-pin {
+            width: 6px; height: 6px;
+            background: var(--logo-sun-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--logo-sun-yellow);
+        }
+
+        .btn-update-gps {
+            background: #ffffff;
+            border: 1.5px solid var(--logo-cobalt);
+            color: var(--logo-cobalt);
+            font-size: 0.72rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: all 0.2s ease;
+        }
+        .btn-update-gps:hover {
+            background: var(--logo-cobalt);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(26, 108, 181, 0.25);
+        }
+
+        .loc-main-body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 12px 0;
+            gap: 12px;
+        }
+        .loc-town-name {
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: var(--text-heading);
+            line-height: 1.1;
+        }
+        .loc-condition-text {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--logo-cobalt);
+            margin-top: 3px;
+        }
+        .loc-temp-display {
+            font-size: 3.6rem;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -1.5px;
+            color: var(--text-heading);
+        }
+
+        .loc-footer-metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            border-top: 1px solid #f1f5f9;
+            padding-top: 12px;
+        }
+        .metric-pill b { color: var(--text-heading); font-weight: 800; }
+
+        /* Gauges */
+        .telemetry-split-side {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .hud-card {
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-left: 4px solid var(--logo-sun-yellow);
+        }
+        .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .hud-val-large {
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: var(--text-heading);
+            line-height: 1.1;
+            margin: 4px 0 2px 0;
+        }
+        .hud-val-sub {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--logo-cobalt);
+        }
+        .hud-footer {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            border-top: 1px solid #f1f5f9;
+            padding-top: 6px;
+            margin-top: 6px;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Hourly Strip */
+        .hourly-strip {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 6px 0 8px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        .hourly-strip::-webkit-scrollbar { height: 5px; }
+        .hourly-strip::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .hourly-box {
+            background: var(--card-subtle);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 12px 14px;
+            min-width: 86px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .hourly-box:hover {
+            transform: translateY(-2px);
+            background: #ffffff;
+            border-color: var(--logo-sun-yellow);
+            box-shadow: 0 4px 12px rgba(246, 184, 26, 0.15);
+        }
+
+        /* 5-Day Grid */
+        .five-day-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+        }
+        .forecast-card {
+            background: var(--card-subtle);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+        .forecast-card:hover {
+            transform: translateY(-2px);
+            background: #ffffff;
+            border-color: var(--logo-sun-yellow);
+            box-shadow: 0 4px 12px rgba(246, 184, 26, 0.15);
+        }
+
+        /* Leaflet Map */
+        .map-section {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .section-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-soft);
+            padding-bottom: 10px;
+        }
+        .cam-controls { display: flex; gap: 6px; flex-wrap: wrap; }
+        .cam-btn {
+            background: var(--card-subtle);
+            color: var(--text-body);
+            border: 1px solid var(--border-soft);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cam-btn:hover {
+            background: #ffffff;
+            border-color: var(--logo-cobalt);
+            color: var(--logo-cobalt);
+        }
+        .cam-btn.active {
+            background: var(--logo-navy);
+            color: #ffffff;
+            border-color: var(--logo-navy);
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(15, 75, 130, 0.25);
+        }
+        #public-map {
+            width: 100%;
+            height: 420px;
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            background: #e2e8f0;
+        }
+
+        /* Map Pin Overlays matching the Crest badge */
+        .tv-station-pin {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transform: translate(-50%, -100%);
+            filter: drop-shadow(0 4px 8px rgba(15, 75, 130, 0.15));
+        }
+        .badge-card {
+            background: #ffffff;
+            border: 2px solid var(--logo-navy);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            min-width: 88px;
+        }
+        .badge-header-label {
+            background: var(--logo-navy);
+            color: #ffffff;
+            padding: 2px 6px;
+            font-size: 0.62rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .badge-body-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 4px 6px;
+            background: #fff;
+        }
+        .badge-temp-text {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #d97706; /* Golden warm amber */
+            line-height: 1;
+        }
+        .badge-wind-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 0.62rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            border-left: 1px solid #f1f5f9;
+            padding-left: 4px;
+        }
+        .pin-pointer {
+            width: 0; height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--logo-navy);
+        }
+
+        /* Vector Weather Animations */
+        .icon-box-hero { width: 56px; height: 56px; }
+        .icon-box-sm { width: 32px; height: 32px; }
+        .sun-pulse { transform-origin: 16px 16px; animation: spinSun 16s linear infinite; }
+        @keyframes spinSun { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .moon-glow { animation: pulseMoon 3.5s ease-in-out infinite alternate; }
+        @keyframes pulseMoon { 0% { transform: scale(0.96); filter: drop-shadow(0 0 2px rgba(246, 184, 26, 0.4)); } 100% { transform: scale(1.04); filter: drop-shadow(0 0 6px rgba(246, 184, 26, 0.7)); } }
+        .cloud-drift { animation: driftCloud 3.5s ease-in-out infinite alternate; }
+        @keyframes driftCloud { 0% { transform: translateX(-2px); } 100% { transform: translateX(2px); } }
+        .rain-drop { animation: fallRain 0.8s linear infinite; }
+        @keyframes fallRain { 0% { opacity: 0; transform: translateY(-4px); } 50% { opacity: 1; } 100% { opacity: 0; transform: translateY(5px); } }
+
+        /* Main Portal CTA Button Strip */
+        .main-site-cta-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            width: 100%;
+        }
+
+        .btn-main-site {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--logo-navy) 0%, var(--logo-cobalt) 100%);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            padding: 13px 28px;
+            border-radius: 30px;
+            border: 2px solid var(--logo-sun-yellow);
+            box-shadow: 0 4px 16px rgba(15, 75, 130, 0.25);
+            transition: all 0.25s ease;
+        }
+
+        .btn-main-site:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--logo-cobalt) 0%, var(--logo-navy) 100%);
+            box-shadow: 0 6px 20px rgba(15, 75, 130, 0.35);
+            border-color: #ffffff;
+        }
+
+        footer {
+            background: #ffffff;
+            border-top: 2px solid var(--logo-sun-yellow);
+            padding: 16px 24px;
+            margin-top: auto;
+        }
+        .footer-wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .disclaimer-box {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            border-top: 1px solid var(--border-soft);
+            padding-top: 12px;
+            margin-top: 12px;
+            text-align: center;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-container">
+            <span class="live-tag">LIVE</span>
+            <div class="brand-title">GLOUCESTERSHIRE <span>WEATHER HUB</span></div>
+        </div>
+        <div class="hud-clock" id="live-clock">--:--:-- BST</div>
+    </header>
+
+    <div class="container">
+
+        <!-- ROW 1: SPLIT HERO & OVERNIGHT GAUGE -->
+        <div class="top-split-grid">
+            <div class="clean-card location-hero-card">
+                <div class="location-header">
+                    <div class="location-tag">
+                        <div class="pulse-pin"></div>
+                        <span id="loc-status-tag">Locating...</span>
+                    </div>
+                    <button onclick="requestUserLocation()" class="btn-update-gps">📍 Update GPS</button>
+                </div>
+
+                <div class="loc-main-body">
+                    <div>
+                        <div class="loc-town-name" id="user-location-name">Gloucester (Default)</div>
+                        <div class="loc-condition-text" id="user-location-cond">Finding Location</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div id="user-location-icon" class="icon-box-hero"></div>
+                        <div class="loc-temp-display" id="user-location-temp">--°</div>
+                    </div>
+                </div>
+
+                <div class="loc-footer-metrics">
+                    <div class="metric-pill">Wind: <b id="user-location-wind">-- mph</b></div>
+                    <div class="metric-pill">Dir: <b id="user-location-wind-dir">--</b></div>
+                    <div class="metric-pill">Precip: <b id="user-location-precip" style="color:var(--logo-cobalt);">0.0 mm</b></div>
+                    <div class="metric-pill">Rain %: <b id="user-location-precip-prob" style="color:#d97706;">--%</b></div>
+                    <div class="metric-pill">Humidity: <b id="user-location-hum">--%</b></div>
+                </div>
+            </div>
+
+            <div class="telemetry-split-side">
+                <div class="clean-card hud-card" style="flex:1; border-left-color: var(--logo-cobalt);">
+                    <div class="hud-header"><span>Overnight Minimum</span><span>Tonight</span></div>
+                    <div class="hud-val-large" id="overnight-low-val" style="color:var(--logo-cobalt);">--°C</div>
+                    <div class="hud-val-sub">Forecast Minimum</div>
+                    <div class="hud-footer">Computed Valley Minimum</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW 2: HOURS AHEAD -->
+        <div class="clean-card" style="padding: 14px 18px;">
+            <div class="section-title" style="margin-bottom: 10px;">⏱️ Hours Ahead Forecast (Your Location)</div>
+            <div class="hourly-strip" id="hourly-forecast-strip"></div>
+        </div>
+
+        <!-- ROW 3: 5-DAY OUTLOOK -->
+        <div class="clean-card" style="padding: 14px 18px;">
+            <div class="section-title" style="margin-bottom: 10px;">📅 5-Day Outlook (Your Location)</div>
+            <div class="five-day-grid" id="five-day-outlook"></div>
+        </div>
+
+        <!-- ROW 4: OBSERVATION MATRIX -->
+        <div class="clean-card map-section">
+            <div class="section-bar">
+                <div class="section-title">🗺️ Across The County Observations</div>
+                <div class="cam-controls">
+                    <button class="cam-btn active" id="btn-county" onclick="setRegionFocus('county')">Full County</button>
+                    <button class="cam-btn" id="btn-dean" onclick="setRegionFocus('dean')">Forest of Dean</button>
+                    <button class="cam-btn" id="btn-leadon" onclick="setRegionFocus('leadon-vale')">Leadon Vale</button>
+                    <button class="cam-btn" id="btn-central" onclick="setRegionFocus('central-vale')">Severn Vale</button>
+                    <button class="cam-btn" id="btn-ncots" onclick="setRegionFocus('north-cotswolds')">North Cotswolds</button>
+                    <button class="cam-btn" id="btn-scots" onclick="setRegionFocus('south-cotswolds')">South Cotswolds</button>
+                </div>
+            </div>
+            <div id="public-map"></div>
+        </div>
+
+        <!-- ROW 5: SEVERN FLOOD GAUGE (RELOCATED BELOW MAP) -->
+        <div class="clean-card hud-card" style="border-left: 4px solid var(--logo-hill-green);">
+            <div class="hud-header"><span>Severn Flood Gauge</span><span>Gloucester Lock</span></div>
+            <div class="hud-val-large" style="color:var(--logo-hill-green);">Normal</div>
+            <div class="hud-val-sub" style="color:var(--text-body);">Steady Flow • 1.12m</div>
+            <div class="hud-footer">Data Source: Environment Agency</div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-wrap">
+            <div style="font-size:0.85rem; color:var(--text-muted);">
+                <b>Gloucestershire Weather HUB</b> &bull; Broadcast Telemetry & Amateur Meteorology &bull; Serving Gloucestershire UK[cite: 2]
+            </div>
+        </div>
+
+        <!-- MAIN SITE LINK BUTTON -->
+        <div class="main-site-cta-wrap">
+            <a href="https://glweatherhub.wixsite.com/gloucestershire-weat" target="_blank" rel="noopener noreferrer" class="btn-main-site">
+                🌐 Visit Gloucestershire Weather HUB Main Portal ➔
+            </a>
+        </div>
+
+        <div class="disclaimer-box">
+            <b>Disclaimer:</b> Gloucestershire Weather HUB provides amateur meteorological tracking, automated camera telemetry, and community observations for informational and interest purposes only[cite: 2]. While every effort is made to maintain high observational accuracy, weather patterns are dynamic and unpredictable[cite: 2]. No guarantee is given regarding data precision, timeliness, or completeness[cite: 2]. This service is not an official statutory warning body[cite: 2]. Users should not make critical safety, travel, or property decisions based solely on this platform[cite: 2]. For official severe weather warnings, life-safety guidance, and statutory advisories, always consult the <b>UK Met Office</b>, the <b>Environment Agency</b>, and local emergency authorities[cite: 2]. Gloucestershire Weather HUB accepts no liability for any loss, damage, or disruption arising from the use of or reliance on data provided on this portal[cite: 2].
+        </div>
+    </footer>
+
+    <script>
+        let stations = [
+            { id: "coleford", name: "Coleford", region: "dean", lat: 51.7910, lon: -2.6180, temp: "18°", glyph: 1, wind: "4mph", heading: 20 },
+            { id: "blakeney", name: "Blakeney Hill", region: "dean", lat: 51.7640, lon: -2.4820, temp: "18°", glyph: 1, wind: "4mph", heading: 64 },
+            { id: "cinderford", name: "Cinderford", region: "dean", lat: 51.8217, lon: -2.4983, temp: "18°", glyph: 1, wind: "4mph", heading: 46 },
+            { id: "newent", name: "Newent", region: "leadon-vale", lat: 51.9310, lon: -2.4042, temp: "19°", glyph: 1, wind: "3mph", heading: 90 },
+            { id: "lydney", name: "Lydney", region: "dean", lat: 51.7280, lon: -2.5280, temp: "19°", glyph: 1, wind: "4mph", heading: 96 },
+            { id: "mitcheldean", name: "Mitcheldean", region: "dean", lat: 51.8640, lon: -2.4880, temp: "18°", glyph: 1, wind: "4mph", heading: 52 },
+            { id: "hartpury", name: "Hartpury", region: "leadon-vale", lat: 51.9160, lon: -2.3120, temp: "19°", glyph: 1, wind: "3mph", heading: 34 },
+            
+            /* Leadon Vale Corridor */
+            { id: "staunton", name: "Staunton", region: "leadon-vale", lat: 51.9560, lon: -2.3360, temp: "19°", glyph: 1, wind: "3mph", heading: 40 },
+            { id: "corse", name: "Corse", region: "leadon-vale", lat: 51.9470, lon: -2.3270, temp: "19°", glyph: 1, wind: "3mph", heading: 45 },
+            { id: "apperley", name: "Apperley", region: "leadon-vale", lat: 51.9480, lon: -2.2020, temp: "20°", glyph: 1, wind: "4mph", heading: 335 },
+            { id: "hasfield", name: "Hasfield", region: "leadon-vale", lat: 51.9400, lon: -2.2530, temp: "19°", glyph: 1, wind: "3mph", heading: 340 },
+            { id: "upleadon", name: "Upleadon", region: "leadon-vale", lat: 51.9280, lon: -2.3650, temp: "19°", glyph: 1, wind: "3mph", heading: 50 },
+            { id: "highleadon", name: "Highleadon", region: "leadon-vale", lat: 51.9050, lon: -2.3480, temp: "19°", glyph: 1, wind: "4mph", heading: 30 },
+
+            { id: "glos", name: "Gloucester", region: "central-vale", lat: 51.8644, lon: -2.2465, temp: "20°", glyph: 1, wind: "4mph", heading: 10 },
+            { id: "chelt", name: "Cheltenham", region: "central-vale", lat: 51.8994, lon: -2.0783, temp: "20°", glyph: 1, wind: "4mph", heading: 352 },
+            { id: "cleeve", name: "Bishops Cleeve", region: "central-vale", lat: 51.9440, lon: -2.0560, temp: "19°", glyph: 1, wind: "4mph", heading: 346 },
+            { id: "tewk", name: "Tewkesbury", region: "central-vale", lat: 51.9930, lon: -2.1585, temp: "20°", glyph: 1, wind: "3mph", heading: 330 },
+            { id: "churchdown", name: "Churchdown", region: "central-vale", lat: 51.8780, lon: -2.1680, temp: "20°", glyph: 1, wind: "4mph", heading: 342 },
+            { id: "staverton", name: "Staverton", region: "central-vale", lat: 51.9080, lon: -2.1640, temp: "20°", glyph: 1, wind: "4mph", heading: 344 },
+            { id: "winchcombe", name: "Winchcombe", region: "central-vale", lat: 51.9540, lon: -1.9680, temp: "19°", glyph: 1, wind: "4mph", heading: 20 },
+            { id: "campden", name: "Chipping Campden", region: "north-cotswolds", lat: 52.0520, lon: -1.7820, temp: "18°", glyph: 1, wind: "5mph", heading: 360 },
+            { id: "stow", name: "Stow-on-the-Wold", region: "north-cotswolds", lat: 51.9310, lon: -1.7220, temp: "17°", glyph: 1, wind: "5mph", heading: 16 },
+            { id: "bourton", name: "Bourton-on-the-Water", region: "north-cotswolds", lat: 51.8840, lon: -1.7580, temp: "18°", glyph: 1, wind: "5mph", heading: 28 },
+            { id: "moreton", name: "Moreton-in-Marsh", region: "north-cotswolds", lat: 51.9880, lon: -1.7040, temp: "18°", glyph: 1, wind: "4mph", heading: 14 },
+            { id: "broadway", name: "Broadway", region: "north-cotswolds", lat: 52.0360, lon: -1.8560, temp: "19°", glyph: 1, wind: "4mph", heading: 16 },
+            { id: "northleach", name: "Northleach", region: "north-cotswolds", lat: 51.8320, lon: -1.8380, temp: "18°", glyph: 1, wind: "5mph", heading: 30 },
+            { id: "stroud", name: "Stroud", region: "south-cotswolds", lat: 51.7450, lon: -2.2180, temp: "19°", glyph: 1, wind: "4mph", heading: 350 },
+            { id: "ciren", name: "Cirencester", region: "south-cotswolds", lat: 51.7180, lon: -1.9670, temp: "19°", glyph: 1, wind: "4mph", heading: 34 },
+            { id: "tetbury", name: "Tetbury", region: "south-cotswolds", lat: 51.6370, lon: -2.1600, temp: "18°", glyph: 1, wind: "4mph", heading: 20 },
+            { id: "dursley", name: "Dursley", region: "south-cotswolds", lat: 51.6820, lon: -2.3520, temp: "19°", glyph: 1, wind: "4mph", heading: 32 },
+            { id: "wotton", name: "Wotton-under-Edge", region: "south-cotswolds", lat: 51.6380, lon: -2.3480, temp: "18°", glyph: 1, wind: "5mph", heading: 28 },
+            { id: "nailsworth", name: "Nailsworth", region: "south-cotswolds", lat: 51.6960, lon: -2.2220, temp: "19°", glyph: 1, wind: "4mph", heading: 352 },
+            { id: "fairford", name: "Fairford", region: "south-cotswolds", lat: 51.7080, lon: -1.7820, temp: "19°", glyph: 1, wind: "5mph", heading: 40 }
+        ];
+
+        let currentRegionFocus = 'county';
+        let map = null;
+        const markerRegistry = new Map();
+
+        function getAnimatedVectorGlyph(code, isDay = 1) {
+            if (code === 0) {
+                if (isDay === 0) {
+                    return `<svg viewBox="0 0 32 32"><g class="moon-glow"><path d="M21 7a10 10 0 1 1-11 11 11 11 0 0 0 11-11z" fill="#f6b81a"/></g></svg>`;
+                }
+                return `<svg viewBox="0 0 32 32"><g class="sun-pulse" stroke="#f6b81a" stroke-width="2.2" stroke-linecap="round"><line x1="16" y1="3" x2="16" y2="6"/><line x1="16" y1="26" x2="16" y2="29"/><line x1="3" y1="16" x2="6" y2="16"/><line x1="26" y1="16" x2="29" y2="16"/><circle cx="16" cy="16" r="6.5" fill="#f6b81a" stroke="none"/></g></svg>`;
+            } else if (code === 1 || code === 2) {
+                if (isDay === 0) {
+                    return `<svg viewBox="0 0 32 32"><g class="moon-glow"><path d="M16 6a7 7 0 1 1-8 8 8 8 0 0 0 8-8z" fill="#f6b81a"/></g><g class="cloud-drift" fill="#94a3b8"><path d="M12 24h12a5 5 0 0 0 0-10 6.5 6.5 0 0 0-11.8-1.5A4.5 4.5 0 0 0 12 24z"/></g></svg>`;
+                }
+                return `<svg viewBox="0 0 32 32"><g class="sun-pulse" stroke="#f6b81a" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="5" fill="#f6b81a" stroke="none"/></g><g class="cloud-drift" fill="#94a3b8"><path d="M12 24h12a5 5 0 0 0 0-10 6.5 6.5 0 0 0-11.8-1.5A4.5 4.5 0 0 0 12 24z"/></g></svg>`;
+            } else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
+                return `<svg viewBox="0 0 32 32"><g class="cloud-drift" fill="#64748b"><path d="M8 18h14a5 5 0 0 0 0-10 6.5 6.5 0 0 0-12-1.5A4.5 4.5 0 0 0 8 18z"/></g><g stroke="#38bdf8" stroke-width="2" stroke-linecap="round"><line class="rain-drop" x1="10" y1="21" x2="9" y2="26"/><line class="rain-drop" x1="15" y1="21" x2="14" y2="26"/><line class="rain-drop" x1="20" y1="21" x2="19" y2="26"/></g></svg>`;
+            } else {
+                return `<svg viewBox="0 0 32 32"><g class="cloud-drift" fill="#64748b"><path d="M9 22h14a5.5 5.5 0 0 0 0-11 7 7 0 0 0-13-1.8A5 5 0 0 0 9 22z"/></g></svg>`;
+            }
+        }
+
+        function getCardinalDirection(deg) {
+            const dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+            return dirs[Math.round(deg / 22.5) % 16];
+        }
+
+        function requestUserLocation() {
+            if ("geolocation" in navigator) {
+                document.getElementById('loc-status-tag').innerText = "Locating GPS Device...";
+                navigator.geolocation.getCurrentPosition(
+                    pos => { fetchLocationWeather(pos.coords.latitude, pos.coords.longitude, "Your Exact Location"); },
+                    err => { fetchLocationWeather(51.8644, -2.2465, "Gloucester (Default)"); },
+                    { timeout: 8000 }
+                );
+            } else {
+                fetchLocationWeather(51.8644, -2.2465, "Gloucester (Default)");
+            }
+        }
+
+        async function fetchLocationWeather(lat, lon, placeName) {
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,is_day,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&wind_speed_unit=mph&timezone=Europe%2FLondon`;
+                const res = await fetch(url);
+                const data = await res.json();
+                const cur = data.current;
+
+                document.getElementById('user-location-name').innerText = placeName;
+                document.getElementById('user-location-temp').innerText = `${Math.round(cur.temperature_2m)}°`;
+                document.getElementById('user-location-wind').innerText = `${Math.round(cur.wind_speed_10m)} mph`;
+                document.getElementById('user-location-wind-dir').innerText = `${getCardinalDirection(cur.wind_direction_10m)} (${Math.round(cur.wind_direction_10m)}°)`;
+                document.getElementById('user-location-precip').innerText = `${cur.precipitation.toFixed(1)} mm`;
+                document.getElementById('user-location-hum').innerText = `${Math.round(cur.relative_humidity_2m)}%`;
+                document.getElementById('user-location-icon').innerHTML = getAnimatedVectorGlyph(cur.weather_code, cur.is_day);
+
+                let cond = "Sunny Spells";
+                if (cur.weather_code === 0) cond = cur.is_day ? "Clear Sun" : "Clear Night";
+                else if (cur.weather_code >= 51 && cur.weather_code <= 67) cond = "Rain Showers";
+                else if (cur.weather_code >= 80) cond = "Heavy Rain";
+                else if (cur.weather_code === 3) cond = "Overcast";
+                document.getElementById('user-location-cond').innerText = cond;
+                document.getElementById('loc-status-tag').innerText = placeName === "Your Exact Location" ? "Live GPS Active" : "Gloucester (Default)";
+
+                // 12 Hours Ahead
+                const hourly = data.hourly;
+                const nowIso = new Date();
+                let startIndex = hourly.time.findIndex(t => new Date(t) >= nowIso);
+                if (startIndex === -1) startIndex = 0;
+
+                document.getElementById('user-location-precip-prob').innerText = `${hourly.precipitation_probability[startIndex]}%`;
+
+                let hourlyHtml = '';
+                for (let i = startIndex; i < startIndex + 12 && i < hourly.time.length; i++) {
+                    const timeDate = new Date(hourly.time[i]);
+                    const hourStr = timeDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                    hourlyHtml += `
+                        <div class="hourly-box">
+                            <span style="font-size:0.75rem; font-weight:800; color:var(--logo-navy);">${hourStr}</span>
+                            <div class="icon-box-sm">${getAnimatedVectorGlyph(hourly.weather_code[i], hourly.is_day[i])}</div>
+                            <span style="font-size:1.1rem; font-weight:900; color:var(--text-heading);">${Math.round(hourly.temperature_2m[i])}°</span>
+                            <span style="font-size:0.7rem; font-weight:800; color:var(--logo-cobalt);">${hourly.precipitation_probability[i]}% rain</span>
+                            <span style="font-size:0.68rem; color:var(--text-muted);">${Math.round(hourly.wind_speed_10m[i])}mph</span>
+                        </div>
+                    `;
+                }
+                document.getElementById('hourly-forecast-strip').innerHTML = hourlyHtml;
+
+                // 5-Day Outlook
+                const daily = data.daily;
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                let outHtml = '';
+                for (let i = 1; i <= 5 && i < daily.time.length; i++) {
+                    const d = new Date(daily.time[i]);
+                    outHtml += `
+                        <div class="forecast-card">
+                            <span style="font-size:0.78rem; font-weight:800; color:var(--logo-navy);">${days[d.getDay()]}</span>
+                            <div class="icon-box-sm">${getAnimatedVectorGlyph(daily.weather_code[i], 1)}</div>
+                            <span style="font-size:1.15rem; font-weight:900; color:var(--text-heading);">${Math.round(daily.temperature_2m_max[i])}°</span>
+                            <span style="font-size:0.8rem; font-weight:700; color:var(--logo-cobalt);">${Math.round(daily.temperature_2m_min[i])}°</span>
+                        </div>
+                    `;
+                }
+                document.getElementById('five-day-outlook').innerHTML = outHtml;
+
+                if (daily.temperature_2m_min && daily.temperature_2m_min.length > 0) {
+                    document.getElementById('overnight-low-val').innerText = `${Math.round(daily.temperature_2m_min[0])}°C`;
+                }
+
+            } catch (e) {
+                console.error("Error fetching weather data:", e);
+            }
+        }
+
+        function initMap() {
+            map = L.map('public-map', { zoomControl: true, attributionControl: false }).setView([51.84, -2.15], 10);
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18 }).addTo(map);
+            renderPins();
+        }
+
+        function renderPins() {
+            markerRegistry.forEach(m => map.removeLayer(m));
+            markerRegistry.clear();
+
+            stations.forEach(stn => {
+                if (currentRegionFocus !== 'county' && stn.region !== currentRegionFocus) return;
+
+                const html = `
+                    <div class="tv-station-pin">
+                        <div class="badge-card">
+                            <div class="badge-header-label">${stn.name}</div>
+                            <div class="badge-body-content">
+                                <span class="badge-temp-text">${stn.temp}</span>
+                                <div class="badge-wind-group">
+                                    <svg style="width:9px; height:9px; fill:var(--logo-cobalt); transform: rotate(${stn.heading}deg);" viewBox="0 0 24 24">
+                                        <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/>
+                                    </svg>
+                                    <span>${stn.wind}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pin-pointer"></div>
+                    </div>
+                `;
+
+                const icon = L.divIcon({ className: '', html: html, iconSize: [92, 42], iconAnchor: [46, 42] });
+                const m = L.marker([stn.lat, stn.lon], { icon: icon }).addTo(map);
+                markerRegistry.set(stn.id, m);
+            });
+        }
+
+        function setRegionFocus(region) {
+            currentRegionFocus = region;
+            document.querySelectorAll('.cam-controls .cam-btn').forEach(b => b.classList.remove('active'));
+
+            if (region === 'county') {
+                document.getElementById('btn-county').classList.add('active');
+                map.flyTo([51.84, -2.15], 10, { duration: 1.2 });
+            } else if (region === 'dean') {
+                document.getElementById('btn-dean').classList.add('active');
+                map.flyTo([51.82, -2.52], 11.2, { duration: 1.2 });
+            } else if (region === 'leadon-vale') {
+                document.getElementById('btn-leadon').classList.add('active');
+                map.flyTo([51.93, -2.31], 11.5, { duration: 1.2 });
+            } else if (region === 'central-vale') {
+                document.getElementById('btn-central').classList.add('active');
+                map.flyTo([51.92, -2.12], 11.4, { duration: 1.2 });
+            } else if (region === 'north-cotswolds') {
+                document.getElementById('btn-ncots').classList.add('active');
+                map.flyTo([51.94, -1.78], 11.0, { duration: 1.2 });
+            } else if (region === 'south-cotswolds') {
+                document.getElementById('btn-scots').classList.add('active');
+                map.flyTo([51.70, -2.08], 11.0, { duration: 1.2 });
+            }
+            renderPins();
+        }
+
+        function runClock() {
+            const d = new Date();
+            const tz = d.toLocaleTimeString('en-GB', { timeZoneName: 'short' }).split(' ')[1] || 'BST';
+            document.getElementById('live-clock').innerText = `${d.toLocaleTimeString('en-GB', { hour12: false })} ${tz}`;
+        }
+
+        window.onload = () => {
+            initMap();
+            requestUserLocation();
+            setInterval(runClock, 1000);
+            runClock();
+        };
+    </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
