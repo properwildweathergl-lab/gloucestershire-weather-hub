@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gloucestershire Weather Hub - Sunny's Cloud Hop & Jump</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-cream: #fdfbf7;
+    --card-white: #ffffff;
+    --navy-brand: #0f4b82;
+    --sun-yellow: #f6b81a;
+    --border-light: #e2e8f0;
+    --text-slate: #334155;
+    --text-muted: #64748b;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--bg-cream);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-slate);
+    padding: 20px 16px 40px;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+  }
+
+  .top-bar {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 16px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .score-badge {
+    background: #fffbeb;
+    border: 1.5px solid var(--sun-yellow);
+    color: #b45309;
+    font-size: 0.9rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 12px;
+  }
+
+  .game-card {
+    background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%);
+    border: 3px solid var(--sun-yellow);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(15, 75, 130, 0.15);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  canvas {
+    background: #e0f2fe;
+    border-radius: 16px;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    box-shadow: inset 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .game-instructions {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: 12px;
+  }
+
+  .panel-card {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .panel-title {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .submit-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .submit-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border-light);
+    border-radius: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    outline: none;
+  }
+
+  .submit-input:focus {
+    border-color: var(--navy-brand);
+  }
+
+  .submit-btn {
+    background: var(--navy-brand);
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+
+  .submit-btn:hover {
+    background: #1a6cb5;
+  }
+
+  .leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+
+  .leaderboard-table th {
+    background: #f8fafc;
+    color: var(--navy-brand);
+    padding: 10px;
+    font-weight: 900;
+    text-align: left;
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .leaderboard-table td {
+    padding: 10px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-slate);
+  }
+
+  .action-button {
+    display: block;
+    width: 100%;
+    background: #1a6cb5;
+    background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 900;
+    font-size: 1rem;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    box-shadow: 0 6px 20px rgba(15, 75, 130, 0.15);
+    transition: transform 0.15s ease;
+  }
+
+  .action-button:hover {
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="top-bar">
+    <div class="brand-title">☁️ Sunny's Cloud Hop</div>
+    <div class="score-badge">Height: <span id="score-val">0</span>m</div>
+  </div>
+
+  <div class="game-card">
+    <canvas id="gameCanvas" width="480" height="320"></canvas>
+    <div class="game-instructions" id="instruction-text">Tap screen or press Spacebar to bounce higher across the Gloucestershire clouds!</div>
+  </div>
+
+  <div class="panel-card" id="submit-panel" style="display: none;">
+    <div class="panel-title">🏆 Submit Your Altitude Score!</div>
+    <div style="font-size: 0.88rem; font-weight: 600; color: var(--text-muted);">Incredible flight! Enter your explorer name to log your height on the leaderboard:</div>
+    <div class="submit-group">
+      <input type="text" id="player-name" class="submit-input" placeholder="Enter your name..." maxlength="15">
+      <button class="submit-btn" onclick="submitScore()">Submit</button>
+    </div>
+  </div>
+
+  <div class="panel-card">
+    <div class="panel-title">🌟 Highest Flyers Leaderboard</div>
+    <table class="leaderboard-table" id="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Explorer Name</th>
+          <th>Height</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body">
+      </tbody>
+    </table>
+  </div>
+
+  <a href="https://www.gloucestershireweatherhub.co.uk/video-wall" class="action-button">
+    Back to Main Hub →
+  </a>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let score = 0;
+  let isGameOver = false;
+
+  let sunny = {
+    x: canvas.width / 2 - 20,
+    y: canvas.height - 100,
+    width: 40,
+    height: 40,
+    vy: 0,
+    jumpPower: -9,
+    gravity: 0.35
+  };
+
+  let platforms = [];
+  let cameraY = 0;
+
+  function initPlatforms() {
+    platforms = [];
+    for (let i = 0; i < 6; i++) {
+      platforms.push({
+        x: Math.random() * (canvas.width - 80),
+        y: canvas.height - (i * 60) - 40,
+        width: 80,
+        height: 16
+      });
+    }
+  }
+
+  initPlatforms();
+
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' || e.code === 'ArrowUp') {
+      sunny.vy = sunny.jumpPower;
+      e.preventDefault();
+    }
+  });
+
+  canvas.addEventListener('click', () => {
+    sunny.vy = sunny.jumpPower;
+  });
+
+  canvas.addEventListener('touchstart', (e) => {
+    sunny.vy = sunny.jumpPower;
+    e.preventDefault();
+  }, { passive: false });
+
+  function update() {
+    if (isGameOver) return;
+
+    sunny.vy += sunny.gravity;
+    sunny.y += sunny.vy;
+
+    // Scroll world up when Sunny goes higher
+    if (sunny.y < canvas.height / 2) {
+      let diff = (canvas.height / 2) - sunny.y;
+      sunny.y = canvas.height / 2;
+      score += Math.floor(diff);
+      document.getElementById('score-val').innerText = score;
+
+      platforms.forEach(p => {
+        p.y += diff;
+      });
+    }
+
+    // Platform collision
+    platforms.forEach(p => {
+      if (
+        sunny.vy > 0 &&
+        sunny.x + sunny.width > p.x &&
+        sunny.x < p.x + p.width &&
+        sunny.y + sunny.height >= p.y &&
+        sunny.y + sunny.height <= p.y + 16
+      ) {
+        sunny.vy = sunny.jumpPower;
+      }
+    });
+
+    // Recycle platforms as they move down
+    platforms.forEach(p => {
+      if (p.y > canvas.height) {
+        p.y = 0;
+        p.x = Math.random() * (canvas.width - 80);
+      }
+    });
+
+    // Game over if Sunny falls below screen
+    if (sunny.y > canvas.height) {
+      isGameOver = true;
+      document.getElementById('instruction-text').innerText = `Game Over! You reached ${score}m high! Submit your score below!`;
+      document.getElementById('submit-panel').style.display = 'block';
+    }
+  }
+
+  function drawSunny(x, y) {
+    ctx.beginPath();
+    ctx.arc(x + 20, y + 20, 16, 0, Math.PI * 2);
+    ctx.fillStyle = '#f6b81a';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#b45309';
+    ctx.stroke();
+
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(x + 6, y + 4, 28, 8);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#e0f2fe';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw cloud platforms
+    platforms.forEach(p => {
+      ctx.beginPath();
+      ctx.roundRect(p.x, p.y, p.width, p.height, 8);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.shadowColor = 'rgba(0,0,0,0.1)';
+      ctx.shadowBlur = 6;
+    });
+    ctx.shadowBlur = 0;
+
+    drawSunny(sunny.x, sunny.y);
+  }
+
+  function loop() {
+    update();
+    draw();
+    if (!isGameOver) {
+      requestAnimationFrame(loop);
+    }
+  }
+
+  function loadLeaderboard() {
+    let scores = JSON.parse(localStorage.getItem('sunny_hop_leaderboard')) || [
+      { name: 'CotswoldCloud', score: 1450 },
+      { name: 'ForestBouncer', score: 1120 },
+      { name: 'SevernFlyer', score: 850 },
+      { name: 'BlakeneyKid', score: 500 }
+    ];
+
+    scores.sort((a, b) => b.score - a.score);
+
+    let tbody = document.getElementById('leaderboard-body');
+    tbody.innerHTML = '';
+
+    scores.forEach((entry, index) => {
+      let row = `<tr>
+        <td>#${index + 1}</td>
+        <td>${entry.name}</td>
+        <td>${entry.score}m</td>
+      </tr>`;
+      tbody.innerHTML += row;
+    });
+  }
+
+  function submitScore() {
+    let nameInput = document.getElementById('player-name').value.trim();
+    if (!nameInput) {
+      alert('Please enter your explorer name!');
+      return;
+    }
+
+    let scores = JSON.parse(localStorage.getItem('sunny_hop_leaderboard')) || [
+      { name: 'CotswoldCloud', score: 1450 },
+      { name: 'ForestBouncer', score: 1120 },
+      { name: 'SevernFlyer', score: 850 },
+      { name: 'BlakeneyKid', score: 500 }
+    ];
+
+    scores.push({ name: nameInput, score: score });
+    scores.sort((a, b) => b.score - a.score);
+    scores = scores.slice(0, 5);
+
+    localStorage.setItem('sunny_hop_leaderboard', JSON.stringify(scores));
+
+    document.getElementById('submit-panel').innerHTML = `<div style="font-weight: 900; color: #16a34a; text-align: center; padding: 10px;">Height Logged Successfully! Refresh page to play again.</div>`;
+    loadLeaderboard();
+  }
+
+  loadLeaderboard();
+  loop();
+</script>
+
+</body>
+</html>

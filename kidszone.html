@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gloucestershire Weather Hub - Junior Explorers & Sunny's Weather Zone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-cream: #fdfbf7;
+    --card-white: #ffffff;
+    --navy-brand: #0f4b82;
+    --sun-yellow: #f6b81a;
+    --border-light: #e2e8f0;
+    --text-slate: #334155;
+    --text-muted: #64748b;
+    --fun-orange: #f97316;
+    --fun-green: #10b981;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html, body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: auto;
+  }
+
+  body {
+    background-color: var(--bg-cream);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-slate);
+    padding: 20px 16px 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .top-bar {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+  }
+
+  .brand-title {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .live-pill {
+    background: #10b981;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .time-badge {
+    background: #fffbeb;
+    border: 1.5px solid var(--sun-yellow);
+    color: #b45309;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 12px;
+  }
+
+  /* SUNNY HERO BANNER */
+  .sunny-hero {
+    background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%);
+    border: 3px solid var(--sun-yellow);
+    border-radius: 24px;
+    padding: 24px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 24px rgba(15, 75, 130, 0.15);
+  }
+
+  /* Sunny's CSS Vector Graphic Avatar */
+  .sunny-avatar {
+    width: 90px;
+    height: 90px;
+    position: relative;
+    flex-shrink: 0;
+    animation: floatSun 3s ease-in-out infinite;
+  }
+
+  @keyframes floatSun {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(3deg); }
+  }
+
+  .sunny-speech h2 {
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin-bottom: 6px;
+    color: var(--sun-yellow);
+  }
+
+  .sunny-speech p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    font-weight: 600;
+    opacity: 0.95;
+  }
+
+  .section-heading {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    margin: 32px 0 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-heading::after {
+    content: "";
+    flex: 1;
+    height: 1.5px;
+    background: var(--border-light);
+  }
+
+  .junior-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .junior-card {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 20px;
+    padding: 24px 20px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .junior-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, var(--sun-yellow), var(--fun-orange));
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-subtitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .fun-display-box {
+    background: #f8fafc;
+    border: 1.5px solid var(--border-light);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .fun-emoji {
+    font-size: 2.3rem;
+    margin-bottom: 6px;
+  }
+
+  .fun-headline {
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    margin-bottom: 4px;
+  }
+
+  .fun-desc {
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--text-slate);
+    line-height: 1.4;
+  }
+
+  .action-button {
+    display: block;
+    width: 100%;
+    background: #1a6cb5;
+    background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 900;
+    font-size: 1rem;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    box-shadow: 0 6px 20px rgba(15, 75, 130, 0.15);
+    margin: 40px 0 10px;
+    transition: transform 0.15s ease;
+  }
+
+  .action-button:hover {
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="top-bar">
+    <div class="brand-title">
+      <span class="live-pill">KIDS ZONE</span> Sunny's Weather Explorers
+    </div>
+    <div class="time-badge" id="live-time">Loading...</div>
+  </div>
+
+  <div class="sunny-hero">
+    <div class="sunny-avatar">
+      <div style="position: absolute; width: 70px; height: 70px; background: #fbbf24; border-radius: 50%; top: 10px; left: 10px; z-index: 1;"></div>
+      <div style="position: absolute; width: 70px; height: 70px; background: #f59e0b; border-radius: 50%; top: 10px; left: 10px; z-index: 1; transform: rotate(45deg);"></div>
+      <div style="position: absolute; width: 62px; height: 62px; background: #f6b81a; border: 3px solid #b45309; border-radius: 50%; top: 14px; left: 14px; z-index: 2;"></div>
+      <div style="position: absolute; width: 44px; height: 14px; background: #1e3a8a; border-radius: 22px 22px 6px 6px; top: 6px; left: 23px; z-index: 4;"></div>
+      <div style="position: absolute; width: 22px; height: 6px; background: #1e3a8a; border-radius: 0 0 4px 4px; top: 17px; left: 38px; transform: rotate(6deg); z-index: 4;"></div>
+      <div style="position: absolute; width: 6px; height: 8px; background: #1e293b; border-radius: 50%; top: 36px; left: 33px; z-index: 3;"></div>
+      <div style="position: absolute; width: 6px; height: 8px; background: #1e293b; border-radius: 50%; top: 36px; left: 51px; z-index: 3;"></div>
+      <div style="position: absolute; width: 14px; height: 8px; border-bottom: 3px solid #1e293b; border-radius: 0 0 8px 8px; top: 46px; left: 38px; z-index: 3;"></div>
+    </div>
+    <div class="sunny-speech">
+      <h2>Hiya! I'm Sunny!</h2>
+      <p id="sunny-message">Checking live skies right across Gloucestershire... Let's see what adventures are waiting today!</p>
+    </div>
+  </div>
+
+  <div class="section-heading">🌲 Forest of Dean & West</div>
+  <div class="junior-grid">
+    <div class="junior-card">
+      <div class="card-title">🥾 Forest Wellie Meter</div>
+      <div class="card-subtitle">Cannop Ponds & Blakeney Trail</div>
+      <div class="fun-display-box">
+        <div class="fun-emoji" id="dean-wellie-emoji">🥾</div>
+        <div class="fun-headline" id="dean-wellie-status">Checking Mud...</div>
+        <div class="fun-desc" id="dean-wellie-desc">Measuring trail dampness.</div>
+      </div>
+    </div>
+    <div class="junior-card">
+      <div class="card-title">💦 Forest Puddle Index</div>
+      <div class="card-subtitle">Splash Readiness</div>
+      <div class="fun-display-box">
+        <div class="fun-emoji" id="dean-puddle-emoji">🌧️</div>
+        <div class="fun-headline" id="dean-puddle-status">Checking Puddles...</div>
+        <div class="fun-desc" id="dean-puddle-desc">Calculating splash factor.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading">⛰️ Cotswolds & Uplands</div>
+  <div class="junior-grid">
+    <div class="junior-card">
+      <div class="card-title">🥾 Upland Boot Checker</div>
+      <div class="card-subtitle">Bourton & Cirencester Paths</div>
+      <div class="fun-display-box">
+        <div class="fun-emoji">🥾</div>
+        <div class="fun-headline">Crisp & Clear Paths</div>
+        <div class="fun-desc">Great conditions for walking across the stone valleys today!</div>
+      </div>
+    </div>
+    <div class="junior-card">
+      <div class="card-title">🪁 Kite Flying Meter</div>
+      <div class="card-subtitle">Ridge Wind Check</div>
+      <div class="fun-display-box">
+        <div class="fun-emoji">🪁</div>
+        <div class="fun-headline" id="kite-status">Checking Breeze...</div>
+        <div class="fun-desc" id="kite-desc">Checking open ridge winds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading">🌊 Severn Vale & Central County</div>
+  <div class="junior-grid">
+    <div class="junior-card">
+      <div class="card-title">🦆 Canal & River Watch</div>
+      <div class="card-subtitle">Gloucester & Tewkesbury Waterside</div>
+      <div class="fun-display-box">
+        <div class="fun-emoji">🦆</div>
+        <div class="fun-headline">Duck Feeding Weather!</div>
+        <div class="fun-desc">Calm river levels along the docks and Severn banks make it lovely for a stroll.</div>
+      </div>
+    </div>
+    <div class="junior-card">
+      <div class="card-title">🍦 Ice Cream Forecast</div>
+      <div class="card-subtitle">Outdoor Treat Meter</div>
+      <div class="fun-display-box">
+        <div class="fun-emoji" id="cream-emoji">🍦</div>
+        <div class="fun-headline" id="cream-status">Checking Temp...</div>
+        <div class="fun-desc" id="cream-desc">Calculating outdoor treat score.</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="https://www.gloucestershireweatherhub.co.uk/video-wall" class="action-button">
+    Full County Video Wall & Guides on Main Site →
+  </a>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('live-time').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' BST';
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Fully automated character logic and regional telemetry
+  async function updateSunnyAndKidsZone() {
+    try {
+      const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q=Gloucester,GB&units=metric&appid=YOUR_OPENWEATHER_API_KEY');
+      if (!response.ok) throw new Error('API offline');
+      const data = await response.json();
+
+      const temp = Math.round(data.main.temp);
+      const condition = data.weather[0].description.toLowerCase();
+      const rain1h = data.rain && data.rain['1h'] ? data.rain['1h'] : 0.0;
+      const windMph = Math.round(data.wind.speed * 2.23694);
+
+      // Sunny Message Dynamics
+      const sunnyMsg = document.getElementById('sunny-message');
+      if (condition.includes('rain')) {
+        sunnyMsg.innerText = `It's raining across the Severn Vale right now (${temp}°C)! Perfect weather for wearing bright yellow raincoats and splashing in muddy puddles!`;
+      } else if (temp > 20) {
+        sunnyMsg.innerText = `Cor, it's a warm one today at ${temp}°C! Sunny recommends wearing a sun hat and grabbing an ice cream down by the docks!`;
+      } else {
+        sunnyMsg.innerText = `Hello from ${temp}°C Gloucestershire! Skies are looking lovely for an outdoor bike ride or a trip to Cannop Ponds!`;
+      }
+
+      // Forest Wellie Meter
+      if (rain1h > 0.3 || condition.includes('rain')) {
+        document.getElementById('dean-wellie-emoji').innerText = '⚠️🥾';
+        document.getElementById('dean-wellie-status').innerText = 'High Mud Alert!';
+        document.getElementById('dean-wellie-desc').innerText = 'Proper squelchy mud today! Wellies are essential in the Forest.';
+      } else {
+        document.getElementById('dean-wellie-emoji').innerText = '🥾';
+        document.getElementById('dean-wellie-status').innerText = 'Standard Trail Boots';
+        document.getElementById('dean-wellie-desc').innerText = 'Paths are looking firm and ready for exploring!';
+      }
+
+      // Kite Meter
+      if (windMph > 12) {
+        document.getElementById('kite-status').innerText = '10/10 Kite Flying!';
+        document.getElementById('kite-desc').innerText = `Wind is blowing at ${windMph} mph—amazing lifting power for kites up on the Cotswold hills!`;
+      } else {
+        document.getElementById('kite-status').innerText = 'Gentle Breeze';
+        document.getElementById('kite-desc').innerText = `Wind is light at ${windMph} mph. Good for a calm walk, maybe a bit light for kites.`;
+      }
+
+      // Ice Cream Meter
+      if (temp >= 18) {
+        document.getElementById('cream-emoji').innerText = '🍦';
+        document.getElementById('cream-status').innerText = 'Prime Ice Cream Weather!';
+        document.getElementById('cream-desc').innerText = `At ${temp}°C, a cold ice cream is 100% recommended today!`;
+      } else {
+        document.getElementById('cream-emoji').innerText = '☕';
+        document.getElementById('cream-status').innerText = 'Hot Chocolate Weather!';
+        document.getElementById('cream-desc').innerText = `At ${temp}°C, how about a nice warm drink after your walk?`;
+      }
+
+    } catch (err) {
+      document.getElementById('sunny-message').innerText = "Sunny is watching over the Forest of Dean and Cotswold skies today! Have a brilliant Gloucestershire adventure!";
+    }
+  }
+
+  updateSunnyAndKidsZone();
+</script>
+
+</body>
+</html>

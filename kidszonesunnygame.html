@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gloucestershire Weather Hub - Sunny's Sky Catcher & Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-cream: #fdfbf7;
+    --card-white: #ffffff;
+    --navy-brand: #0f4b82;
+    --sun-yellow: #f6b81a;
+    --border-light: #e2e8f0;
+    --text-slate: #334155;
+    --text-muted: #64748b;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--bg-cream);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-slate);
+    padding: 20px 16px 40px;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+  }
+
+  .top-bar {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 16px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+  }
+
+  .brand-title {
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .score-badge {
+    background: #fffbeb;
+    border: 1.5px solid var(--sun-yellow);
+    color: #b45309;
+    font-size: 0.9rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 12px;
+  }
+
+  .game-card {
+    background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%);
+    border: 3px solid var(--sun-yellow);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(15, 75, 130, 0.15);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  canvas {
+    background: #e0f2fe;
+    border-radius: 16px;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    box-shadow: inset 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .game-instructions {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: 12px;
+  }
+
+  /* SUBMISSION & LEADERBOARD STYLES */
+  .panel-card {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .panel-title {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .submit-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .submit-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border-light);
+    border-radius: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    outline: none;
+  }
+
+  .submit-input:focus {
+    border-color: var(--navy-brand);
+  }
+
+  .submit-btn {
+    background: var(--navy-brand);
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 900;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+
+  .submit-btn:hover {
+    background: #1a6cb5;
+  }
+
+  .leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+
+  .leaderboard-table th {
+    background: #f8fafc;
+    color: var(--navy-brand);
+    padding: 10px;
+    font-weight: 900;
+    text-align: left;
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .leaderboard-table td {
+    padding: 10px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-slate);
+  }
+
+  .leaderboard-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .action-button {
+    display: block;
+    width: 100%;
+    background: #1a6cb5;
+    background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 900;
+    font-size: 1rem;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    box-shadow: 0 6px 20px rgba(15, 75, 130, 0.15);
+    transition: transform 0.15s ease;
+  }
+
+  .action-button:hover {
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="top-bar">
+    <div class="brand-title">☀️ Sunny's Sky Catcher</div>
+    <div class="score-badge">Score: <span id="score-val">0</span></div>
+  </div>
+
+  <div class="game-card">
+    <canvas id="gameCanvas" width="480" height="320"></canvas>
+    <div class="game-instructions" id="instruction-text">Use Left/Right arrow keys or touch sides to move Sunny and catch clouds! Avoid raindrops!</div>
+  </div>
+
+  <div class="panel-card" id="submit-panel" style="display: none;">
+    <div class="panel-title">🏆 Submit Your High Score!</div>
+    <div style="font-size: 0.88rem; font-weight: 600; color: var(--text-muted);">Great flying! Enter your explorer name below to add your score to the county leaderboard:</div>
+    <div class="submit-group">
+      <input type="text" id="player-name" class="submit-input" placeholder="Enter your name..." maxlength="15">
+      <button class="submit-btn" onclick="submitScore()">Submit</button>
+    </div>
+  </div>
+
+  <div class="panel-card">
+    <div class="panel-title">🌟 Gloucestershire Explorer Leaderboard</div>
+    <table class="leaderboard-table" id="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Explorer Name</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body">
+        </tbody>
+    </table>
+  </div>
+
+  <a href="https://www.gloucestershireweatherhub.co.uk/video-wall" class="action-button">
+    Back to Main Hub →
+  </a>
+
+</div>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let score = 0;
+  let isGameOver = false;
+
+  let sunny = {
+    x: canvas.width / 2 - 30,
+    y: canvas.height - 65,
+    width: 60,
+    height: 50,
+    speed: 7,
+    dx: 0
+  };
+
+  let items = [];
+  let keys = { ArrowLeft: false, ArrowRight: false };
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') keys.ArrowLeft = true;
+    if (e.key === 'ArrowRight') keys.ArrowRight = true;
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (e.key === 'ArrowLeft') keys.ArrowLeft = false;
+    if (e.key === 'ArrowRight') keys.ArrowRight = false;
+  });
+
+  canvas.addEventListener('touchmove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const touchX = e.touches[0].clientX - rect.left;
+    sunny.x = touchX - sunny.width / 2;
+    e.preventDefault();
+  }, { passive: false });
+
+  function spawnItem() {
+    if (isGameOver) return;
+    const isCloud = Math.random() > 0.3;
+    items.push({
+      x: Math.random() * (canvas.width - 40),
+      y: -40,
+      radius: isCloud ? 22 : 14,
+      speed: 2.5 + Math.random() * 2.5,
+      type: isCloud ? 'cloud' : 'rain'
+    });
+  }
+
+  setInterval(spawnItem, 900);
+
+  function update() {
+    if (isGameOver) return;
+
+    if (keys.ArrowLeft) sunny.x -= sunny.speed;
+    if (keys.ArrowRight) sunny.x += sunny.speed;
+
+    if (sunny.x < 0) sunny.x = 0;
+    if (sunny.x + sunny.width > canvas.width) sunny.x = canvas.width - sunny.width;
+
+    for (let i = items.length - 1; i >= 0; i--) {
+      let item = items[i];
+      item.y += item.speed;
+
+      let hitBoxX = sunny.x + sunny.width / 2;
+      let hitBoxY = sunny.y + sunny.height / 2;
+      let dist = Math.hypot(hitBoxX - item.x, hitBoxY - item.y);
+
+      if (dist < 35) {
+        if (item.type === 'cloud') {
+          score += 10;
+          document.getElementById('score-val').innerText = score;
+        } else {
+          isGameOver = true;
+          document.getElementById('instruction-text').innerText = `Game Over! Final Score: ${score}. Submit your score below!`;
+          document.getElementById('submit-panel').style.display = 'block';
+        }
+        items.splice(i, 1);
+        continue;
+      }
+
+      if (item.y > canvas.height + 50) {
+        items.splice(i, 1);
+      }
+    }
+  }
+
+  function drawSunny(x, y) {
+    ctx.beginPath();
+    ctx.arc(x + 30, y + 25, 22, 0, Math.PI * 2);
+    ctx.fillStyle = '#f6b81a';
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#b45309';
+    ctx.stroke();
+
+    ctx.fillStyle = '#1e3a8a';
+    ctx.fillRect(x + 10, y + 4, 40, 12);
+    ctx.beginPath();
+    ctx.ellipse(x + 38, y + 16, 14, 5, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(x + 22, y + 22, 4, 6);
+    ctx.fillRect(x + 34, y + 22, 4, 6);
+
+    ctx.beginPath();
+    ctx.arc(x + 30, y + 28, 6, 0, Math.PI, false);
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#e0f2fe';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    items.forEach(item => {
+      ctx.beginPath();
+      if (item.type === 'cloud') {
+        ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+      } else {
+        ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#0284c7';
+        ctx.fill();
+      }
+    });
+
+    drawSunny(sunny.x, sunny.y);
+  }
+
+  function loop() {
+    update();
+    draw();
+    if (!isGameOver) {
+      requestAnimationFrame(loop);
+    }
+  }
+
+  // LEADERBOARD LOGIC
+  function loadLeaderboard() {
+    let scores = JSON.parse(localStorage.getItem('sunny_leaderboard')) || [
+      { name: 'ForestExplorer', score: 120 },
+      { name: 'CotswoldKid', score: 90 },
+      { name: 'SevernSurfer', score: 60 },
+      { name: 'CloudWatcher', score: 40 }
+    ];
+
+    scores.sort((a, b) => b.score - a.score);
+
+    let tbody = document.getElementById('leaderboard-body');
+    tbody.innerHTML = '';
+
+    scores.forEach((entry, index) => {
+      let row = `<tr>
+        <td>#${index + 1}</td>
+        <td>${entry.name}</td>
+        <td>${entry.score} pts</td>
+      </tr>`;
+      tbody.innerHTML += row;
+    });
+  }
+
+  function submitScore() {
+    let nameInput = document.getElementById('player-name').value.trim();
+    if (!nameInput) {
+      alert('Please enter your explorer name!');
+      return;
+    }
+
+    let scores = JSON.parse(localStorage.getItem('sunny_leaderboard')) || [
+      { name: 'ForestExplorer', score: 120 },
+      { name: 'CotswoldKid', score: 90 },
+      { name: 'SevernSurfer', score: 60 },
+      { name: 'CloudWatcher', score: 40 }
+    ];
+
+    scores.push({ name: nameInput, score: score });
+    scores.sort((a, b) => b.score - a.score);
+    scores = scores.slice(fn => 5); // Keep top scores
+
+    localStorage.setItem('sunny_leaderboard', JSON.stringify(scores));
+
+    document.getElementById('submit-panel').innerHTML = `<div style="font-weight: 900; color: #16a34a; text-align: center; padding: 10px;">Score Submitted Successfully! Refresh page to play again.</div>`;
+    loadLeaderboard();
+  }
+
+  loadLeaderboard();
+  loop();
+</script>
+
+</body>
+</html>
