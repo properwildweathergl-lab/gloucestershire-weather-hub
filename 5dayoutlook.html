@@ -344,7 +344,7 @@
 
     regions.forEach(async (reg) => {
       try {
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${reg.city}&units=metric&appid=${490143351f02580359732b23b33a1233}`);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${reg.city}&units=metric&appid=490143351f02580359732b23b33a1233`);
         if (!response.ok) throw new Error('Forecast fetch failed');
         const data = await response.json();
 
