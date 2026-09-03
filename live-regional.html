@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gloucestershire Weather Hub - Comprehensive Regional Telemetry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-cream: #fdfbf7;
+    --card-white: #ffffff;
+    --navy-brand: #0f4b82;
+    --cobalt-accent: #1a6cb5;
+    --sun-yellow: #f6b81a;
+    --border-light: #e2e8f0;
+    --text-slate: #334155;
+    --text-muted: #64748b;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Enable smooth scrolling for anchor jump links */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html, body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: auto;
+  }
+
+  body {
+    background-color: var(--bg-cream);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-slate);
+    padding: 20px 16px 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  /* Top Bar Header */
+  .top-bar {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+  }
+
+  .brand-title {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .live-pill {
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .time-badge {
+    background: #fffbeb;
+    border: 1.5px solid var(--sun-yellow);
+    color: #b45309;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 12px;
+  }
+
+  /* Sticky Quick-Jump Navigation Bar */
+  .jump-nav {
+    background: var(--card-white);
+    border: 1.5px solid var(--border-light);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 10px rgba(15, 75, 130, 0.03);
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+  }
+
+  .jump-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--navy-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .jump-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .jump-btn {
+    background: #f8fafc;
+    border: 1.5px solid var(--border-light);
+    color: var(--navy-brand);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .jump-btn:hover {
+    background: var(--navy-brand);
+    color: #ffffff;
+    border-color: var(--navy-brand);
+  }
+
+  /* Section Headings */
+  .section-heading {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    margin: 36px 0 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    scroll-margin-top: 90px; /* Ensures header isn't hidden behind sticky nav when jumped to */
+  }
+
+  .section-heading::after {
+    content: "";
+    flex: 1;
+    height: 1.5px;
+    background: var(--border-light);
+  }
+
+  /* Town Card Styles */
+  .town-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .town-card {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+  }
+
+  .town-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .town-name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    line-height: 1.1;
+  }
+
+  .town-condition {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-transform: capitalize;
+  }
+
+  .town-temp-box {
+    text-align: right;
+  }
+
+  .town-temp {
+    font-size: 1.85rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    line-height: 1;
+  }
+
+  .town-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-slate);
+  }
+
+  .town-metrics span {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* Bridge Button back to Wix Main Site */
+  .action-button {
+    display: block;
+    width: 100%;
+    background: #1a6cb5;
+    background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 900;
+    font-size: 1rem;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    box-shadow: 0 6px 20px rgba(15, 75, 130, 0.15);
+    margin: 40px 0 10px;
+    transition: transform 0.15s ease;
+  }
+
+  .action-button:hover {
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="top-bar">
+    <div class="brand-title">
+      <span class="live-pill">LIVE</span> Gloucestershire Weather Hub
+    </div>
+    <div class="time-badge" id="live-time">Loading...</div>
+  </div>
+
+  <div class="jump-nav">
+    <div class="jump-label">Quick Jump to Region</div>
+    <div class="jump-buttons">
+      <a href="#cotswolds" class="jump-btn">Cotswolds</a>
+      <a href="#dean" class="jump-btn">Forest of Dean</a>
+      <a href="#leadon" class="jump-btn">Leadon Vale</a>
+      <a href="#north" class="jump-btn">North Glos & Spa</a>
+      <a href="#severn" class="jump-btn">Severn Vale</a>
+      <a href="#stroud" class="jump-btn">Stroud Valleys</a>
+    </div>
+  </div>
+
+  <div class="section-heading" id="cotswolds">⛰️ Cotswolds & Uplands</div>
+  <div class="town-grid">
+    <div class="town-card" data-city="Bourton-on-the-Water,GB"><div class="town-header"><div><div class="town-name">Bourton-on-the-Water</div><div class="town-condition" id="cond-Bourton-on-the-Water">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Bourton-on-the-Water">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Bourton-on-the-Water">--</span></div><div>Precip: <span id="precip-Bourton-on-the-Water">0.0 mm</span></div><div>Rain %: <span id="rain-Bourton-on-the-Water">--%</span></div><div>Humidity: <span id="hum-Bourton-on-the-Water">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Chipping Campden,GB"><div class="town-header"><div><div class="town-name">Chipping Campden</div><div class="town-condition" id="cond-Chipping-Campden">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Chipping-Campden">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Chipping-Campden">--</span></div><div>Precip: <span id="precip-Chipping-Campden">0.0 mm</span></div><div>Rain %: <span id="rain-Chipping-Campden">--%</span></div><div>Humidity: <span id="hum-Chipping-Campden">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Cirencester,GB"><div class="town-header"><div><div class="town-name">Cirencester</div><div class="town-condition" id="cond-Cirencester">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Cirencester">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Cirencester">--</span></div><div>Precip: <span id="precip-Cirencester">0.0 mm</span></div><div>Rain %: <span id="rain-Cirencester">--%</span></div><div>Humidity: <span id="hum-Cirencester">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Fairford,GB"><div class="town-header"><div><div class="town-name">Fairford</div><div class="town-condition" id="cond-Fairford">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Fairford">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Fairford">--</span></div><div>Precip: <span id="precip-Fairford">0.0 mm</span></div><div>Rain %: <span id="rain-Fairford">--%</span></div><div>Humidity: <span id="hum-Fairford">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Moreton-in-Marsh,GB"><div class="town-header"><div><div class="town-name">Moreton-in-Marsh</div><div class="town-condition" id="cond-Moreton-in-Marsh">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Moreton-in-Marsh">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Moreton-in-Marsh">--</span></div><div>Precip: <span id="precip-Moreton-in-Marsh">0.0 mm</span></div><div>Rain %: <span id="rain-Moreton-in-Marsh">--%</span></div><div>Humidity: <span id="hum-Moreton-in-Marsh">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Northleach,GB"><div class="town-header"><div><div class="town-name">Northleach</div><div class="town-condition" id="cond-Northleach">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Northleach">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Northleach">--</span></div><div>Precip: <span id="precip-Northleach">0.0 mm</span></div><div>Rain %: <span id="rain-Northleach">--%</span></div><div>Humidity: <span id="hum-Northleach">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Stow-on-the-Wold,GB"><div class="town-header"><div><div class="town-name">Stow-on-the-Wold</div><div class="town-condition" id="cond-Stow-on-the-Wold">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Stow-on-the-Wold">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Stow-on-the-Wold">--</span></div><div>Precip: <span id="precip-Stow-on-the-Wold">0.0 mm</span></div><div>Rain %: <span id="rain-Stow-on-the-Wold">--%</span></div><div>Humidity: <span id="hum-Stow-on-the-Wold">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Tetbury,GB"><div class="town-header"><div><div class="town-name">Tetbury</div><div class="town-condition" id="cond-Tetbury">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Tetbury">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Tetbury">--</span></div><div>Precip: <span id="precip-Tetbury">0.0 mm</span></div><div>Rain %: <span id="rain-Tetbury">--%</span></div><div>Humidity: <span id="hum-Tetbury">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Winchcombe,GB"><div class="town-header"><div><div class="town-name">Winchcombe</div><div class="town-condition" id="cond-Winchcombe">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Winchcombe">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Winchcombe">--</span></div><div>Precip: <span id="precip-Winchcombe">0.0 mm</span></div><div>Rain %: <span id="rain-Winchcombe">--%</span></div><div>Humidity: <span id="hum-Winchcombe">--%</span></div></div></div>
+  </div>
+
+  <div class="section-heading" id="dean">🌲 Forest of Dean & West</div>
+  <div class="town-grid">
+    <div class="town-card" data-city="Alvington,GB"><div class="town-header"><div><div class="town-name">Alvington</div><div class="town-condition" id="cond-Alvington">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Alvington">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Alvington">--</span></div><div>Precip: <span id="precip-Alvington">0.0 mm</span></div><div>Rain %: <span id="rain-Alvington">--%</span></div><div>Humidity: <span id="hum-Alvington">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Blakeney,GB"><div class="town-header"><div><div class="town-name">Blakeney</div><div class="town-condition" id="cond-Blakeney">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Blakeney">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Blakeney">--</span></div><div>Precip: <span id="precip-Blakeney">0.0 mm</span></div><div>Rain %: <span id="rain-Blakeney">--%</span></div><div>Humidity: <span id="hum-Blakeney">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Bream,GB"><div class="town-header"><div><div class="town-name">Bream</div><div class="town-condition" id="cond-Bream">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Bream">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Bream">--</span></div><div>Precip: <span id="precip-Bream">0.0 mm</span></div><div>Rain %: <span id="rain-Bream">--%</span></div><div>Humidity: <span id="hum-Bream">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Cinderford,GB"><div class="town-header"><div><div class="town-name">Cinderford</div><div class="town-condition" id="cond-Cinderford">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Cinderford">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Cinderford">--</span></div><div>Precip: <span id="precip-Cinderford">0.0 mm</span></div><div>Rain %: <span id="rain-Cinderford">--%</span></div><div>Humidity: <span id="hum-Cinderford">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Coleford,GB"><div class="town-header"><div><div class="town-name">Coleford</div><div class="town-condition" id="cond-Coleford">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Coleford">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Coleford">--</span></div><div>Precip: <span id="precip-Coleford">0.0 mm</span></div><div>Rain %: <span id="rain-Coleford">--%</span></div><div>Humidity: <span id="hum-Coleford">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Drybrook,GB"><div class="town-header"><div><div class="town-name">Drybrook</div><div class="town-condition" id="cond-Drybrook">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Drybrook">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Drybrook">--</span></div><div>Precip: <span id="precip-Drybrook">0.0 mm</span></div><div>Rain %: <span id="rain-Drybrook">--%</span></div><div>Humidity: <span id="hum-Drybrook">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Lydney,GB"><div class="town-header"><div><div class="town-name">Lydney</div><div class="town-condition" id="cond-Lydney">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Lydney">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Lydney">--</span></div><div>Precip: <span id="precip-Lydney">0.0 mm</span></div><div>Rain %: <span id="rain-Lydney">--%</span></div><div>Humidity: <span id="hum-Lydney">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Mitcheldean,GB"><div class="town-header"><div><div class="town-name">Mitcheldean</div><div class="town-condition" id="cond-Mitcheldean">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Mitcheldean">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Mitcheldean">--</span></div><div>Precip: <span id="precip-Mitcheldean">0.0 mm</span></div><div>Rain %: <span id="rain-Mitcheldean">--%</span></div><div>Humidity: <span id="hum-Mitcheldean">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Newnham,GB"><div class="town-header"><div><div class="town-name">Newnham</div><div class="town-condition" id="cond-Newnham">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Newnham">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Newnham">--</span></div><div>Precip: <span id="precip-Newnham">0.0 mm</span></div><div>Rain %: <span id="rain-Newnham">--%</span></div><div>Humidity: <span id="hum-Newnham">--%</span></div></div></div>
+
+    <div class="town-card" data-city="St. Briavels,GB"><div class="town-header"><div><div class="town-name">St. Briavels</div><div class="town-condition" id="cond-St.-Briavels">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-St.-Briavels">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-St.-Briavels">--</span></div><div>Precip: <span id="precip-St.-Briavels">0.0 mm</span></div><div>Rain %: <span id="rain-St.-Briavels">--%</span></div><div>Humidity: <span id="hum-St.-Briavels">--%</span></div></div></div>
+  </div>
+
+  <div class="section-heading" id="leadon">🌿 Leadon Vale & Northwest</div>
+  <div class="town-grid">
+    <div class="town-card" data-city="Dymock,GB"><div class="town-header"><div><div class="town-name">Dymock</div><div class="town-condition" id="cond-Dymock">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Dymock">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Dymock">--</span></div><div>Precip: <span id="precip-Dymock">0.0 mm</span></div><div>Rain %: <span id="rain-Dymock">--%</span></div><div>Humidity: <span id="hum-Dymock">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Hartpury,GB"><div class="town-header"><div><div class="town-name">Hartpury</div><div class="town-condition" id="cond-Hartpury">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Hartpury">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Hartpury">--</span></div><div>Precip: <span id="precip-Hartpury">0.0 mm</span></div><div>Rain %: <span id="rain-Hartpury">--%</span></div><div>Humidity: <span id="hum-Hartpury">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Newent,GB"><div class="town-header"><div><div class="town-name">Newent</div><div class="town-condition" id="cond-Newent">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Newent">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Newent">--</span></div><div>Precip: <span id="precip-Newent">0.0 mm</span></div><div>Rain %: <span id="rain-Newent">--%</span></div><div>Humidity: <span id="hum-Newent">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Redmarley D'Abitot,GB"><div class="town-header"><div><div class="town-name">Redmarley</div><div class="town-condition" id="cond-Redmarley-D-Abitot">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Redmarley-D-Abitot">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Redmarley-D-Abitot">--</span></div><div>Precip: <span id="precip-Redmarley-D-Abitot">0.0 mm</span></div><div>Rain %: <span id="rain-Redmarley-D-Abitot">--%</span></div><div>Humidity: <span id="hum-Redmarley-D-Abitot">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Tibberton,GB"><div class="town-header"><div><div class="town-name">Tibberton</div><div class="town-condition" id="cond-Tibberton">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Tibberton">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Tibberton">--</span></div><div>Precip: <span id="precip-Tibberton">0.0 mm</span></div><div>Rain %: <span id="rain-Tibberton">--%</span></div><div>Humidity: <span id="hum-Tibberton">--%</span></div></div></div>
+  </div>
+
+  <div class="section-heading" id="north">☀️ North Gloucestershire & Spa</div>
+  <div class="town-grid">
+    <div class="town-card" data-city="Bishop's Cleeve,GB"><div class="town-header"><div><div class="town-name">Bishop's Cleeve</div><div class="town-condition" id="cond-Bishop-s-Cleeve">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Bishop-s-Cleeve">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Bishop-s-Cleeve">--</span></div><div>Precip: <span id="precip-Bishop-s-Cleeve">0.0 mm</span></div><div>Rain %: <span id="rain-Bishop-s-Cleeve">--%</span></div><div>Humidity: <span id="hum-Bishop-s-Cleeve">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Cheltenham,GB"><div class="town-header"><div><div class="town-name">Cheltenham</div><div class="town-condition" id="cond-Cheltenham">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Cheltenham">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Cheltenham">--</span></div><div>Precip: <span id="precip-Cheltenham">0.0 mm</span></div><div>Rain %: <span id="rain-Cheltenham">--%</span></div><div>Humidity: <span id="hum-Cheltenham">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Churchdown,GB"><div class="town-header"><div><div class="town-name">Churchdown</div><div class="town-condition" id="cond-Churchdown">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Churchdown">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Churchdown">--</span></div><div>Precip: <span id="precip-Churchdown">0.0 mm</span></div><div>Rain %: <span id="rain-Churchdown">--%</span></div><div>Humidity: <span id="hum-Churchdown">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Prestbury,GB"><div class="town-header"><div><div class="town-name">Prestbury</div><div class="town-condition" id="cond-Prestbury">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Prestbury">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Prestbury">--</span></div><div>Precip: <span id="precip-Prestbury">0.0 mm</span></div><div>Rain %: <span id="rain-Prestbury">--%</span></div><div>Humidity: <span id="hum-Prestbury">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Shurdington,GB"><div class="town-header"><div><div class="town-name">Shurdington</div><div class="town-condition" id="cond-Shurdington">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Shurdington">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Shurdington">--</span></div><div>Precip: <span id="precip-Shurdington">0.0 mm</span></div><div>Rain %: <span id="rain-Shurdington">--%</span></div><div>Humidity: <span id="hum-Shurdington">--%</span></div></div></div>
+  </div>
+
+  <div class="section-heading" id="severn">🌊 Severn Vale</div>
+  <div class="town-grid">
+    <div class="town-card" data-city="Apperley,GB"><div class="town-header"><div><div class="town-name">Apperley</div><div class="town-condition" id="cond-Apperley">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Apperley">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Apperley">--</span></div><div>Precip: <span id="precip-Apperley">0.0 mm</span></div><div>Rain %: <span id="rain-Apperley">--%</span></div><div>Humidity: <span id="hum-Apperley">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Berkeley,GB"><div class="town-header"><div><div class="town-name">Berkeley</div><div class="town-condition" id="cond-Berkeley">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Berkeley">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Berkeley">--</span></div><div>Precip: <span id="precip-Berkeley">0.0 mm</span></div><div>Rain %: <span id="rain-Berkeley">--%</span></div><div>Humidity: <span id="hum-Berkeley">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Gloucester,GB"><div class="town-header"><div><div class="town-name">Gloucester</div><div class="town-condition" id="cond-Gloucester">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Gloucester">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Gloucester">--</span></div><div>Precip: <span id="precip-Gloucester">0.0 mm</span></div><div>Rain %: <span id="rain-Gloucester">--%</span></div><div>Humidity: <span id="hum-Gloucester">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Minsterworth,GB"><div class="town-header"><div><div class="town-name">Minsterworth</div><div class="town-condition" id="cond-Minsterworth">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Minsterworth">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Minsterworth">--</span></div><div>Precip: <span id="precip-Minsterworth">0.0 mm</span></div><div>Rain %: <span id="rain-Minsterworth">--%</span></div><div>Humidity: <span id="hum-Minsterworth">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Sandhurst,GB"><div class="town-header"><div><div class="town-name">Sandhurst</div><div class="town-condition" id="cond-Sandhurst">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Sandhurst">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Sandhurst">--</span></div><div>Precip: <span id="precip-Sandhurst">0.0 mm</span></div><div>Rain %: <span id="rain-Sandhurst">--%</span></div><div>Humidity: <span id="hum-Sandhurst">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Tewkesbury,GB"><div class="town-header"><div><div class="town-name">Tewkesbury</div><div class="town-condition" id="cond-Tewkesbury">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Tewkesbury">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Tewkesbury">--</span></div><div>Precip: <span id="precip-Tewkesbury">0.0 mm</span></div><div>Rain %: <span id="rain-Tewkesbury">--%</span></div><div>Humidity: <span id="hum-Tewkesbury">--%</span></div></div></div>
+  </div>
+
+  <div class="section-heading" id="stroud">🌿 Stroud Valleys & South</div>
+  <div class="town-grid">
+    <div class="town-card" data-city="Dursley,GB"><div class="town-header"><div><div class="town-name">Dursley</div><div class="town-condition" id="cond-Dursley">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Dursley">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Dursley">--</span></div><div>Precip: <span id="precip-Dursley">0.0 mm</span></div><div>Rain %: <span id="rain-Dursley">--%</span></div><div>Humidity: <span id="hum-Dursley">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Minchinhampton,GB"><div class="town-header"><div><div class="town-name">Minchinhampton</div><div class="town-condition" id="cond-Minchinhampton">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Minchinhampton">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Minchinhampton">--</span></div><div>Precip: <span id="precip-Minchinhampton">0.0 mm</span></div><div>Rain %: <span id="rain-Minchinhampton">--%</span></div><div>Humidity: <span id="hum-Minchinhampton">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Nailsworth,GB"><div class="town-header"><div><div class="town-name">Nailsworth</div><div class="town-condition" id="cond-Nailsworth">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Nailsworth">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Nailsworth">--</span></div><div>Precip: <span id="precip-Nailsworth">0.0 mm</span></div><div>Rain %: <span id="rain-Nailsworth">--%</span></div><div>Humidity: <span id="hum-Nailsworth">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Painswick,GB"><div class="town-header"><div><div class="town-name">Painswick</div><div class="town-condition" id="cond-Painswick">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Painswick">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Painswick">--</span></div><div>Precip: <span id="precip-Painswick">0.0 mm</span></div><div>Rain %: <span id="rain-Painswick">--%</span></div><div>Humidity: <span id="hum-Painswick">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Stonehouse,GB"><div class="town-header"><div><div class="town-name">Stonehouse</div><div class="town-condition" id="cond-Stonehouse">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Stonehouse">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Stonehouse">--</span></div><div>Precip: <span id="precip-Stonehouse">0.0 mm</span></div><div>Rain %: <span id="rain-Stonehouse">--%</span></div><div>Humidity: <span id="hum-Stonehouse">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Stroud,GB"><div class="town-header"><div><div class="town-name">Stroud</div><div class="town-condition" id="cond-Stroud">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Stroud">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Stroud">--</span></div><div>Precip: <span id="precip-Stroud">0.0 mm</span></div><div>Rain %: <span id="rain-Stroud">--%</span></div><div>Humidity: <span id="hum-Stroud">--%</span></div></div></div>
+
+    <div class="town-card" data-city="Wotton-under-Edge,GB"><div class="town-header"><div><div class="town-name">Wotton-under-Edge</div><div class="town-condition" id="cond-Wotton-under-Edge">Updating...</div></div><div class="town-temp-box"><div class="town-temp" id="temp-Wotton-under-Edge">--°</div></div></div><div class="town-metrics"><div>Wind: <span id="wind-Wotton-under-Edge">--</span></div><div>Precip: <span id="precip-Wotton-under-Edge">0.0 mm</span></div><div>Rain %: <span id="rain-Woton-under-Edge">--%</span></div><div>Humidity: <span id="hum-Wotton-under-Edge">--%</span></div></div></div>
+  </div>
+
+  <a href="https://www.gloucestershireweatherhub.co.uk/video-wall" class="action-button">
+    Full County Video Wall & Guides on Main Site →
+  </a>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('live-time').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' BST';
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  const API_KEY = 'YOUR_OPENWEATHER_API_KEY';
+
+  function degreesToCompass(deg) {
+    const val = Math.floor((deg / 22.5) + 0.5);
+    const arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+    return arr[(val % 16)];
+  }
+
+  async function fetchWeatherData() {
+    const cards = document.querySelectorAll('.town-card');
+    
+    cards.forEach(async (card) => {
+      const cityName = card.getAttribute('data-city');
+      const safeId = cityName.split(',')[0].replace(/[^a-zA-Z]/g, '-');
+      
+      try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+
+        const tempEl = document.getElementById(`temp-${safeId}`);
+        const condEl = document.getElementById(`cond-${safeId}`);
+        const windEl = document.getElementById(`wind-${safeId}`);
+        const humEl = document.getElementById(`hum-${safeId}`);
+        const precipEl = document.getElementById(`precip-${safeId}`);
+        const rainEl = document.getElementById(`rain-${safeId}`);
+
+        if (tempEl) tempEl.innerText = Math.round(data.main.temp) + '°';
+        if (condEl) condEl.innerText = data.weather[0].description;
+        
+        if (windEl) {
+          const windSpeedMph = Math.round(data.wind.speed * 2.23694);
+          const windDir = data.wind.deg !== undefined ? degreesToCompass(data.wind.deg) : '';
+          windEl.innerText = `${windSpeedMph} mph ${windDir}`;
+        }
+
+        if (humEl) humEl.innerText = data.main.humidity + '%';
+        
+        if (precipEl) {
+          const rain1h = data.rain && data.rain['1h'] ? data.rain['1h'] : (data.rain && data.rain['3h'] ? (data.rain['3h']/3).toFixed(1) : '0.0');
+          precipEl.innerText = rain1h + ' mm';
+        }
+        
+        if (rainEl) {
+          const clouds = data.clouds && data.clouds.all ? data.clouds.all : 0;
+          rainEl.innerText = (clouds > 75 ? '40%' : (clouds > 40 ? '15%': '0%'));
+        }
+
+      } catch (error) {
+        // Fallback placeholder behavior if API key is pending
+      }
+    });
+  }
+
+  fetchWeatherData();
+  setInterval(fetchWeatherData, 600000);
+</script>
+
+</body>
+</html>
