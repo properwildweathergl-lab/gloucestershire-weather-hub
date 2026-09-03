@@ -240,7 +240,7 @@
   <div class="region-card" data-city="Blakeney,GB" id="region-dean">
     <div class="region-title">
       🌲 Forest of Dean & West
-      <span class="region-station">Blakeney Hill Reference</span>
+      <span class="region-station">Blakeney Reference</span>
     </div>
     <div class="forecast-strip" id="strip-dean">
       <div class="day-box"><div class="day-name">Today</div><div class="day-icon">☁️</div><div class="day-temps">--° <span>/ --°</span></div><div class="day-cond">Syncing...</div></div>
@@ -307,10 +307,13 @@
     </div>
   </div>
 
-  <a href="https://www.gloucestershireweatherhub.co.uk/video-wall" class="action-button">
-    Full County Video Wall & Guides on Main Site →
+  <a href="https://glweatherhub.wixsite.com/gloucesterweatherhub" class="action-button">
+    Back To HUB Home →
   </a>
 
+  <a href="https://www.gloucestershireweatherhub.co.uk" class="action-button">
+    Your Location Forecast →
+  </a>
 </div>
 
 <script>
@@ -321,7 +324,7 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  const API_KEY = 'YOUR_OPENWEATHER_API_KEY';
+  const API_KEY = '490143351f02580359732b23b33a1233';
 
   function getWeatherEmoji(condition) {
     const cond = condition.toLowerCase();
