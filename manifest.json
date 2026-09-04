@@ -1,20 +1,14 @@
 {
-  "name": "Gloucestershire Weather HUB",
-  "short_name": "GlosWeather",
-  "description": "Hyper-local weather telemetry and observations for Gloucestershire.",
-  "start_url": "./index.html",
+  "name": "Gloucestershire Weather Hub",
+  "short_name": "GWH",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#fdfbf7",
-  "theme_color": "#0f4b82",
+  "background_color": "#ffffff",
+  "theme_color": "#1a2b4c",
   "icons": [
     {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
+      "src": "https://gloucestershireweatherhub.co.uk/logo.png",
+      "sizes": "192x192 512x512",
       "type": "image/png"
     }
   ]
