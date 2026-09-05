@@ -1,10 +1,10 @@
 {
-  "name": "Gloucestershire Weather Hub"[cite: 8],
-  "short_name": "GWH"[cite: 8],
+  "name": "Gloucestershire Weather HUB",
+  "short_name": "GWH",
   "start_url": "./",
-  "display": "standalone"[cite: 8],
-  "background_color": "#ffffff"[cite: 8],
-  "theme_color": "#1a2b4c"[cite: 8],
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
   "icons": [
     {
       "src": "icon-192.png",
