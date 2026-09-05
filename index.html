@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gloucestershire Weather HUB</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b131e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Glos Weather">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --app-bg: #0b131e;
+            --card-bg: #131f30;
+            --card-border: #1e3552;
+            --accent-color: #00d2ff;
+            --orange-accent: #ff9800;
+            --gold: #facc15;
+            --red: #ef4444;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--app-bg); color: var(--text-main); padding-bottom: 40px; min-height: 100vh; }
+
+        .app-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 18px; background: rgba(19, 31, 48, 0.95);
+            border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .location-title { 
+            font-size: 1.05rem; font-weight: 800; color: var(--text-main); 
+            display: flex; align-items: center; gap: 8px; font-family: 'Montserrat', sans-serif; 
+        }
+        .location-title span { color: var(--accent-color); }
+        .hud-clock { 
+            font-family: monospace; font-size: 0.8rem; font-weight: 700; 
+            color: var(--accent-color); background: rgba(0,0,0,0.4); 
+            padding: 4px 8px; border-radius: 6px; border: 1px solid var(--card-border); 
+        }
+
+        .container { width: 100%; max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; }
+
+        .hero-card {
+            background: linear-gradient(135deg, #131f30 0%, #1a2f4c 100%);
+            border-bottom: 1px solid var(--card-border); padding: 20px 18px; margin-bottom: 16px;
+        }
+        .hero-subhead { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; }
+        .temp-display { font-size: 52px; font-weight: 300; line-height: 1; margin: 8px 0; font-family: 'Montserrat', sans-serif; }
+        .condition-text { font-size: 18px; font-weight: 600; color: var(--gold); margin-bottom: 14px; }
+        .pill-container { display: flex; gap: 8px; flex-wrap: wrap; }
+        .weather-pill {
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+
+        .section-container { padding: 0 16px; margin-bottom: 16px; }
+        .section-heading { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        
+        .horizontal-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+        .hour-box { 
+            background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; 
+            padding: 12px 14px; min-width: 78px; text-align: center; flex-shrink: 0; 
+            display: flex; flex-direction: column; align-items: center; gap: 6px; 
+        }
+        .hour-time { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .hour-temp { font-size: 15px; font-weight: 700; }
+
+        .daily-card {
+            background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+            padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .day-name { font-weight: 600; font-size: 14px; width: 90px; }
+        .day-temps { font-weight: 700; font-size: 14px; display: flex; gap: 10px; }
+        .day-temps span:last-child { color: var(--text-muted); font-weight: 400; }
+
+        .install-wrap { padding: 16px; text-align: center; }
+        #install-app-btn {
+            background: var(--gold); color: #0b131e; border: none; padding: 12px 24px;
+            border-radius: 30px; font-weight: 800; font-size: 0.9rem; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3); display: inline-flex; align-items: center; gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="location-title">
+            <i class="fa-solid fa-location-dot" style="font-size: 16px; color: var(--accent-color);"></i> 
+            <span id="user-town">BLAKENEY</span>
+        </div>
+        <div class="hud-clock" id="live-clock">00:00:00 BST</div>
+    </header>
+
+    <div class="container">
+        <div class="install-wrap">
+            <button id="install-app-btn"><i class="fa-solid fa-mobile-screen"></i> Install GWH App to Home Screen</button>
+        </div>
+
+        <div class="hero-card">
+            <div class="hero-subhead" id="hero-subhead-text">Next Hour &bull; Blakeney Hill</div>
+            <div>
+                <div class="temp-display" id="home-temp">--°C</div>
+                <div class="condition-text" id="home-cond">Loading weather...</div>
+            </div>
+            <div class="pill-container">
+                <div class="weather-pill"><i class="fa-solid fa-temperature-half"></i> <span id="home-feels">Feels like --°</span></div>
+                <div class="weather-pill"><i class="fa-solid fa-droplet"></i> <span id="home-rain">Rain --%</span></div>
+                <div class="weather-pill"><i class="fa-solid fa-wind"></i> <span id="home-wind">--mph</span></div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-heading">Hourly Breakdown</div>
+            <div class="horizontal-scroll" id="hourly-strip"></div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-heading">County 5-Day Outlook</div>
+            <div id="five-day-outlook-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Service Worker & Install Logic Combined Safely
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            });
+        }
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        document.getElementById('install-app-btn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    deferredPrompt = null;
+                }
+            } else {
+                alert("To install this app as a standalone app:\n\n• Android/Chrome: Tap the 3-dot menu and select 'Install app' or 'Add to Home screen'.\n• iPhone/Safari: Tap the Share button and select 'Add to Home Screen'.");
+            }
+        });
+
+        function runClock() {
+            const d = new Date();
+            const clockEl = document.getElementById('live-clock');
+            if (clockEl) {
+                clockEl.innerText = d.toLocaleTimeString('en-GB', { hour12: false }) + ' BST';
+            }
+        }
+        setInterval(runClock, 1000);
+        runClock();
+
+        async function fetchLiveWeather() {
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=51.7640&longitude=-2.4820&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,is_day,wind_speed_10m&hourly=temperature_2m,weather_code,is_day,precipitation_probability&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLondon`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                const cur = data.current;
+                const daily = data.daily;
+                const hourly = data.hourly;
+                const currentHourIndex = new Date().getHours();
+
+                document.getElementById('home-temp').innerText = `${Math.round(cur.temperature_2m)}°C`;
+                document.getElementById('home-feels').innerText = `Feels like ${Math.round(cur.apparent_temperature)}°`;
+                document.getElementById('home-wind').innerText = `${Math.round(cur.wind_speed_10m)}mph`;
+                document.getElementById('home-rain').innerText = `Rain ${hourly.precipitation_probability[currentHourIndex] || 0}%`;
+                document.getElementById('home-cond').innerText = cur.weather_code === 0 ? "Clear Sky" : "Sunny Spells";
+
+                let hourlyHtml = '';
+                for (let i = currentHourIndex; i < currentHourIndex + 12 && i < hourly.time.length; i++) {
+                    const timeLabel = i === currentHourIndex ? 'Now' : `${new Date(hourly.time[i]).getHours()}:00`;
+                    hourlyHtml += `
+                        <div class="hour-box">
+                            <div class="hour-time">${timeLabel}</div>
+                            <div class="hour-temp">${Math.round(hourly.temperature_2m[i])}°</div>
+                        </div>
+                    `;
+                }
+                document.getElementById('hourly-strip').innerHTML = hourlyHtml;
+
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                let dailyHtml = '';
+                for (let i = 0; i < 5 && i < daily.time.length; i++) {
+                    const d = new Date(daily.time[i]);
+                    const dayLabel = i === 0 ? 'Today' : days[d.getDay()];
+                    dailyHtml += `
+                        <div class="daily-card">
+                            <div class="day-name">${dayLabel}</div>
+                            <div class="day-temps">
+                                <span>${Math.round(daily.temperature_2m_max[i])}°</span>
+                                <span>${Math.round(daily.temperature_2m_min[i])}°</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                document.getElementById('five-day-outlook-container').innerHTML = dailyHtml;
+            } catch (e) {
+                console.error("API Fetch Error:", e);
+            }
+        }
+
+        fetchLiveWeather();
+        setInterval(fetchLiveWeather, 600000);
+    </script>
+</body>
+</html>
