@@ -936,5 +936,24 @@
         }
     });
     </script>
+<script>
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
+
+document.getElementById('install-app-btn').addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            deferredPrompt = null;
+        }
+    } else {
+        alert("To install this app as a standalone web app:\n\n• On Android/Chrome: Tap your browser menu (three dots) and select 'Install app' or 'Add to Home screen'.\n• On iPhone/Safari: Tap the Share button and select 'Add to Home Screen'.");
+    }
+});
+</script>
 </body>
 </html>
