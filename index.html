@@ -78,15 +78,7 @@
         </div>
     </div>
 
-    <!-- Service Worker Registration Script -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').catch(() => {});
-        });
-      }
-    </script>
-
+   
     <!-- Unified Install Button Script -->
     <script>
     let deferredPrompt;
