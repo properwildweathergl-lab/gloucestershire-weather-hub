@@ -1,18 +1,20 @@
-const CACHE_NAME = 'gwh-cache-v2';
-const assetsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
-];
+const CACHE_NAME = 'gwh-cache-v3';
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(assetsToCache);
+      return cache.addAll([
+        './',
+        './index.html',
+        './manifest.json'
+      ]).catch(() => {});
     })
   );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', (e) => {
