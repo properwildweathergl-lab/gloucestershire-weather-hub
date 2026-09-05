@@ -1,14 +1,19 @@
 {
-  "name": "Gloucestershire Weather Hub",
-  "short_name": "GWH",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a2b4c",
+  "name": "Gloucestershire Weather Hub"[cite: 8],
+  "short_name": "GWH"[cite: 8],
+  "start_url": "./",
+  "display": "standalone"[cite: 8],
+  "background_color": "#ffffff"[cite: 8],
+  "theme_color": "#1a2b4c"[cite: 8],
   "icons": [
     {
-      "src": "https://gloucestershireweatherhub.co.uk/logo.png",
-      "sizes": "192x192 512x512",
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
