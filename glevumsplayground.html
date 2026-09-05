@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glevum & Pip's Playground - Gloucestershire Weather Hub</title>
+<style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100vh;
+        background-color: #f4f6f9;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1a2b4c;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 20px 10px;
+    }
+
+    .playground-container {
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 700px;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 2.5px solid #f1c40f;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .header-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #eef2f7;
+        padding-bottom: 12px;
+    }
+
+    .badge {
+        background: #f1c40f;
+        color: #1a2b4c;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 6px 12px;
+        border-radius: 8px;
+    }
+
+    /* Dual Character Hero Banner */
+    .glevum-banner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(135deg, #fffdfa 0%, #fff9e6 100%);
+        border: 2.5px solid #f1c40f;
+        border-radius: 16px;
+        padding: 20px;
+        gap: 14px;
+    }
+
+    .characters-row {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .char-box {
+        width: 110px;
+        height: 110px;
+        border: 3px solid #f1c40f;
+        border-radius: 50%;
+        background: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 6px 15px rgba(241, 196, 15, 0.3);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .char-box:hover {
+        transform: scale(1.1) translateY(-5px);
+        box-shadow: 0 12px 25px rgba(241, 196, 15, 0.5);
+        border-color: #1a2b4c;
+    }
+
+    .char-box:hover .animated-character-1 {
+        animation: spinGlevum 0.6s ease infinite alternate;
+    }
+
+    .char-box:hover .animated-character-2 {
+        animation: wigglePip 0.4s ease infinite alternate;
+    }
+
+    .animated-character-1 {
+        animation: floatGlevum 3s ease-in-out infinite;
+    }
+
+    .animated-character-2 {
+        animation: bouncePip 2.5s ease-in-out infinite;
+    }
+
+    @keyframes floatGlevum {
+        0%, 100% { transform: scale(0.58) translateY(0px) rotate(0deg); }
+        50% { transform: scale(0.58) translateY(-5px) rotate(2deg); }
+    }
+
+    @keyframes bouncePip {
+        0%, 100% { transform: scale(0.58) translateY(0px) rotate(0deg); }
+        50% { transform: scale(0.58) translateY(-7px) rotate(-3deg); }
+    }
+
+    @keyframes spinGlevum {
+        0% { transform: scale(0.58) rotate(-10deg); }
+        100% { transform: scale(0.58) rotate(10deg); }
+    }
+
+    @keyframes wigglePip {
+        0% { transform: scale(0.58) translateY(-4px) rotate(-8deg); }
+        100% { transform: scale(0.58) translateY(4px) rotate(8deg); }
+    }
+
+    .intro-text {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-width: 550px;
+    }
+
+    h1 {
+        font-size: 24px;
+        font-weight: 900;
+        color: #1a2b4c;
+        margin: 0;
+        letter-spacing: -0.5px;
+    }
+
+    p {
+        font-size: 13px;
+        font-weight: 700;
+        color: #4a5568;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .games-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 4px;
+    }
+
+    @media (max-width: 500px) {
+        .games-grid {
+            grid-template-columns: 1fr;
+        }
+        .full-span {
+            grid-column: span 1 !important;
+        }
+        .characters-row {
+            gap: 10px;
+        }
+        .char-box {
+            width: 95px;
+            height: 95px;
+        }
+    }
+
+    .game-card {
+        background: #f8f9fa;
+        border: 2px solid rgba(241, 196, 15, 0.5);
+        border-radius: 14px;
+        padding: 16px;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        transition: all 0.2s ease;
+    }
+
+    .game-card:hover {
+        background: rgba(241, 196, 15, 0.12);
+        border-color: #f1c40f;
+        transform: translateY(-2px);
+    }
+
+    .card-title {
+        font-size: 14px;
+        font-weight: 900;
+        color: #1a2b4c;
+        text-transform: uppercase;
+    }
+
+    .card-desc {
+        font-size: 12px;
+        font-weight: 700;
+        color: #556070;
+        line-height: 1.4;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 11px;
+        color: #7b8594;
+        font-weight: 700;
+        margin-top: 10px;
+        border-top: 2px solid #eef2f7;
+        padding-top: 12px;
+    }
+
+    .back-btn {
+        display: inline-block;
+        margin-top: 8px;
+        background: #1a2b4c;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        padding: 10px 20px;
+        border-radius: 10px;
+        transition: background 0.2s ease;
+    }
+
+    .back-btn:hover {
+        background: #f1c40f;
+        color: #1a2b4c;
+    }
+</style>
+</head>
+<body>
+
+    <div class="playground-container">
+        <div class="header-area">
+            <span class="badge">Kids & Interactive Zone</span>
+            <span style="font-size: 22px;">🦕✨</span>
+        </div>
+        
+        <div class="glevum-banner">
+            <div class="characters-row">
+                <!-- Glevum Bubble Linked to glevum-bio.html -->
+                <a href="glevum-bio.html" class="char-box" title="Click to read Glevum's Bio!">
+                    <div class="animated-character-1" style="width: 100px; height: 100px; position: relative; margin-top: 6px;">
+                      <div style="position: absolute; width: 140px; height: 140px; background: #fbbf24; border-radius: 50%; top: 20px; left: 20px; z-index: 1;"></div>
+                      <div style="position: absolute; width: 140px; height: 140px; background: #f59e0b; border-radius: 50%; top: 20px; left: 20px; z-index: 1; transform: rotate(45deg);"></div>
+                      <div style="position: absolute; width: 120px; height: 120px; background: #f6b81a; border: 4px solid #b45309; border-radius: 50%; top: 30px; left: 30px; z-index: 2; box-shadow: inset -8px -8px 0px rgba(180, 83, 9, 0.2);"></div>
+                      <div style="position: absolute; width: 84px; height: 26px; background: #1e3a8a; border-radius: 42px 42px 10px 10px; top: 18px; left: 48px; z-index: 4;"></div>
+                      <div style="position: absolute; width: 42px; height: 10px; background: #1e3a8a; border-radius: 0 0 6px 6px; top: 40px; left: 74px; transform: rotate(6deg); z-index: 4;"></div>
+                      <div style="position: absolute; width: 12px; height: 16px; background: #1e293b; border-radius: 50%; top: 72px; left: 66px; z-index: 3;"></div>
+                      <div style="position: absolute; width: 12px; height: 16px; background: #1e293b; border-radius: 50%; top: 72px; left: 102px; z-index: 3;"></div>
+                      <div style="position: absolute; width: 26px; height: 14px; border-bottom: 4px solid #1e293b; border-radius: 0 0 14px 14px; top: 92px; left: 77px; z-index: 3;"></div>
+                    </div>
+                </a>
+
+                <!-- Pip Bubble Linked to pip-bio.html -->
+                <a href="pip-bio.html" class="char-box" style="border-color: #28a745; box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);" title="Click to read Pip's Bio!">
+                    <div class="animated-character-2" style="width: 100px; height: 100px; position: relative; margin-top: 6px;">
+                      <div style="position: absolute; width: 110px; height: 95px; background: #28a745; border: 4px solid #155724; border-radius: 50% 50% 40% 40%; top: 30px; left: 35px; z-index: 2;"></div>
+                      <div style="position: absolute; width: 50px; height: 35px; background: #34ce57; border: 3px solid #155724; border-radius: 50%; top: 65px; left: 75px; z-index: 3;"></div>
+                      <div style="position: absolute; width: 12px; height: 16px; background: #1e293b; border-radius: 50%; top: 46px; left: 60px; z-index: 4;"></div>
+                      <div style="position: absolute; width: 12px; height: 16px; background: #1e293b; border-radius: 50%; top: 46px; left: 88px; z-index: 4;"></div>
+                      <div style="position: absolute; width: 5px; height: 7px; background: #155724; border-radius: 50%; top: 74px; left: 93px; z-index: 4;"></div>
+                      <div style="position: absolute; width: 5px; height: 7px; background: #155724; border-radius: 50%; top: 74px; left: 103px; z-index: 4;"></div>
+                      <div style="position: absolute; width: 22px; height: 12px; border-bottom: 3px solid #1e293b; border-radius: 0 0 12px 12px; top: 78px; left: 91px; z-index: 4;"></div>
+                      <div style="position: absolute; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 18px solid #ffc107; top: 16px; left: 78px; z-index: 1;"></div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="intro-text">
+                <h1>Glevum & Pip's Playground! 🚀🦖</h1>
+                <p>Welcome from both of us! Click our bubbles above to read our stories, or pick a game below and let the adventure begin!</p>
+            </div>
+        </div>
+
+        <div class="games-grid">
+            <a href="YOUR_GITHUB_LINK_1_HERE" class="game-card">
+                <span class="card-title">🧩 Weather Wordsearch</span>
+                <span class="card-desc">Find hidden meteorological terms and local county words in this fun interactive puzzle.</span>
+            </a>
+
+            <a href="YOUR_GITHUB_LINK_2_HERE" class="game-card">
+                <span class="card-title">🦖 Dino Adventure Quiz</span>
+                <span class="card-desc">Explore prehistoric facts and test your knowledge with Pip and Clover.</span>
+            </a>
+
+            <a href="YOUR_GITHUB_LINK_3_HERE" class="game-card">
+                <span class="card-title">🎮 Interactive Catch Game</span>
+                <span class="card-desc">Help Glevum catch falling raindrops and avoid the storm clouds!</span>
+            </a>
+
+            <a href="YOUR_GITHUB_LINK_4_HERE" class="game-card">
+                <span class="card-title">🎨 Colouring & Activity Book</span>
+                <span class="card-desc">Digital coloring pages featuring local wildlife and scenic Forest of Dean spots.</span>
+            </a>
+
+            <a href="YOUR_GITHUB_LINK_5_HERE" class="game-card full-span" style="grid-column: span 2;">
+                <span class="card-title">⭐ Mystery Bonus Game (Coming Soon)</span>
+                <span class="card-desc">Another exciting interactive challenge currently being built by Glevum & Pip!</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p style="margin-bottom: 8px;">Gloucestershire Weather Hub • Glevum's Playground</p>
+            <a href="https://glweatherhub.wixsite.com/gloucesterweatherhub" class="back-btn" target="_top">Back to Main Hub</a>
+        </div>
+    </div>
+
+</body>
+</html>

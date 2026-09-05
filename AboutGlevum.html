@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meet Glevum - Gloucestershire Weather Hub</title>
+<style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+        margin: 0; padding: 0; width: 100%; min-height: 100vh;
+        background-color: #f4f6f9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1a2b4c; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 10px;
+    }
+    .bio-container {
+        background-color: #ffffff; width: 100%; max-width: 700px; border-radius: 20px;
+        padding: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); border: 2.5px solid #f1c40f;
+        display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center;
+    }
+    .char-box {
+        width: 140px; height: 140px; border: 3px solid #f1c40f; border-radius: 50%;
+        background: #ffffff; display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 6px 15px rgba(241, 196, 15, 0.3); position: relative; overflow: hidden;
+    }
+    h1 { font-size: 26px; font-weight: 900; color: #1a2b4c; margin: 0; }
+    p { font-size: 14px; font-weight: 700; color: #4a5568; line-height: 1.6; max-width: 550px; margin: 0; }
+    .back-btn {
+        display: inline-block; margin-top: 10px; background: #1a2b4c; color: #ffffff;
+        text-decoration: none; font-size: 12px; font-weight: 900; text-transform: uppercase;
+        padding: 10px 20px; border-radius: 10px; transition: background 0.2s ease;
+    }
+    .back-btn:hover { background: #f1c40f; color: #1a2b4c; }
+</style>
+</head>
+<body>
+
+    <div class="bio-container">
+        <div class="char-box">
+            <div style="width: 100px; height: 100px; position: relative; margin-top: 6px;">
+              <div style="position: absolute; width: 140px; height: 140px; background: #fbbf24; border-radius: 50%; top: 20px; left: 20px; z-index: 1;"></div>
+              <div style="position: absolute; width: 140px; height: 140px; background: #f59e0b; border-radius: 50%; top: 20px; left: 20px; z-index: 1; transform: rotate(45deg);"></div>
+              <div style="position: absolute; width: 120px; height: 120px; background: #f6b81a; border: 4px solid #b45309; border-radius: 50%; top: 30px; left: 30px; z-index: 2; box-shadow: inset -8px -8px 0px rgba(180, 83, 9, 0.2);"></div>
+              <div style="position: absolute; width: 84px; height: 26px; background: #1e3a8a; border-radius: 42px 42px 10px 10px; top: 18px; left: 48px; z-index: 4;"></div>
+              <div style="position: absolute; width: 42px; height: 10px; background: #1e3a8a; border-radius: 0 0 6px 6px; top: 40px; left: 74px; transform: rotate(6deg); z-index: 4;"></div>
+              <div style="position: absolute; width: 12px; height: 16px; background: #1e293b; border-radius: 50%; top: 72px; left: 66px; z-index: 3;"></div>
+              <div style="position: absolute; width: 12px; height: 16px; background: #1e293b; border-radius: 50%; top: 72px; left: 102px; z-index: 3;"></div>
+              <div style="position: absolute; width: 26px; height: 14px; border-bottom: 4px solid #1e293b; border-radius: 0 0 14px 14px; top: 92px; left: 77px; z-index: 3;"></div>
+            </div>
+        </div>
+
+        <h1>Meet Glevum! ☀️</h1>
+        <p>Hello Gloucestershire! I am Glevum, your official guide and mascot for the Gloucestershire Weather Hub. I fly through the skies tracking every cloud, sunbeam, and rain shower across the county to bring you live updates and super fun games!</p>
+
+        <a href="gleuvmplayground.html" class="back-btn">Back to Playground</a>
+    </div>
+
+</body>
+</html>

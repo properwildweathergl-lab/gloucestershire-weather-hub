@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meet Pip - Gloucestershire Weather Hub</title>
+<style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+        margin: 0; padding: 0; width: 100%; min-height: 100vh;
+        background-color: #f4f6f9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1a2b4c; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 10px;
+    }
+    .bio-container {
+        background-color: #ffffff; width: 100%; max-width: 700px; border-radius: 20px;
+        padding: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); border: 2.5px solid #28a745;
+        display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center;
+    }
+    .char-box {
+        width: 140px; height: 140px; border: 3px solid #28a745; border-radius: 50%;
+        background: #ffffff; display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3); position: relative; overflow: hidden;
+    }
+    h1 { font-size: 26px; font-weight: 900; color: #1a2b4c; margin: 0; }
+    p { font-size: 14px; font-weight: 700; color: #4a5568; line-height: 1.6; max-width: 550px; margin: 0; }
+    .back-btn {
+        display: inline-block; margin-top: 10px; background: #1a2b4c; color: #ffffff;
+        text-decoration: none; font-size: 12px; font-weight: 900; text-transform: uppercase;
+        padding: 10px 20px; border-radius: 10px; transition: background 0.2s ease;
+    }
+    .back-btn:hover { background: #28a745; color: #ffffff; }
+</style>
+</head>
+<body>
+
+    <div class="bio-container">
+        <div class="char-box">
+            <div style="width: 100px; height: 100px; position: relative; margin-top: 6px;">
+              <div style="position: absolute; width: 110px; height: 95px; background: #28a745; border: 4px solid #155724; border-radius: 50% 50% 40% 40%; top: 30px; left: 35px; z-index: 2;"></div>
+              <div style="position: absolute; width: 50px; height: 35px; background: #34ce57; border: 3px solid #155724; border-radius: 50%; top: 65px; left: 75px; z-index: 3;"></div>
+              <div style="position: absolute; width: 12px; height: 16px; background: #1e293b; border-radius: 50%; top: 46px; left: 60px; z-index: 4;"></div>
+              <div style="position: absolute; width: 12px; height: 16px; background: #1e293b; border-radius: 50%; top: 46px; left: 88px; z-index: 4;"></div>
+              <div style="position: absolute; width: 5px; height: 7px; background: #155724; border-radius: 50%; top: 74px; left: 93px; z-index: 4;"></div>
+              <div style="position: absolute; width: 5px; height: 7px; background: #155724; border-radius: 50%; top: 74px; left: 103px; z-index: 4;"></div>
+              <div style="position: absolute; width: 22px; height: 12px; border-bottom: 3px solid #1e293b; border-radius: 0 0 12px 12px; top: 78px; left: 91px; z-index: 4;"></div>
+              <div style="position: absolute; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 18px solid #ffc107; top: 16px; left: 78px; z-index: 1;"></div>
+            </div>
+        </div>
+
+        <h1>Meet Pip the Dinosaur! 🦖</h1>
+        <p>Roar-hello! I'm Pip, Glevum's prehistoric best friend. When I'm not exploring the prehistoric trails of the Forest of Dean with Clover, I love hanging out in the Weather Playground to test out quizzes and games with you!</p>
+
+        <a href="gleuvmplayground.html" class="back-btn">Back to Playground</a>
+    </div>
+
+</body>
+</html>
