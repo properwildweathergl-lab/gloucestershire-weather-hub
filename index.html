@@ -915,7 +915,13 @@
         });
       }
     </script>
-  
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+</script>
 <script>
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -923,17 +929,20 @@ window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt = e;
 });
 
-document.getElementById('install-app-btn').addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            deferredPrompt = null;
+const installBtn = document.getElementById('install-app-btn');
+if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                deferredPrompt = null;
+            }
+        } else {
+            alert("To install this app as a standalone web app:\n\n• On Android/Chrome: Tap your browser menu (three dots) and select 'Install app' or 'Add to Home screen'.\n• On iPhone/Safari: Tap the Share button and select 'Add to Home Screen'.");
         }
-    } else {
-        alert("To install this app as a standalone web app:\n\n• On Android/Chrome: Tap your browser menu (three dots) and select 'Install app' or 'Add to Home screen'.\n• On iPhone/Safari: Tap the Share button and select 'Add to Home Screen'.");
-    }
-});
+    });
+}
 </script>
 </body>
 </html>
