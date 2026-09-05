@@ -915,27 +915,7 @@
         });
       }
     </script>
-    <script>
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        const installBtn = document.getElementById('install-app-btn');
-        if (installBtn) {
-            installBtn.style.display = 'inline-block';
-            installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    if (outcome === 'accepted') {
-                        deferredPrompt = null;
-                        installBtn.style.display = 'none';
-                    }
-                }
-            });
-        }
-    });
-    </script>
+  
 <script>
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
