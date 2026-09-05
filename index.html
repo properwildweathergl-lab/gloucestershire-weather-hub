@@ -78,26 +78,32 @@
         </div>
     </div>
 
-   
-    <!-- Unified Install Button Script -->
-    <script>
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
+<script>
+  // 1. Register Service Worker safely
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
     });
+  }
 
-    document.getElementById('install-app-btn').addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                deferredPrompt = null;
-            }
-        } else {
-            alert("To install this app as a standalone web app:\n\n• On Android/Chrome: Tap your browser menu (three dots) and select 'Install app' or 'Add to Home screen'.\n• On iPhone/Safari: Tap the Share button and select 'Add to Home Screen'.");
-        }
-    });
-    </script>
+  // 2. Handle PWA Install Prompt without variable collisions
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+  });
+
+  document.getElementById('install-app-btn').addEventListener('click', async () => {
+      if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+              deferredPrompt = null;
+          }
+      } else {
+          alert("To install this app as a standalone app:\n\n• Android/Chrome: Tap the 3-dot menu and select 'Install app' or 'Add to Home screen'.\n• iPhone/Safari: Tap the Share button and select 'Add to Home Screen'.");
+      }
+  });
+</script>
 </body>
 </html>
