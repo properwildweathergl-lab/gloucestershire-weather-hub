@@ -17,7 +17,6 @@
 
     <style>
         :root {
-            /* Exact Colors Sampled from your Logo */
             --logo-navy: #0f4b82;
             --logo-cobalt: #1a6cb5;
             --logo-sun-yellow: #f6b81a;
@@ -134,7 +133,6 @@
             box-shadow: 0 4px 15px rgba(15, 75, 130, 0.04);
         }
 
-        /* Top 2-Column Split */
         .top-split-grid {
             display: grid;
             grid-template-columns: 1.35fr 1fr;
@@ -237,7 +235,6 @@
         }
         .metric-pill b { color: var(--text-heading); font-weight: 800; }
 
-        /* Gauges */
         .telemetry-split-side {
             display: flex;
             flex-direction: column;
@@ -290,7 +287,6 @@
             gap: 6px;
         }
 
-        /* Hourly Strip */
         .hourly-strip {
             display: flex;
             gap: 10px;
@@ -326,7 +322,6 @@
             box-shadow: 0 4px 12px rgba(246, 184, 26, 0.15);
         }
 
-        /* 5-Day Grid */
         .five-day-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -351,7 +346,6 @@
             box-shadow: 0 4px 12px rgba(246, 184, 26, 0.15);
         }
 
-        /* Leaflet Map */
         .map-section {
             padding: 16px;
             display: flex;
@@ -399,7 +393,6 @@
             background: #e2e8f0;
         }
 
-        /* Map Pin Overlays matching the Crest badge */
         .tv-station-pin {
             display: flex;
             flex-direction: column;
@@ -459,7 +452,6 @@
             border-top: 5px solid var(--logo-navy);
         }
 
-        /* Vector Weather Animations */
         .icon-box-hero { width: 56px; height: 56px; }
         .icon-box-sm { width: 32px; height: 32px; }
         .sun-pulse { transform-origin: 16px 16px; animation: spinSun 16s linear infinite; }
@@ -471,7 +463,6 @@
         .rain-drop { animation: fallRain 0.8s linear infinite; }
         @keyframes fallRain { 0% { opacity: 0; transform: translateY(-4px); } 50% { opacity: 1; } 100% { opacity: 0; transform: translateY(5px); } }
 
-        /* Main Portal CTA Button Strip */
         .main-site-cta-wrap {
             display: flex;
             justify-content: center;
@@ -542,7 +533,10 @@
             <span class="live-tag">LIVE</span>
             <div class="brand-title">GLOUCESTERSHIRE <span>WEATHER HUB</span></div>
         </div>
-        <div class="hud-clock" id="live-clock">--:--:-- BST</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <button id="install-app-btn" style="display: none; background: var(--logo-sun-yellow); color: var(--logo-navy); border: none; padding: 6px 12px; border-radius: 20px; font-weight: 800; font-size: 0.75rem; cursor: pointer; box-shadow: 0 2px 6px rgba(246, 184, 26, 0.3);">📱 Install App</button>
+            <div class="hud-clock" id="live-clock">--:--:-- BST</div>
+        </div>
     </header>
 
     <div class="container">
@@ -587,25 +581,14 @@
                 </div>
             </div>
         </div>
-
                 
-                 <!-- MAIN SITE LINK BUTTON -->
+        <!-- MAIN SITE LINK BUTTON -->
         <div class="main-site-cta-wrap">
             <a href="https://glweatherhub.wixsite.com/gloucesterweatherhub" target="_blank" rel="noopener noreferrer" class="btn-main-site">
                 🌐 FULL COUNTY FORECAST AND MORE ➔
             </a>
         </div>
 
-        <header>
-    <div class="brand-container">
-        <span class="live-tag">LIVE</span>
-        <div class="brand-title">GLOUCESTERSHIRE <span>WEATHER HUB</span></div>
-    </div>
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <button id="install-app-btn" style="display: none; background: var(--logo-sun-yellow); color: var(--logo-navy); border: none; padding: 6px 12px; border-radius: 20px; font-weight: 800; font-size: 0.75rem; cursor: pointer; box-shadow: 0 2px 6px rgba(246, 184, 26, 0.3);">📱 Install App</button>
-        <div class="hud-clock" id="live-clock">--:--:-- BST</div>
-    </div>
-</header>
         <!-- ROW 2: HOURS AHEAD -->
         <div class="clean-card" style="padding: 14px 18px;">
             <div class="section-title" style="margin-bottom: 10px;">⏱️ Hours Ahead Forecast (Your Location)</div>
@@ -634,7 +617,7 @@
             <div id="public-map"></div>
         </div>
 
-        <!-- ROW 5: SEVERN FLOOD GAUGE (RELOCATED BELOW MAP) -->
+        <!-- ROW 5: SEVERN FLOOD GAUGE -->
         <div class="clean-card hud-card" style="border-left: 4px solid var(--logo-hill-green);">
             <div class="hud-header"><span>Severn Flood Gauge</span><span>Gloucester Lock</span></div>
             <div class="hud-val-large" style="color:var(--logo-hill-green);">Normal</div>
@@ -650,8 +633,7 @@
                 <b>Gloucestershire Weather HUB</b> &bull; Broadcast Telemetry & Amateur Meteorology &bull; Serving Gloucestershire UK.
             </div>
         </div>
-
-       
+        
         <div class="disclaimer-box">
             <b>Disclaimer:</b> Gloucestershire Weather HUB provides amateur meteorological tracking, automated camera telemetry, and community observations for informational and interest purposes only. While every effort is made to maintain high observational accuracy, weather patterns are dynamic and unpredictable. No guarantee is given regarding data precision, timeliness, or completeness. This service is not an official statutory warning body. Users should not make critical safety, travel, or property decisions based solely on this platform. For official severe weather warnings, life-safety guidance, and statutory advisories, always consult the <b>UK Met Office</b>, the <b>Environment Agency</b>, and local emergency authorities. Gloucestershire Weather HUB accepts no liability for any loss, damage, or disruption arising from the use of or reliance on data provided on this HUB.
         </div>
@@ -667,7 +649,6 @@
             { id: "mitcheldean", name: "Mitcheldean", region: "dean", lat: 51.8640, lon: -2.4880, temp: "--°", wind: "--", heading: 0 },
             { id: "hartpury", name: "Hartpury", region: "leadon-vale", lat: 51.9160, lon: -2.3120, temp: "--°", wind: "--", heading: 0 },
             
-            /* Leadon Vale Corridor */
             { id: "staunton", name: "Staunton", region: "leadon-vale", lat: 51.9560, lon: -2.3360, temp: "--°", wind: "--", heading: 0 },
             { id: "corse", name: "Corse", region: "leadon-vale", lat: 51.9470, lon: -2.3270, temp: "--°", wind: "--", heading: 0 },
             { id: "apperley", name: "Apperley", region: "leadon-vale", lat: 51.9480, lon: -2.2020, temp: "--°", wind: "--", heading: 0 },
@@ -774,7 +755,6 @@
                 document.getElementById('user-location-cond').innerText = cond;
                 document.getElementById('loc-status-tag').innerText = (placeName !== "Gloucester (Default)") ? "Live GPS Active" : "Gloucester (Default)";
 
-                // 12 Hours Ahead
                 const hourly = data.hourly;
                 const nowIso = new Date();
                 let startIndex = hourly.time.findIndex(t => new Date(t) >= nowIso);
@@ -798,7 +778,6 @@
                 }
                 document.getElementById('hourly-forecast-strip').innerHTML = hourlyHtml;
 
-                // 5-Day Outlook
                 const daily = data.daily;
                 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                 let outHtml = '';
@@ -824,7 +803,6 @@
             }
         }
 
-        /* Bulk fetch real-time data for all county pins in one single call */
         async function fetchLiveCountyObservations() {
             try {
                 const lats = stations.map(s => s.lat).join(',');
@@ -834,7 +812,6 @@
                 const res = await fetch(url);
                 const results = await res.json();
                 
-                // Open-Meteo returns an array of objects matching the station order
                 if (Array.isArray(results)) {
                     results.forEach((item, idx) => {
                         stations[idx].temp = `${Math.round(item.current.temperature_2m)}°`;
@@ -842,7 +819,6 @@
                         stations[idx].heading = Math.round(item.current.wind_direction_10m);
                     });
                 } else if (results.current) {
-                    // In case only one station is queried
                     stations[0].temp = `${Math.round(results.current.temperature_2m)}°`;
                     stations[0].wind = `${Math.round(results.current.wind_speed_10m)}mph`;
                     stations[0].heading = Math.round(results.current.wind_direction_10m);
@@ -926,7 +902,7 @@
         window.onload = () => {
             initMap();
             requestUserLocation();
-            fetchLiveCountyObservations(); // Triggers the real observation fetch immediately on page load
+            fetchLiveCountyObservations();
             setInterval(runClock, 1000);
             runClock();
         };
@@ -939,25 +915,25 @@
       }
     </script>
     <script>
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    const installBtn = document.getElementById('install-app-btn');
-    if (installBtn) {
-        installBtn.style.display = 'inline-block';
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    deferredPrompt = null;
-                    installBtn.style.display = 'none';
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('install-app-btn');
+        if (installBtn) {
+            installBtn.style.display = 'inline-block';
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        deferredPrompt = null;
+                        installBtn.style.display = 'none';
+                    }
                 }
-            }
-        });
-    }
-});
-</script>
+            });
+        }
+    });
+    </script>
 </body>
 </html>
