@@ -86,12 +86,12 @@
     margin-bottom: 16px;
   }
 
-  /* WORD SEARCH GRID */
+  /* EXPANDED WORD SEARCH GRID (10x10) */
   .word-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 6px;
-    max-width: 360px;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    max-width: 420px;
     margin: 0 auto 16px;
   }
 
@@ -103,9 +103,9 @@
     align-items: center;
     justify-content: center;
     font-weight: 900;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     color: var(--navy-brand);
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.1s ease;
   }
@@ -120,7 +120,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     margin-top: 12px;
   }
 
@@ -128,16 +128,16 @@
     background: #fffbeb;
     border: 1.5px solid var(--sun-yellow);
     color: #b45309;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 800;
-    padding: 6px 12px;
-    border-radius: 10px;
+    padding: 5px 10px;
+    border-radius: 8px;
   }
 
   /* COLOURING STUDIO */
   .colour-canvas-wrap {
     position: relative;
-    max-width: 280px;
+    max-width: 300px;
     margin: 0 auto 14px;
     background: #f8fafc;
     border: 2px solid var(--border-light);
@@ -175,8 +175,8 @@
     border-color: var(--navy-brand);
   }
 
-  /* WEATHER TRIVIA & JOKES */
-  .trivia-box, .joke-box {
+  /* TRIVIA, JOKES & CLOUD WATCHER */
+  .interactive-box {
     background: #fdfae5;
     border: 1.5px solid var(--sun-yellow);
     border-radius: 14px;
@@ -203,6 +203,31 @@
   }
   .interactive-btn:hover {
     background: #0f4b82;
+  }
+
+  /* WEATHER QUIZ */
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    text-align: left;
+  }
+
+  .quiz-btn {
+    background: #f8fafc;
+    border: 1.5px solid var(--border-light);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--navy-brand);
+    transition: all 0.15s ease;
+  }
+  .quiz-btn:hover {
+    background: var(--sun-yellow);
+    border-color: #b45309;
   }
 
   .action-button {
@@ -236,10 +261,10 @@
     <div style="font-size: 0.85rem; font-weight: 800; color: #b45309;">Junior Zone</div>
   </div>
 
-  <!-- WEATHER WORD SEARCH -->
+  <!-- EXPANDED WEATHER WORD SEARCH (10x10) -->
   <div class="panel-card">
     <div class="panel-title">🔍 Gloucestershire Weather Word Search</div>
-    <div class="panel-subtitle">Find hidden county weather words in the grid below! Tap letters to highlight them.</div>
+    <div class="panel-subtitle">Find the hidden county weather words in the bigger grid below!</div>
     
     <div class="word-grid" id="word-grid"></div>
 
@@ -250,13 +275,17 @@
       <div class="word-badge">WIND</div>
       <div class="word-badge">SUN</div>
       <div class="word-badge">SEVERN</div>
+      <div class="word-badge">STORM</div>
+      <div class="word-badge">SNOW</div>
+      <div class="word-badge">VALE</div>
+      <div class="word-badge">FLOOD</div>
     </div>
   </div>
 
   <!-- GLEVUM COLOURING STUDIO -->
   <div class="panel-card">
     <div class="panel-title">🖍️ Glevum's Colouring Studio</div>
-    <div class="panel-subtitle">Pick a vibrant colour and click sections of Glevum to paint him!</div>
+    <div class="panel-subtitle">Pick a vibrant colour and click sections to paint Glevum!</div>
 
     <div class="palette">
       <div class="color-btn" style="background: #f1c40f;" onclick="setColour('#f1c40f')"></div>
@@ -268,7 +297,7 @@
     </div>
 
     <div class="colour-canvas-wrap">
-      <canvas id="colourCanvas" width="260" height="200"></canvas>
+      <canvas id="colourCanvas" width="280" height="220"></canvas>
     </div>
     <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Tap cap, rays, or face to fill with colour!</div>
   </div>
@@ -277,7 +306,7 @@
   <div class="panel-card">
     <div class="panel-title">🧠 County Weather Trivia</div>
     <div class="panel-subtitle">Test your local meteorological brain!</div>
-    <div class="trivia-box" id="trivia-text">
+    <div class="interactive-box" id="trivia-text">
       Did you know? The famous Severn Bore tidal wave travels upstream all the way past Gloucester during high spring tides!
     </div>
     <button class="interactive-btn" onclick="nextTrivia()">New Fact 🎲</button>
@@ -287,10 +316,32 @@
   <div class="panel-card">
     <div class="panel-title">😂 Glevum's Joke Corner</div>
     <div class="panel-subtitle">Laugh your way through the forecast!</div>
-    <div class="joke-box" id="joke-text">
+    <div class="interactive-box" id="joke-text">
       What does a tornado say to a sports car? <br><b>"Wanna go for a spin?"</b>
     </div>
     <button class="interactive-btn" onclick="nextJoke()">Another Joke ⚡</button>
+  </div>
+
+  <!-- CLOUD SPOTTER CHALLENGE -->
+  <div class="panel-card">
+    <div class="panel-title">☁️ Glevum's Cloud Spotter</div>
+    <div class="panel-subtitle">Click to discover today's featured cloud type!</div>
+    <div class="interactive-box" id="cloud-text">
+      <b>Cumulonimbus:</b> Towering vertical clouds associated with thunderstorms, heavy downpours, and lightning across the Severn Vale!
+    </div>
+    <button class="interactive-btn" onclick="nextCloud()">Discover Another Cloud 🌤️</button>
+  </div>
+
+  <!-- MINI WEATHER QUIZ -->
+  <div class="panel-card">
+    <div class="panel-title">❓ Quick Weather Quiz</div>
+    <div class="panel-subtitle" id="quiz-question">What causes the famous Cotswold snow line?</div>
+    <div class="quiz-options" id="quiz-options">
+      <button class="quiz-btn" onclick="checkQuiz(false)">A) Volcanic activity underneath Cleeve Hill</button>
+      <button class="quiz-btn" onclick="checkQuiz(true)">B) Orographic lift cooling moist air as it rises up the escarpment</button>
+      <button class="quiz-btn" onclick="checkQuiz(false)">C) Cold air blowing straight from London</button>
+    </div>
+    <div id="quiz-feedback" style="margin-top: 10px; font-weight: 800; font-size: 0.9rem;"></div>
   </div>
 
   <a href="https://glweatherhub.wixsite.com/gloucesterweatherhub" class="action-button">
@@ -300,12 +351,18 @@
 </div>
 
 <script>
-  // Word Search Logic
+  // Expanded 10x10 Word Search Grid
   const letters = [
-    ['B', 'O', 'R', 'E', 'S', 'U', 'N', 'X'],
-    ['F', 'O', 'G', 'X', 'R', 'A', 'I', 'N'],
-    ['W', 'I', 'N', 'D', 'C', 'O', 'L', 'D'],
-    ['S', 'E', 'V', 'E', 'R', 'N', 'Z', 'Y']
+    ['B', 'O', 'R', 'E', 'S', 'U', 'N', 'X', 'M', 'P'],
+    ['F', 'O', 'G', 'X', 'R', 'A', 'I', 'N', 'L', 'Q'],
+    ['W', 'I', 'N', 'D', 'C', 'O', 'L', 'D', 'K', 'J'],
+    ['S', 'E', 'V', 'E', 'R', 'N', 'Z', 'Y', 'H', 'G'],
+    ['S', 'T', 'O', 'R', 'M', 'A', 'B', 'C', 'D', 'E'],
+    ['S', 'N', 'O', 'W', 'F', 'L', 'O', 'O', 'D', 'F'],
+    ['V', 'A', 'L', 'E', 'P', 'Q', 'R', 'S', 'T', 'U'],
+    ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+    ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
+    ['W', 'E', 'A', 'T', 'H', 'E', 'R', 'U', 'V', 'W']
   ];
 
   const gridEl = document.getElementById('word-grid');
@@ -321,7 +378,7 @@
     gridEl.appendChild(cell);
   });
 
-  // Colouring Canvas Logic (Glevum Mascot)
+  // Colouring Canvas Logic (Glevum Mascot Restored & Scaled)
   const canvas = document.getElementById('colourCanvas');
   const ctx = canvas.getContext('2d');
   let selectedColour = '#f1c40f';
@@ -335,7 +392,7 @@
 
     // Rays / Outer Sun Halo
     ctx.beginPath();
-    ctx.arc(130, 100, 58, 0, Math.PI * 2);
+    ctx.arc(140, 110, 64, 0, Math.PI * 2);
     ctx.fillStyle = rayCol;
     ctx.fill();
     ctx.lineWidth = 3;
@@ -344,32 +401,32 @@
 
     // Body / Central Sun Face Circle
     ctx.beginPath();
-    ctx.arc(130, 100, 44, 0, Math.PI * 2);
+    ctx.arc(140, 110, 48, 0, Math.PI * 2);
     ctx.fillStyle = bodyCol;
     ctx.fill();
     ctx.stroke();
 
     // Flat Cap
     ctx.beginPath();
-    ctx.rect(102, 58, 56, 16);
+    ctx.rect(108, 64, 64, 18);
     ctx.fillStyle = capCol;
     ctx.fill();
     ctx.stroke();
 
     // Cap Brim extension
     ctx.beginPath();
-    ctx.rect(120, 52, 45, 8);
+    ctx.rect(128, 56, 52, 10);
     ctx.fillStyle = capCol;
     ctx.fill();
     ctx.stroke();
 
     // Eyes & Smile
     ctx.fillStyle = '#1e293b';
-    ctx.fillRect(116, 92, 5, 8);
-    ctx.fillRect(138, 92, 5, 8);
+    ctx.fillRect(124, 100, 6, 9);
+    ctx.fillRect(150, 100, 6, 9);
 
     ctx.beginPath();
-    ctx.arc(127, 106, 8, 0, Math.PI, false);
+    ctx.arc(138, 116, 9, 0, Math.PI, false);
     ctx.lineWidth = 2.5;
     ctx.strokeStyle = '#1e293b';
     ctx.stroke();
@@ -382,9 +439,9 @@
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    if (y < 76) {
+    if (y < 82) {
       parts.cap = selectedColour;
-    } else if (x < 72 || x > 188 || y < 42 || y > 158) {
+    } else if (x < 76 || x > 204 || y < 46 || y > 174) {
       parts.rays = selectedColour;
     } else {
       parts.body = selectedColour;
@@ -418,6 +475,31 @@
   function nextJoke() {
     jokeIdx = (jokeIdx + 1) % jokes.length;
     document.getElementById('joke-text').innerHTML = jokes[jokeIdx];
+  }
+
+  // Cloud Spotter Rotator
+  const clouds = [
+    "<b>Cumulonimbus:</b> Towering vertical clouds associated with thunderstorms, heavy downpours, and lightning across the Severn Vale!",
+    "<b>Cirrus:</b> Wispy, high-altitude ice crystal clouds that often indicate a change in weather approaching from the Atlantic.",
+    "<b>Stratus:</b> Low, gray blanket clouds that frequently form over Gloucester and the M5 corridor during foggy autumn mornings.",
+    "<b>Cumulus:</b> Fluffy, cotton-ball fair weather clouds that dot the Gloucestershire sky on bright, sunny afternoons."
+  ];
+  let cloudIdx = 0;
+  function nextCloud() {
+    cloudIdx = (cloudIdx + 1) % clouds.length;
+    document.getElementById('cloud-text').innerHTML = clouds[cloudIdx];
+  }
+
+  // Quiz Logic
+  function checkQuiz(isCorrect) {
+    const feedback = document.getElementById('quiz-feedback');
+    if (isCorrect) {
+      feedback.style.color = '#15803d';
+      feedback.innerText = "🎉 Correct! Moist air is forced upward over the escarpment, cooling and dropping heavy snow!";
+    } else {
+      feedback.style.color = '#b91c1c';
+      feedback.innerText = "❌ Not quite! Try the other option to find the right weather fact.";
+    }
   }
 </script>
 
