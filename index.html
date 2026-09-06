@@ -577,9 +577,14 @@
             <a href="https://glweatherhub.wixsite.com/gloucesterweatherhub" target="_blank" rel="noopener noreferrer" class="btn-main-site">
                 🌐 Visit Gloucestershire Weather HUB Main Portal ➔
             </a>
+    
         </div>
          <!-- Install button safely positioned on its own clean row below the top header info -->
-  <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 8px;">
+  <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 8px; gap: 10px; align-items: center;">
+    <!-- Reactive Home Page Warning Button -->
+    <a id="home-warning-btn" href="#" target="_blank" style="display: inline-block; background-color: #2a9d8f; color: white; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.82rem; font-weight: 800; border: 1.5px solid #13315c; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: background 0.3s;">
+      🛡️ County Weather Status: Normal
+    </a>
     <button id="install-app" class="btn-install-app">📱 Install App</button>
   </div>
         <!-- ROW 1: SPLIT HERO & OVERNIGHT GAUGE -->
@@ -938,7 +943,7 @@
 
         // PWA Installation & Service Worker Logic
         let deferredPrompt;
-        const installBtn = document.getElementById('install-app-btn');
+        const installBtn = document.getElementById('install-app');
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -966,6 +971,33 @@
                 }
             });
         }
+
+        // Automated Warning Button Script
+        (async function() {
+          const apiKey = '490143351f02580359732b23b33a1233';
+          const lat = 51.9608;
+          const lon = -2.3064;
+          const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily&appid=${apiKey}`;
+
+          try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const btn = document.getElementById('home-warning-btn');
+
+            if (data.alerts && data.alerts.length > 0) {
+              btn.style.backgroundColor = "#d90429";
+              btn.style.animation = "pulse 1.5s infinite";
+              btn.innerHTML = `🚨 SEVERE ALERT: ${data.alerts[0].event} — Click for Details`;
+              btn.href = "warning-page.html";
+            } else {
+              btn.style.backgroundColor = "#2a9d8f";
+              btn.innerHTML = "🛡️ County Weather Status: Normal";
+              btn.href = "#";
+            }
+          } catch (e) {
+            console.error("Could not check alert status for home page button", e);
+          }
+        })();
 
         window.onload = () => {
             initMap();
