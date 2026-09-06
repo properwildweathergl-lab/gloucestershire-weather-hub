@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gloucestershire Weather Hub - Gloucestershire Ultimate Laundry Meter</title>
+  <style>
+    :root {
+      --primary-blue: #0b2545;
+      --accent-gold: #e2bc74;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --text-dark: #13315c;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0b2545, #134074);
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .hub-container {
+      width: 100%;
+      max-width: 650px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .warning-banner {
+      display: none;
+      background-color: #d90429;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(217, 4, 4, 0.4);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+    .hub-card {
+      background: var(--card-bg);
+      color: var(--text-dark);
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      border: 2px solid var(--accent-gold);
+    }
+    .hub-card h2 {
+      margin-top: 0;
+      color: var(--primary-blue);
+      border-bottom: 2px solid var(--accent-gold);
+      padding-bottom: 8px;
+      font-size: 1.3rem;
+    }
+    .status-display {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 15px 0;
+      color: #1d3557;
+      background: #f1faee;
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 5px solid #457b9d;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .metric-box {
+      background: #eef2f7;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .metric-box span {
+      display: block;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: var(--primary-blue);
+      margin-top: 4px;
+    }
+    .advice-text {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #333;
+      margin-bottom: 15px;
+    }
+    ul.tips-list, ul.pegs-list {
+      margin: 8px 0;
+      padding-left: 20px;
+      color: #333;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .joke-box {
+      background: #fff3cd;
+      border: 1px dashed #ffeba4;
+      padding: 12px;
+      border-radius: 6px;
+      color: #856404;
+      font-style: italic;
+      margin-top: 15px;
+    }
+    .gateway-btn {
+      display: block;
+      background-color: var(--accent-gold);
+      color: var(--primary-blue);
+      text-align: center;
+      padding: 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+    .gateway-btn:hover {
+      background-color: #cca457;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hub-container">
+    
+    <!-- Automated Severe Weather Warning Button -->
+    <a id="weather-warning-btn" class="warning-banner" href="#" target="_blank">
+      ⚠️ Checking active severe weather alerts...
+    </a>
+
+    <!-- Main Gateway Link back to Wix Hub -->
+    <a href="https://glweatherhub.wixsite.com/gloucestershireweatherhub" class="gateway-btn">
+      🏠 Go Back To Main Wix Hub
+    </a>
+
+    <!-- Main Dynamic Laundry Meter Card -->
+    <div class="hub-card">
+      <h2>🧺 Gloucestershire`s Live Laundry Drying Meter</h2>
+      <p style="font-size: 0.85rem; color: #555; margin-top: 0;">In partnership with <strong>Laundry Lane Herefordshire & Gloucestershire</strong> — Live telemetry via OpenWeather for Gloucestershire.(Laundry Lane Location)</p>
+      
+      <div id="laundry-status" class="status-display">🔄 Connecting to local microclimate...</div>
+      
+      <div class="metrics-grid">
+        <div class="metric-box">Temp <span id="metric-temp">--°C</span></div>
+        <div class="metric-box">Humidity <span id="metric-humidity">--%</span></div>
+        <div class="metric-box">Wind Speed <span id="metric-wind">-- m/s</span></div>
+      </div>
+
+      <div id="laundry-advice" class="advice-text">Pulling real-time atmospheric data...</div>
+
+      <h2>🌬️ Pro Drying & Pegging Tips</h2>
+      <ul class="tips-list">
+        <li><strong>Spacing is Key:</strong> Leave at least one hand's width between garments to let the breeze circulate freely.</li>
+        <li><strong>Heavy Items Low:</strong> Hang jeans and towels on the outer lines where weight is supported best, keeping shirts and lighter fabrics closer to the center.</li>
+        <li><strong>Turn Inside Out:</strong> Protect dark clothes and bright colors from UV fading while sun-drying.</li>
+      </ul>
+
+      <h2>🧷 The Best Pegs for Gloucestershire Breezes</h2>
+      <ul class="pegs-list">
+        <li><strong>Soft-Grip Plastic Pegs:</strong> Gentle on fine cottons and synthetics without leaving pinch marks.</li>
+        <li><strong>Marine-Grade Stainless Steel Pegs:</strong> Totally rust-proof, unbreakable, and won't snap under heavy wind gusts across the open fields.</li>
+      </ul>
+
+      <div class="joke-box" id="laundry-joke">
+        😂 <em>Loading daily laundry joke...</em>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const apiKey = '490143351f02580359732b23b33a1233';
+    const lat = 51.9608;
+    const lon = -2.3064;
+
+    const jokes = [
+      "Why did the socks go to casino? To lose their pair!",
+      "What is a washing machine's favorite song? 'Spin Me Round'!",
+      "Why are laundry days like detective novels? They always end with a spinning revelation!",
+      "What did the angry sheet say to the washing machine? 'I've had enough of your spin cycles!'"
+    ];
+
+    async function updateLaundryMeter() {
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        const temp = data.main.temp;
+        const humidity = data.main.humidity;
+        const windSpeed = data.wind.speed;
+
+        document.getElementById('metric-temp').innerText = temp.toFixed(1) + "°C";
+        document.getElementById('metric-humidity').innerText = humidity + "%";
+        document.getElementById('metric-wind').innerText = windSpeed.toFixed(1) + " m/s";
+
+        let status = "✨ Ideal Outdoor Drying Conditions 🧺";
+        let advice = "Fantastic breeze and low humidity across Laundry Lane! Evaporation rates are high—get those sheets and heavy loads out on the line!";
+
+        if (humidity > 80 || temp < 8) {
+          status = "🌧️ Keep It Indoors (High Moisture / Cold)";
+          advice = "High relative humidity or low ambient temperatures detected. Moisture in the air will prevent clothes from drying properly outside today.";
+        } else if (humidity > 65 || windSpeed < 1.5) {
+          status = "🌤️ Moderate / Slow Outdoor Drying";
+          advice = "Conditions are borderline. Lighter fabrics will dry fine, but heavy jeans and towels might need an extra spin cycle or indoor finishing.";
+        }
+
+        document.getElementById('laundry-status').innerText = status;
+        document.getElementById('laundry-advice').innerText = advice;
+
+        // Random joke selection
+        const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+        document.getElementById('laundry-joke').innerHTML = `😂 <em>"${randomJoke}"</em>`;
+
+      } catch (error) {
+        console.error("Error fetching weather for laundry meter:", error);
+        document.getElementById('laundry-status').innerText = "⚠️ Data Feed Error";
+        document.getElementById('laundry-advice').innerText = "Unable to reach live weather telemetry nodes right now.";
+      }
+    }
+
+    async function checkWeatherAlerts() {
+      const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily&appid=${apiKey}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const warningButton = document.getElementById('weather-warning-btn');
+
+        if (data.alerts && data.alerts.length > 0) {
+          const activeAlert = data.alerts[0];
+          warningButton.style.display = "block";
+          warningButton.innerHTML = `⚠️ ACTIVE WEATHER WARNING: ${activeAlert.event} — Click for Details`;
+          warningButton.href = "#";
+        } else {
+          warningButton.style.display = "none";
+        }
+      } catch (error) {
+        console.error("Error checking weather alerts:", error);
+      }
+    }
+
+    updateLaundryMeter();
+    checkWeatherAlerts();
+  </script>
+
+</body>
+</html>
