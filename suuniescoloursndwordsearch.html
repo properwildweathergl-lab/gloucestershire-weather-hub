@@ -3,18 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gloucestershire Weather Hub - Word Search & Sunny's Colouring Studio</title>
+<title>Gloucestershire Weather Hub - Glevum's Activity Den</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-cream: #fdfbf7;
     --card-white: #ffffff;
     --navy-brand: #0f4b82;
-    --sun-yellow: #f6b81a;
+    --sun-yellow: #f1c40f;
     --border-light: #e2e8f0;
-    --text-slate: #334155;
+    --text-slate: #1a2b4c;
     --text-muted: #64748b;
   }
 
@@ -25,7 +24,7 @@
   }
 
   body {
-    background-color: #2c4a78
+    background-color: #2c4a78;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--text-slate);
     padding: 20px 16px 40px;
@@ -47,7 +46,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 
   .brand-title {
@@ -63,7 +62,7 @@
     border: 2px solid var(--sun-yellow);
     border-radius: 20px;
     padding: 22px;
-    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     margin-bottom: 24px;
     text-align: center;
   }
@@ -135,18 +134,11 @@
     border-radius: 10px;
   }
 
-  .word-badge.found {
-    background: #dcfce7;
-    border-color: #16a34a;
-    color: #15803d;
-    text-decoration: line-through;
-  }
-
   /* COLOURING STUDIO */
   .colour-canvas-wrap {
     position: relative;
-    max-width: 340px;
-    margin: 0 auto 16px;
+    max-width: 280px;
+    margin: 0 auto 14px;
     background: #f8fafc;
     border: 2px solid var(--border-light);
     border-radius: 16px;
@@ -157,7 +149,7 @@
     display: block;
     margin: 0 auto;
     cursor: crosshair;
-    background: #f1c40f;
+    background: #ffffff;
     border-radius: 10px;
   }
 
@@ -183,10 +175,39 @@
     border-color: var(--navy-brand);
   }
 
+  /* WEATHER TRIVIA & JOKES */
+  .trivia-box, .joke-box {
+    background: #fdfae5;
+    border: 1.5px solid var(--sun-yellow);
+    border-radius: 14px;
+    padding: 16px;
+    font-size: 0.93rem;
+    font-weight: 700;
+    color: var(--navy-brand);
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  .interactive-btn {
+    background: #1a6cb5;
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-top: 12px;
+    text-transform: uppercase;
+    transition: background 0.2s ease;
+  }
+  .interactive-btn:hover {
+    background: #0f4b82;
+  }
+
   .action-button {
     display: block;
     width: 100%;
-    background: #1a6cb5;
     background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%);
     color: #ffffff;
     text-align: center;
@@ -197,7 +218,7 @@
     text-decoration: none;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    box-shadow: 0 6px 20px rgba(15, 75, 130, 0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.15s ease;
   }
 
@@ -211,35 +232,34 @@
 <div class="container">
 
   <div class="top-bar">
-    <div class="brand-title">🎨 Sunny's Activity Den</div>
+    <div class="brand-title">🎨 Glevum's Activity Den</div>
     <div style="font-size: 0.85rem; font-weight: 800; color: #b45309;">Junior Zone</div>
   </div>
 
   <!-- WEATHER WORD SEARCH -->
   <div class="panel-card">
     <div class="panel-title">🔍 Gloucestershire Weather Word Search</div>
-    <div class="panel-subtitle">Find hidden county weather words in the grid below!</div>
+    <div class="panel-subtitle">Find hidden county weather words in the grid below! Tap letters to highlight them.</div>
     
-    <div class="word-grid" id="word-grid">
-      <!-- 8x8 Grid populated via JS -->
-    </div>
+    <div class="word-grid" id="word-grid"></div>
 
-    <div class="word-list" id="word-list-box">
-      <div class="word-badge" id="w-BORE">BORE</div>
-      <div class="word-badge" id="w-FOG">FOG</div>
-      <div class="word-badge" id="w-RAIN">RAIN</div>
-      <div class="word-badge" id="w-WIND">WIND</div>
-      <div class="word-badge" id="w-SUN">SUN</div>
+    <div class="word-list">
+      <div class="word-badge">BORE</div>
+      <div class="word-badge">FOG</div>
+      <div class="word-badge">RAIN</div>
+      <div class="word-badge">WIND</div>
+      <div class="word-badge">SUN</div>
+      <div class="word-badge">SEVERN</div>
     </div>
   </div>
 
-  <!-- SUNNY COLOURING STUDIO -->
+  <!-- GLEVUM COLOURING STUDIO -->
   <div class="panel-card">
-    <div class="panel-title">🖍️ Sunny's Colouring Studio</div>
-    <div class="panel-subtitle">Pick a vibrant colour and click sections of Sunny to paint him!</div>
+    <div class="panel-title">🖍️ Glevum's Colouring Studio</div>
+    <div class="panel-subtitle">Pick a vibrant colour and click sections of Glevum to paint him!</div>
 
     <div class="palette">
-      <div class="color-btn" style="background: #f6b81a;" onclick="setColour('#f6b81a')"></div>
+      <div class="color-btn" style="background: #f1c40f;" onclick="setColour('#f1c40f')"></div>
       <div class="color-btn" style="background: #1e3a8a;" onclick="setColour('#1e3a8a')"></div>
       <div class="color-btn" style="background: #ef4444;" onclick="setColour('#ef4444')"></div>
       <div class="color-btn" style="background: #10b981;" onclick="setColour('#10b981')"></div>
@@ -248,9 +268,29 @@
     </div>
 
     <div class="colour-canvas-wrap">
-      <canvas id="colourCanvas" width="280" height="200"></canvas>
+      <canvas id="colourCanvas" width="260" height="200"></canvas>
     </div>
     <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Tap cap, rays, or face to fill with colour!</div>
+  </div>
+
+  <!-- WEATHER TRIVIA CHALLENGE -->
+  <div class="panel-card">
+    <div class="panel-title">🧠 County Weather Trivia</div>
+    <div class="panel-subtitle">Test your local meteorological brain!</div>
+    <div class="trivia-box" id="trivia-text">
+      Did you know? The famous Severn Bore tidal wave travels upstream all the way past Gloucester during high spring tides!
+    </div>
+    <button class="interactive-btn" onclick="nextTrivia()">New Fact 🎲</button>
+  </div>
+
+  <!-- WEATHER JOKE GENERATOR -->
+  <div class="panel-card">
+    <div class="panel-title">😂 Glevum's Joke Corner</div>
+    <div class="panel-subtitle">Laugh your way through the forecast!</div>
+    <div class="joke-box" id="joke-text">
+      What does a tornado say to a sports car? <br><b>"Wanna go for a spin?"</b>
+    </div>
+    <button class="interactive-btn" onclick="nextJoke()">Another Joke ⚡</button>
   </div>
 
   <a href="https://glweatherhub.wixsite.com/gloucesterweatherhub" class="action-button">
@@ -271,7 +311,7 @@
   const gridEl = document.getElementById('word-grid');
   let flatLetters = letters.flat();
 
-  flatLetters.forEach((char, idx) => {
+  flatLetters.forEach((char) => {
     let cell = document.createElement('div');
     cell.className = 'letter-cell';
     cell.innerText = char;
@@ -281,48 +321,55 @@
     gridEl.appendChild(cell);
   });
 
-  // Colouring Canvas Logic
+  // Colouring Canvas Logic (Glevum Mascot)
   const canvas = document.getElementById('colourCanvas');
   const ctx = canvas.getContext('2d');
-  let selectedColour = '#f6b81a';
+  let selectedColour = '#f1c40f';
 
   function setColour(col) {
     selectedColour = col;
   }
 
-  function drawSunnyOutline(capCol = '#ffffff', rayCol = '#ffffff', bodyCol = '#ffffff') {
+  function drawGlevumOutline(capCol = '#ffffff', rayCol = '#ffffff', bodyCol = '#ffffff') {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Rays
+    // Rays / Outer Sun Halo
     ctx.beginPath();
-    ctx.arc(140, 100, 55, 0, Math.PI * 2);
+    ctx.arc(130, 100, 58, 0, Math.PI * 2);
     ctx.fillStyle = rayCol;
     ctx.fill();
     ctx.lineWidth = 3;
     ctx.strokeStyle = '#1e293b';
     ctx.stroke();
 
-    // Body
+    // Body / Central Sun Face Circle
     ctx.beginPath();
-    ctx.arc(140, 100, 42, 0, Math.PI * 2);
+    ctx.arc(130, 100, 44, 0, Math.PI * 2);
     ctx.fillStyle = bodyCol;
     ctx.fill();
     ctx.stroke();
 
     // Flat Cap
     ctx.beginPath();
-    ctx.rect(115, 62, 50, 16);
+    ctx.rect(102, 58, 56, 16);
+    ctx.fillStyle = capCol;
+    ctx.fill();
+    ctx.stroke();
+
+    // Cap Brim extension
+    ctx.beginPath();
+    ctx.rect(120, 52, 45, 8);
     ctx.fillStyle = capCol;
     ctx.fill();
     ctx.stroke();
 
     // Eyes & Smile
     ctx.fillStyle = '#1e293b';
-    ctx.fillRect(128, 92, 5, 8);
-    ctx.fillRect(147, 92, 5, 8);
+    ctx.fillRect(116, 92, 5, 8);
+    ctx.fillRect(138, 92, 5, 8);
 
     ctx.beginPath();
-    ctx.arc(140, 106, 8, 0, Math.PI, false);
+    ctx.arc(127, 106, 8, 0, Math.PI, false);
     ctx.lineWidth = 2.5;
     ctx.strokeStyle = '#1e293b';
     ctx.stroke();
@@ -335,17 +382,43 @@
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    if (y < 78) {
+    if (y < 76) {
       parts.cap = selectedColour;
-    } else if (x < 90 || x > 190 || y < 55 || y > 145) {
+    } else if (x < 72 || x > 188 || y < 42 || y > 158) {
       parts.rays = selectedColour;
     } else {
       parts.body = selectedColour;
     }
-    drawSunnyOutline(parts.cap, parts.rays, parts.body);
+    drawGlevumOutline(parts.cap, parts.rays, parts.body);
   };
 
-  drawSunnyOutline();
+  drawGlevumOutline();
+
+  // Trivia Rotator
+  const triviaFacts = [
+    "Did you know? The famous Severn Bore tidal wave travels upstream all the way past Gloucester during high spring tides!",
+    "The Cotswold escarpment at Cleeve Cloud reaches 330 metres, creating Gloucestershire's highest winter snow line.",
+    "During intense winter high pressure, the Severn Vale frequently acts as a heavy fog trap keeping valleys grey while hills bask in sunshine.",
+    "Gloucestershire's river network funnels runoff from both the Welsh mountains and the Midlands straight through the Severn corridor."
+  ];
+  let triviaIdx = 0;
+  function nextTrivia() {
+    triviaIdx = (triviaIdx + 1) % triviaFacts.length;
+    document.getElementById('trivia-text').innerText = triviaFacts[triviaIdx];
+  }
+
+  // Joke Rotator
+  const jokes = [
+    "What does a tornado say to a sports car? <br><b>'Wanna go for a spin?'</b>",
+    "What kind of bow can never be tied? <br><b>A rainbow!</b>",
+    "Why did the sun go to school? <br><b>To get a little brighter!</b>",
+    "What do clouds wear underneath their raincoats? <br><b>Thunderwear!</b>"
+  ];
+  let jokeIdx = 0;
+  function nextJoke() {
+    jokeIdx = (jokeIdx + 1) % jokes.length;
+    document.getElementById('joke-text').innerHTML = jokes[jokeIdx];
+  }
 </script>
 
 </body>
