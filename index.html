@@ -559,16 +559,21 @@
 </head>
 <body>
 
-    <header>
-        <div class="brand-container">
-            <span class="live-tag">LIVE</span>
-            <div class="brand-title">GLOUCESTERSHIRE <span>WEATHER HUB</span></div>
-        </div>
-        <div class="header-controls">
-            <button id="install-app-btn" class="btn-install-app" > 📱 Install App</button>
-            <div class="hud-clock" id="live-clock">--:--:-- BST</div>
-        </div>
-    </header>
+   <header>
+  <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+    <div class="brand-container">
+      <span class="live-tag">LIVE</span>
+      <div class="brand-title">GLOUCESTERSHIRE <span>WEATHER HUB</span></div>
+    </div>
+    <div class="header-controls">
+      <div class="hud-clock" id="live-clock">--:--:-- BST</div>
+    </div>
+  </div>
+  <!-- Install button safely positioned on its own clean row below the top header info -->
+  <div style="width: 100%; display: flex; justify-content: flex-end; margin-top: 8px;">
+    <button id="install-app" class="btn-install-app">📱 Install App</button>
+  </div>
+</header>
 
     <div class="container">
 <div class="main-site-cta-wrap">
