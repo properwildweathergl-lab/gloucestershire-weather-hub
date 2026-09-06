@@ -3,25 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gloucestershire Weather Hub - Glevum's Activity Den</title>
+<title>Gloucestershire Weather Hub - Junior Zone & Activity Den</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root {
     --card-white: #ffffff;
     --navy-brand: #0f4b82;
-    --sun-yellow: #f1c40f;
+    --sun-yellow: #f6b81a;
     --border-light: #e2e8f0;
-    --text-slate: #1a2b4c;
+    --text-slate: #334155;
     --text-muted: #64748b;
   }
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     background-color: #2c4a78;
@@ -32,10 +29,7 @@
     justify-content: center;
   }
 
-  .container {
-    width: 100%;
-    max-width: 650px;
-  }
+  .container { width: 100%; max-width: 650px; }
 
   .top-bar {
     background: var(--card-white);
@@ -46,7 +40,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
   }
 
   .brand-title {
@@ -62,7 +56,7 @@
     border: 2px solid var(--sun-yellow);
     border-radius: 20px;
     padding: 22px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
     margin-bottom: 24px;
     text-align: center;
   }
@@ -86,7 +80,7 @@
     margin-bottom: 16px;
   }
 
-  /* EXPANDED WORD SEARCH GRID (10x10) */
+  /* WORD SEARCH */
   .word-grid {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -134,15 +128,27 @@
     border-radius: 8px;
   }
 
-  /* COLOURING STUDIO */
-  .colour-canvas-wrap {
-    position: relative;
-    max-width: 300px;
-    margin: 0 auto 14px;
+  /* STUDIO CONTAINER */
+  .studio-box {
     background: #f8fafc;
     border: 2px solid var(--border-light);
     border-radius: 16px;
-    padding: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .colour-canvas-wrap {
+    position: relative;
+    max-width: 280px;
+    margin: 0 auto 12px;
+    background: #ffffff;
+    border: 2px solid var(--border-light);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.03);
   }
 
   canvas {
@@ -150,19 +156,20 @@
     margin: 0 auto;
     cursor: crosshair;
     background: #ffffff;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 
   .palette {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
   }
 
   .color-btn {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 3px solid #ffffff;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
@@ -170,12 +177,92 @@
     transition: transform 0.1s ease;
   }
 
-  .color-btn:hover, .color-btn.active {
-    transform: scale(1.15);
-    border-color: var(--navy-brand);
+  .color-btn:hover, .color-btn.active { transform: scale(1.15); border-color: var(--navy-brand); box-shadow: 0 0 0 2px var(--navy-brand); }
+
+  .tools-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  /* TRIVIA, JOKES & CLOUD WATCHER */
+  .tool-btn {
+    background: #e2e8f0;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--navy-brand);
+  }
+  .tool-btn.active, .tool-btn:hover { background: var(--sun-yellow); color: #1e293b; }
+
+  .stamp-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stamp-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stamp-btn {
+    background: #fffbeb;
+    border: 1.5px solid var(--sun-yellow);
+    padding: 4px 8px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .stamp-btn:hover { transform: scale(1.15); background: var(--sun-yellow); }
+
+  .size-selector {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    background: #fff;
+    border: 1px solid var(--border-light);
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .download-btn {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 800;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 4px;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .gallery-note {
+    font-size: 0.78rem;
+    color: #15803d;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  /* EXTRA GAMES & GUIDES */
   .interactive-box {
     background: #fdfae5;
     border: 1.5px solid var(--sun-yellow);
@@ -201,11 +288,8 @@
     text-transform: uppercase;
     transition: background 0.2s ease;
   }
-  .interactive-btn:hover {
-    background: #0f4b82;
-  }
+  .interactive-btn:hover { background: #0f4b82; }
 
-  /* WEATHER QUIZ */
   .quiz-options {
     display: flex;
     flex-direction: column;
@@ -225,10 +309,7 @@
     color: var(--navy-brand);
     transition: all 0.15s ease;
   }
-  .quiz-btn:hover {
-    background: var(--sun-yellow);
-    border-color: #b45309;
-  }
+  .quiz-btn:hover { background: var(--sun-yellow); border-color: #b45309; }
 
   .action-button {
     display: block;
@@ -243,13 +324,9 @@
     text-decoration: none;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    transition: transform 0.15s ease;
+    box-shadow: 0 6px 20px rgba(15, 75, 130, 0.15);
   }
-
-  .action-button:hover {
-    transform: translateY(-2px);
-  }
+  .action-button:hover { transform: translateY(-2px); }
 </style>
 </head>
 <body>
@@ -257,17 +334,15 @@
 <div class="container">
 
   <div class="top-bar">
-    <div class="brand-title">🎨 Glevum's Activity Den</div>
+    <div class="brand-title">🎨 Glevum & Pip's Activity Den</div>
     <div style="font-size: 0.85rem; font-weight: 800; color: #b45309;">Junior Zone</div>
   </div>
 
-  <!-- EXPANDED WEATHER WORD SEARCH (10x10) -->
+  <!-- WORD SEARCH -->
   <div class="panel-card">
     <div class="panel-title">🔍 Gloucestershire Weather Word Search</div>
-    <div class="panel-subtitle">Find the hidden county weather words in the bigger grid below!</div>
-    
+    <div class="panel-subtitle">Find hidden county weather words in the grid below!</div>
     <div class="word-grid" id="word-grid"></div>
-
     <div class="word-list">
       <div class="word-badge">BORE</div>
       <div class="word-badge">FOG</div>
@@ -282,27 +357,148 @@
     </div>
   </div>
 
-  <!-- GLEVUM COLOURING STUDIO -->
-  <div class="panel-card">
-    <div class="panel-title">🖍️ Glevum's Colouring Studio</div>
-    <div class="panel-subtitle">Pick a vibrant colour and click sections to paint Glevum!</div>
+  <!-- GLEVUM STUDIO -->
+  <div class="panel-card" id="cardGlevum">
+    <div class="panel-title">🖍️ Glevum's Colouring & Stamp Studio</div>
+    <div class="panel-subtitle">Fill Glevum's sections, draw, use eraser, or add Glevum & Pip character stamps!</div>
 
-    <div class="palette">
-      <div class="color-btn" style="background: #f1c40f;" onclick="setColour('#f1c40f')"></div>
-      <div class="color-btn" style="background: #1e3a8a;" onclick="setColour('#1e3a8a')"></div>
-      <div class="color-btn" style="background: #ef4444;" onclick="setColour('#ef4444')"></div>
-      <div class="color-btn" style="background: #10b981;" onclick="setColour('#10b981')"></div>
-      <div class="color-btn" style="background: #0ea5e9;" onclick="setColour('#0ea5e9')"></div>
-      <div class="color-btn" style="background: #ec4899;" onclick="setColour('#ec4899')"></div>
+    <div class="palette" id="paletteGlevum">
+      <div class="color-btn active" style="background: #f6b81a;" onclick="setActiveColor('Glevum', '#f6b81a', this)"></div>
+      <div class="color-btn" style="background: #ef4444;" onclick="setActiveColor('Glevum', '#ef4444', this)"></div>
+      <div class="color-btn" style="background: #0ea5e9;" onclick="setActiveColor('Glevum', '#0ea5e9', this)"></div>
+      <div class="color-btn" style="background: #10b981;" onclick="setActiveColor('Glevum', '#10b981', this)"></div>
+      <div class="color-btn" style="background: #ec4899;" onclick="setActiveColor('Glevum', '#ec4899', this)"></div>
+      <div class="color-btn" style="background: #1e3a8a;" onclick="setActiveColor('Glevum', '#1e3a8a', this)"></div>
+      <div class="color-btn" style="background: #ffffff; border: 2px solid #cbd5e1;" onclick="setActiveColor('Glevum', '#ffffff', this)"></div>
     </div>
 
-    <div class="colour-canvas-wrap">
-      <canvas id="colourCanvas" width="280" height="220"></canvas>
+    <div class="studio-box">
+      <div class="colour-canvas-wrap">
+        <canvas id="canvasGlevum" width="260" height="190"></canvas>
+      </div>
+      <div class="tools-row">
+        <button class="tool-btn active" id="toolFillGlevum" onclick="setTool('Glevum', 'fill', this)">Bucket Fill 🪣</button>
+        <button class="tool-btn" id="toolDrawGlevum" onclick="setTool('Glevum', 'draw', this)">Freehand Brush 🖌️</button>
+        <button class="tool-btn" id="toolEraseGlevum" onclick="setTool('Glevum', 'erase', this)">Eraser 🧹</button>
+        <button class="tool-btn" onclick="clearStudio('Glevum')">Reset 🔄</button>
+      </div>
+      <div class="stamp-controls">
+        <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">Stamp Size:</span>
+        <select class="size-selector" id="sizeGlevum" onchange="setStampSize('Glevum', this.value)">
+          <option value="20">Small</option>
+          <option value="35" selected>Medium</option>
+          <option value="55">Large</option>
+        </select>
+      </div>
+      <div class="stamp-row">
+        <button class="stamp-btn" onclick="setStamp('Glevum', 'glevum_mascot')">☀️ Glevum</button>
+        <button class="stamp-btn" onclick="setStamp('Glevum', '🦖')">🦖 Pip</button>
+        <button class="stamp-btn" onclick="setStamp('Glevum', '🌧️')">🌧️</button>
+        <button class="stamp-btn" onclick="setStamp('Glevum', '⚡')">⚡</button>
+        <button class="stamp-btn" onclick="setStamp('Glevum', '❄️')">❄️</button>
+        <button class="stamp-btn" onclick="setStamp('Glevum', '🌳')">🌳</button>
+        <button class="stamp-btn" onclick="setStamp('Glevum', '⛰️')">⛰️</button>
+        <button class="stamp-btn" onclick="setStamp('Glevum', '🌊')">🌊</button>
+      </div>
+      <button class="download-btn" onclick="downloadStudio('cardGlevum', 'Glevum_Masterpiece.png')">📥 Download My Picture</button>
     </div>
-    <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Tap cap, rays, or face to fill with colour!</div>
   </div>
 
-  <!-- WEATHER TRIVIA CHALLENGE -->
+  <!-- PIP STUDIO -->
+  <div class="panel-card" id="cardPip">
+    <div class="panel-title">🦖 Pip's Dinosaur Colouring & Stamp Studio</div>
+    <div class="panel-subtitle">Fill Pip, draw, use eraser, or stamp character & landscape icons!</div>
+
+    <div class="palette" id="palettePip">
+      <div class="color-btn active" style="background: #10b981;" onclick="setActiveColor('Pip', '#10b981', this)"></div>
+      <div class="color-btn" style="background: #f6b81a;" onclick="setActiveColor('Pip', '#f6b81a', this)"></div>
+      <div class="color-btn" style="background: #ef4444;" onclick="setActiveColor('Pip', '#ef4444', this)"></div>
+      <div class="color-btn" style="background: #0ea5e9;" onclick="setActiveColor('Pip', '#0ea5e9', this)"></div>
+      <div class="color-btn" style="background: #ec4899;" onclick="setActiveColor('Pip', '#ec4899', this)"></div>
+      <div class="color-btn" style="background: #1e3a8a;" onclick="setActiveColor('Pip', '#1e3a8a', this)"></div>
+      <div class="color-btn" style="background: #ffffff; border: 2px solid #cbd5e1;" onclick="setActiveColor('Pip', '#ffffff', this)"></div>
+    </div>
+
+    <div class="studio-box">
+      <div class="colour-canvas-wrap">
+        <canvas id="canvasPip" width="260" height="190"></canvas>
+      </div>
+      <div class="tools-row">
+        <button class="tool-btn active" id="toolFillPip" onclick="setTool('Pip', 'fill', this)">Bucket Fill 🪣</button>
+        <button class="tool-btn" id="toolDrawPip" onclick="setTool('Pip', 'draw', this)">Freehand Brush 🖌️</button>
+        <button class="tool-btn" id="toolErasePip" onclick="setTool('Pip', 'erase', this)">Eraser 🧹</button>
+        <button class="tool-btn" onclick="clearStudio('Pip')">Reset 🔄</button>
+      </div>
+      <div class="stamp-controls">
+        <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">Stamp Size:</span>
+        <select class="size-selector" id="sizePip" onchange="setStampSize('Pip', this.value)">
+          <option value="20">Small</option>
+          <option value="35" selected>Medium</option>
+          <option value="55">Large</option>
+        </select>
+      </div>
+      <div class="stamp-row">
+        <button class="stamp-btn" onclick="setStamp('Pip', '🦖')">🦖 Pip</button>
+        <button class="stamp-btn" onclick="setStamp('Pip', 'glevum_mascot')">☀️ Glevum</button>
+        <button class="stamp-btn" onclick="setStamp('Pip', '🍃')">🍃</button>
+        <button class="stamp-btn" onclick="setStamp('Pip', '☁️')">☁️</button>
+        <button class="stamp-btn" onclick="setStamp('Pip', '🌈')">🌈</button>
+        <button class="stamp-btn" onclick="setStamp('Pip', '🌳')">🌳</button>
+        <button class="stamp-btn" onclick="setStamp('Pip', '⛰️')">⛰️</button>
+        <button class="stamp-btn" onclick="setStamp('Pip', '🌊')">🌊</button>
+      </div>
+      <button class="download-btn" onclick="downloadStudio('cardPip', 'Pip_Dino_Masterpiece.png')">📥 Download My Picture</button>
+    </div>
+  </div>
+
+  <!-- KIDS FREE DRAWING COMMUNITY STUDIO -->
+  <div class="panel-card" id="cardKids">
+    <div class="panel-title">🌟 Kids Community Drawing Canvas</div>
+    <div class="panel-subtitle">Create your own weather drawing, use the eraser to fix errors, and submit to GWH!</div>
+
+    <div class="palette" id="paletteKids">
+      <div class="color-btn active" style="background: #1e3a8a;" onclick="setActiveColor('Kids', '#1e3a8a', this)"></div>
+      <div class="color-btn" style="background: #f6b81a;" onclick="setActiveColor('Kids', '#f6b81a', this)"></div>
+      <div class="color-btn" style="background: #ef4444;" onclick="setActiveColor('Kids', '#ef4444', this)"></div>
+      <div class="color-btn" style="background: #10b981;" onclick="setActiveColor('Kids', '#10b981', this)"></div>
+      <div class="color-btn" style="background: #0ea5e9;" onclick="setActiveColor('Kids', '#0ea5e9', this)"></div>
+      <div class="color-btn" style="background: #ec4899;" onclick="setActiveColor('Kids', '#ec4899', this)"></div>
+      <div class="color-btn" style="background: #000000;" onclick="setActiveColor('Kids', '#000000', this)"></div>
+    </div>
+
+    <div class="studio-box">
+      <div class="colour-canvas-wrap">
+        <canvas id="canvasKids" width="260" height="190"></canvas>
+      </div>
+      <div class="tools-row">
+        <button class="tool-btn active" id="toolDrawKids" onclick="setTool('Kids', 'draw', this)">Freehand Brush 🖌️</button>
+        <button class="tool-btn" id="toolEraseKids" onclick="setTool('Kids', 'erase', this)">Eraser 🧹</button>
+        <button class="tool-btn" onclick="clearStudio('Kids')">Clear Canvas 🔄</button>
+      </div>
+      <div class="stamp-controls">
+        <span style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted);">Stamp Size:</span>
+        <select class="size-selector" id="sizeKids" onchange="setStampSize('Kids', this.value)">
+          <option value="20">Small</option>
+          <option value="35" selected>Medium</option>
+          <option value="55">Large</option>
+        </select>
+      </div>
+      <div class="stamp-row">
+        <button class="stamp-btn" onclick="setStamp('Kids', 'glevum_mascot')">☀️ Glevum</button>
+        <button class="stamp-btn" onclick="setStamp('Kids', '🦖')">🦖 Pip</button>
+        <button class="stamp-btn" onclick="setStamp('Kids', '🌧️')">🌧️</button>
+        <button class="stamp-btn" onclick="setStamp('Kids', '⚡')">⚡</button>
+        <button class="stamp-btn" onclick="setStamp('Kids', '🌈')">🌈</button>
+        <button class="stamp-btn" onclick="setStamp('Kids', '🌳')">🌳</button>
+      </div>
+      <button class="download-btn" onclick="downloadStudio('cardKids', 'Kids_Community_Drawing.png')">📥 Download My Picture</button>
+      <br>
+      <a href="mailto:yourweatherhub@gmail.com?subject=Kids%20Gallery%20Submission&body=Hi%20Gloucestershire%20Weather%20Hub,%20Here%20is%20my%20drawing%20for%20the%20community%20gallery!" class="download-btn" style="background: linear-gradient(135deg, #0f4b82 0%, #1a6cb5 100%); margin-top: 8px;">📧 Email Drawing to Gallery</a>
+      <div class="gallery-note">🖼️ Download your picture first, then click email to send it straight to GWH!</div>
+    </div>
+  </div>
+
+  <!-- TRIVIA -->
   <div class="panel-card">
     <div class="panel-title">🧠 County Weather Trivia</div>
     <div class="panel-subtitle">Test your local meteorological brain!</div>
@@ -312,7 +508,7 @@
     <button class="interactive-btn" onclick="nextTrivia()">New Fact 🎲</button>
   </div>
 
-  <!-- WEATHER JOKE GENERATOR -->
+  <!-- JOKES -->
   <div class="panel-card">
     <div class="panel-title">😂 Glevum's Joke Corner</div>
     <div class="panel-subtitle">Laugh your way through the forecast!</div>
@@ -322,20 +518,20 @@
     <button class="interactive-btn" onclick="nextJoke()">Another Joke ⚡</button>
   </div>
 
-  <!-- CLOUD SPOTTER CHALLENGE -->
+  <!-- CLOUD SPOTTER -->
   <div class="panel-card">
-    <div class="panel-title">☁️ Glevum's Cloud Spotter</div>
-    <div class="panel-subtitle">Click to discover today's featured cloud type!</div>
+    <div class="panel-title">☁️ Cloud Spotter Guide</div>
+    <div class="panel-subtitle">Click to discover featured cloud types across Gloucestershire!</div>
     <div class="interactive-box" id="cloud-text">
       <b>Cumulonimbus:</b> Towering vertical clouds associated with thunderstorms, heavy downpours, and lightning across the Severn Vale!
     </div>
     <button class="interactive-btn" onclick="nextCloud()">Discover Another Cloud 🌤️</button>
   </div>
 
-  <!-- MINI WEATHER QUIZ -->
+  <!-- QUIZ -->
   <div class="panel-card">
     <div class="panel-title">❓ Quick Weather Quiz</div>
-    <div class="panel-subtitle" id="quiz-question">What causes the famous Cotswold snow line?</div>
+    <div class="panel-subtitle">What causes the famous Cotswold snow line?</div>
     <div class="quiz-options" id="quiz-options">
       <button class="quiz-btn" onclick="checkQuiz(false)">A) Volcanic activity underneath Cleeve Hill</button>
       <button class="quiz-btn" onclick="checkQuiz(true)">B) Orographic lift cooling moist air as it rises up the escarpment</button>
@@ -344,14 +540,14 @@
     <div id="quiz-feedback" style="margin-top: 10px; font-weight: 800; font-size: 0.9rem;"></div>
   </div>
 
-  <a href="https://glweatherhub.wixsite.com/gloucesterweatherhub" class="action-button">
+  <a href="https://www.gloucestershireweatherhub.co.uk/video-wall" class="action-button">
     Back to Main Hub →
   </a>
 
 </div>
 
 <script>
-  // Expanded 10x10 Word Search Grid
+  // Word Search Logic
   const letters = [
     ['B', 'O', 'R', 'E', 'S', 'U', 'N', 'X', 'M', 'P'],
     ['F', 'O', 'G', 'X', 'R', 'A', 'I', 'N', 'L', 'Q'],
@@ -366,92 +562,322 @@
   ];
 
   const gridEl = document.getElementById('word-grid');
-  let flatLetters = letters.flat();
-
-  flatLetters.forEach((char) => {
+  letters.flat().forEach(char => {
     let cell = document.createElement('div');
     cell.className = 'letter-cell';
     cell.innerText = char;
-    cell.onclick = () => {
-      cell.classList.toggle('selected');
-    };
+    cell.onclick = () => cell.classList.toggle('selected');
     gridEl.appendChild(cell);
   });
 
-  // Colouring Canvas Logic (Glevum Mascot Restored & Scaled)
-  const canvas = document.getElementById('colourCanvas');
-  const ctx = canvas.getContext('2d');
-  let selectedColour = '#f1c40f';
+  // Studio Controller
+  const appStudios = {};
 
-  function setColour(col) {
-    selectedColour = col;
+  function initStudio(id, type) {
+    const canvas = document.getElementById('canvas' + id);
+    const ctx = canvas.getContext('2d');
+    appStudios[id] = {
+      canvas: canvas,
+      ctx: ctx,
+      color: type === 'Glevum' ? '#f6b81a' : (type === 'Pip' ? '#10b981' : '#1e3a8a'),
+      tool: type === 'Kids' ? 'draw' : 'fill', 
+      isDrawing: false,
+      type: type.toLowerCase(),
+      parts: type === 'Glevum' ? { cap: '#ffffff', rays: '#ffffff', body: '#ffffff' } : (type === 'Pip' ? { body: '#ffffff', head: '#ffffff', spikes: '#ffffff' } : {}),
+      stamps: [],
+      stampSize: 35
+    };
+
+    renderStudio(id);
+
+    canvas.onmousedown = (e) => handleCanvasAction(e, id);
+    canvas.onmousemove = (e) => { 
+      if(appStudios[id].tool === 'draw' && appStudios[id].isDrawing) drawFreehand(e, id);
+      if(appStudios[id].tool === 'erase' && appStudios[id].isDrawing) eraseAt(e, id);
+    };
+    canvas.onmouseup = () => appStudios[id].isDrawing = false;
   }
 
-  function drawGlevumOutline(capCol = '#ffffff', rayCol = '#ffffff', bodyCol = '#ffffff') {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Rays / Outer Sun Halo
-    ctx.beginPath();
-    ctx.arc(140, 110, 64, 0, Math.PI * 2);
-    ctx.fillStyle = rayCol;
-    ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#1e293b';
-    ctx.stroke();
-
-    // Body / Central Sun Face Circle
-    ctx.beginPath();
-    ctx.arc(140, 110, 48, 0, Math.PI * 2);
-    ctx.fillStyle = bodyCol;
-    ctx.fill();
-    ctx.stroke();
-
-    // Flat Cap
-    ctx.beginPath();
-    ctx.rect(108, 64, 64, 18);
-    ctx.fillStyle = capCol;
-    ctx.fill();
-    ctx.stroke();
-
-    // Cap Brim extension
-    ctx.beginPath();
-    ctx.rect(128, 56, 52, 10);
-    ctx.fillStyle = capCol;
-    ctx.fill();
-    ctx.stroke();
-
-    // Eyes & Smile
-    ctx.fillStyle = '#1e293b';
-    ctx.fillRect(124, 100, 6, 9);
-    ctx.fillRect(150, 100, 6, 9);
-
-    ctx.beginPath();
-    ctx.arc(138, 116, 9, 0, Math.PI, false);
-    ctx.lineWidth = 2.5;
-    ctx.strokeStyle = '#1e293b';
-    ctx.stroke();
+  function setActiveColor(id, col, btn) {
+    appStudios[id].color = col;
+    const palette = document.getElementById('palette' + id);
+    palette.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
   }
 
-  let parts = { cap: '#ffffff', rays: '#ffffff', body: '#ffffff' };
+  function setTool(id, toolName, btn) {
+    appStudios[id].tool = toolName;
+    const box = btn.parentNode;
+    box.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
 
-  canvas.onclick = (e) => {
-    const rect = canvas.getBoundingClientRect();
+  function setStamp(id, stampVal) {
+    appStudios[id].tool = stampVal;
+  }
+
+  function setStampSize(id, val) {
+    appStudios[id].stampSize = parseInt(val);
+  }
+
+  function clearStudio(id) {
+    appStudios[id].stamps = [];
+    if (appStudios[id].type === 'glevum') {
+      appStudios[id].parts = { cap: '#ffffff', rays: '#ffffff', body: '#ffffff' };
+    } else if (appStudios[id].type === 'pip') {
+      appStudios[id].parts = { body: '#ffffff', head: '#ffffff', spikes: '#ffffff' };
+    }
+    renderStudio(id);
+  }
+
+  function handleCanvasAction(e, id) {
+    const s = appStudios[id];
+    const rect = s.canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    if (y < 82) {
-      parts.cap = selectedColour;
-    } else if (x < 76 || x > 204 || y < 46 || y > 174) {
-      parts.rays = selectedColour;
-    } else {
-      parts.body = selectedColour;
+    const stampList = ['☀️', '🌧️', '⚡', '❄️', '🌳', '⛰️', '🌊', '🍃', '☁️', '🌈', '🦖', 'glevum_mascot'];
+    
+    if (stampList.includes(s.tool)) {
+      s.stamps.push({ x: x, y: y, item: s.tool, size: s.stampSize });
+      renderStudio(id);
+      return;
     }
-    drawGlevumOutline(parts.cap, parts.rays, parts.body);
+
+    if (s.tool === 'draw' || s.tool === 'erase') {
+      s.isDrawing = true;
+      if (s.tool === 'draw') {
+        s.ctx.beginPath();
+        s.ctx.moveTo(x, y);
+      } else {
+        eraseAt(e, id);
+      }
+      return;
+    }
+
+    if (s.tool === 'fill' && s.type !== 'kids') {
+      if (s.type === 'glevum') {
+        const dx = x - 140, dy = y - 100;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (y < 78) {
+          s.parts.cap = s.color;
+        } else if (dist > 42) {
+          s.parts.rays = s.color;
+        } else {
+          s.parts.body = s.color;
+        }
+      } else if (s.type === 'pip') {
+        if (y < 68) s.parts.spikes = s.color;
+        else if (x > 145) s.parts.head = s.color;
+        else s.parts.body = s.color;
+      }
+      renderStudio(id);
+    }
+  }
+
+  function drawFreehand(e, id) {
+    const s = appStudios[id];
+    const rect = s.canvas.getBoundingClientRect();
+    s.ctx.strokeStyle = s.color;
+    s.ctx.lineWidth = 5;
+    s.ctx.lineCap = 'round';
+    s.ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    s.ctx.stroke();
+  }
+
+  function eraseAt(e, id) {
+    const s = appStudios[id];
+    const rect = s.canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    s.stamps = s.stamps.filter(st => Math.abs(st.x - x) > st.size/2 || Math.abs(st.y - y) > st.size/2);
+    
+    s.ctx.fillStyle = '#ffffff';
+    s.ctx.beginPath();
+    s.ctx.arc(x, y, 14, 0, Math.PI * 2);
+    s.ctx.fill();
+
+    renderStudio(id);
+  }
+
+  function renderStudio(id) {
+    const s = appStudios[id];
+    const ctx = s.ctx;
+    ctx.clearRect(0, 0, 260, 190);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 260, 190);
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 2.5;
+
+    if (s.type === 'glevum') {
+      // Classic Glevum Outline
+      ctx.beginPath();
+      ctx.arc(140, 100, 55, 0, Math.PI * 2);
+      ctx.fillStyle = s.parts.rays;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(140, 100, 42, 0, Math.PI * 2);
+      ctx.fillStyle = s.parts.body;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.rect(115, 62, 50, 16);
+      ctx.fillStyle = s.parts.cap;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(128, 92, 5, 8);
+      ctx.fillRect(147, 92, 5, 8);
+
+      ctx.beginPath();
+      ctx.arc(140, 106, 8, 0, Math.PI, false);
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+    } else if (s.type === 'pip') {
+      ctx.beginPath();
+      ctx.ellipse(125, 110, 42, 28, 0, 0, Math.PI * 2);
+      ctx.fillStyle = s.parts.body;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(160, 85, 20, 0, Math.PI * 2);
+      ctx.fillStyle = s.parts.head;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(90, 95);
+      ctx.lineTo(100, 72);
+      ctx.lineTo(110, 93);
+      ctx.lineTo(122, 70);
+      ctx.lineTo(132, 93);
+      ctx.lineTo(142, 72);
+      ctx.lineTo(152, 93);
+      ctx.fillStyle = s.parts.spikes;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(166, 80, 3, 5);
+      ctx.beginPath();
+      ctx.arc(167, 90, 4, 0, Math.PI, false);
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    } else if (s.type === 'kids') {
+      ctx.strokeRect(6, 6, 248, 178);
+    }
+
+    // Render Stamps
+    s.stamps.forEach(st => {
+      ctx.save();
+      if (st.item === 'glevum_mascot') {
+        const sx = st.x, sy = st.y, sz = st.size;
+        ctx.translate(sx - sz/2, sy - sz/2);
+        ctx.scale(sz/60, sz/60);
+
+        // Soft Glow Circle
+        ctx.beginPath();
+        ctx.arc(30, 30, 28, 0, Math.PI * 2);
+        ctx.fillStyle = "#fbbf24";
+        ctx.globalAlpha = 0.4;
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+
+        // Main Sun Body & Outline
+        ctx.beginPath();
+        ctx.arc(30, 30, 22, 0, Math.PI * 2);
+        ctx.fillStyle = "#f6b81a";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#b45309";
+        ctx.stroke();
+
+        // Cap Top Path
+        ctx.beginPath();
+        ctx.moveTo(18, 20);
+        ctx.bezierCurveTo(30, 15, 42, 20, 44, 26);
+        ctx.lineTo(46, 32);
+        ctx.bezierCurveTo(30, 28, 16, 30, 18, 26);
+        ctx.closePath();
+        ctx.fillStyle = "#0f4b82";
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "#1e293b";
+        ctx.stroke();
+
+        // Cap Brim Path
+        ctx.beginPath();
+        ctx.moveTo(12, 26);
+        ctx.bezierCurveTo(30, 22, 48, 26, 48, 29);
+        ctx.lineTo(46, 32);
+        ctx.bezierCurveTo(30, 28, 14, 29, 12, 26);
+        ctx.closePath();
+        ctx.fillStyle = "#1a6cb5";
+        ctx.fill();
+        ctx.stroke();
+
+        // Eyes
+        ctx.fillStyle = "#1e293b";
+        ctx.beginPath();
+        ctx.ellipse(24, 34, 2.2, 3.2, 0, 0, Math.PI * 2);
+        ctx.ellipse(36, 34, 2.2, 3.2, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye Shines
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(23.2, 33.2, 0.8, 0, Math.PI * 2);
+        ctx.arc(35.2, 33.2, 0.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Smile
+        ctx.beginPath();
+        ctx.arc(30, 40, 4, 0, Math.PI, false);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#1e293b";
+        ctx.stroke();
+
+        // Rosy Cheeks
+        ctx.fillStyle = "#f87171";
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.arc(20, 38, 2.5, 0, Math.PI * 2);
+        ctx.arc(40, 38, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+      } else {
+        ctx.font = st.size + 'px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(st.item, st.x, st.y);
+      }
+      ctx.restore();
+    });
+  }
+
+  function downloadStudio(cardId, filename) {
+    html2canvas(document.getElementById(cardId), { scale: 2, useCORS: true, backgroundColor: null }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  window.onload = () => {
+    initStudio('Glevum', 'Glevum');
+    initStudio('Pip', 'Pip');
+    initStudio('Kids', 'Kids');
   };
 
-  drawGlevumOutline();
-
-  // Trivia Rotator
+  // Rotators & Quiz
   const triviaFacts = [
     "Did you know? The famous Severn Bore tidal wave travels upstream all the way past Gloucester during high spring tides!",
     "The Cotswold escarpment at Cleeve Cloud reaches 330 metres, creating Gloucestershire's highest winter snow line.",
@@ -464,7 +890,6 @@
     document.getElementById('trivia-text').innerText = triviaFacts[triviaIdx];
   }
 
-  // Joke Rotator
   const jokes = [
     "What does a tornado say to a sports car? <br><b>'Wanna go for a spin?'</b>",
     "What kind of bow can never be tied? <br><b>A rainbow!</b>",
@@ -477,7 +902,6 @@
     document.getElementById('joke-text').innerHTML = jokes[jokeIdx];
   }
 
-  // Cloud Spotter Rotator
   const clouds = [
     "<b>Cumulonimbus:</b> Towering vertical clouds associated with thunderstorms, heavy downpours, and lightning across the Severn Vale!",
     "<b>Cirrus:</b> Wispy, high-altitude ice crystal clouds that often indicate a change in weather approaching from the Atlantic.",
@@ -490,7 +914,6 @@
     document.getElementById('cloud-text').innerHTML = clouds[cloudIdx];
   }
 
-  // Quiz Logic
   function checkQuiz(isCorrect) {
     const feedback = document.getElementById('quiz-feedback');
     if (isCorrect) {
