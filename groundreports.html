@@ -1,0 +1,432 @@
+<!-- Gloucestershire Weather HUB - Multi-Category Incident & Spotter Network -->
+<div class="spotter-container">
+    <div class="spotter-header">
+        <h3> County Incident & Spotter Network</h3>
+        <span class="spotter-badge">LIVE FEED</span>
+    </div>
+    
+    <p class="spotter-desc">Spotted hazards, flooding, road disruption, or storms across Gloucestershire? Choose a reporting category below to update fellow residents instantly.</p>
+
+    <!-- Category Selector Tabs -->
+    <div class="category-tabs">
+        <button type="button" class="tab-btn active" onclick="switchTab('weather', event)"> General Weather</button>
+        <button type="button" class="tab-btn" onclick="switchTab('flood', event)"> Flooding / Water</button>
+        <button type="button" class="tab-btn" onclick="switchTab('traffic', event)"> Traffic & Roads</button>
+        <button type="button" class="tab-btn storm-tab" onclick="switchTab('storm', event)"> Storm & Lightning</button>
+    </div>
+
+    <!-- Submission Form -->
+    <form id="spotterForm" onsubmit="submitSpotReport(event)">
+        <input type="hidden" id="reportCategory" value="weather">
+
+        <div class="spotter-grid">
+            <div class="form-field">
+                <label>Your Location / Village</label>
+                <input type="text" id="spotterLocation" placeholder="e.g., Blakeney Hill, Lydney" required>
+            </div>
+
+            <!-- Dynamic Category Options -->
+            <div class="form-field" id="categoryFieldContainer">
+                <label id="conditionLabel">Condition</label>
+                <select id="spotterCondition">
+                    <option value=" Bright & Sunny"> Bright & Sunny</option>
+                    <option value=" Sunny Intervals"> Sunny Intervals</option>
+                    <option value=" Heavy Downpour"> Heavy Downpour</option>
+                    <option value=" Strong Gusts"> Strong Gusts</option>
+                    <option value=" Dense Fog / Mist"> Dense Fog / Mist</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Specialized Storm Checkboxes (Hidden by default, shown for Storm tab) -->
+        <div id="stormCheckboxes" class="storm-checks" style="display:none;">
+            <label><input type="checkbox" id="lightningSeen">  Lightning Visible</label>
+            <label><input type="checkbox" id="thunderHeard">  Thunder Heard</label>
+        </div>
+
+        <div class="form-field" style="margin-top: 12px;">
+            <label>Observation Details / Note</label>
+            <input type="text" id="spotterNote" placeholder="Add specific details (e.g., standing water on A48, close lightning strike)..." maxlength="120">
+        </div>
+
+        <div class="form-field" style="margin-top: 12px;">
+            <label>Attach Photo (Optional)</label>
+            <input type="file" id="spotterPhoto" accept="image/*" style="background:#0f172a; color:#fff; border:1.5px solid #cbd5e1; padding:8px; border-radius:8px;">
+        </div>
+
+        <button type="submit" class="spotter-btn"> Broadcast Report to County</button>
+    </form>
+
+    <!-- Live Feed Display -->
+    <div class="spotter-feed-header" style="margin-top: 24px;">
+        <h4>Live County Reports & Incidents</h4>
+        <span id="reportCount" class="report-count">0 active</span>
+    </div>
+    <div id="spotterFeedList" class="spotter-feed-list">
+        <div class="no-reports">No active reports right now. Be the first to update the hub!</div>
+    </div>
+</div>
+
+<style>
+    .spotter-container {
+        background: #0f4b82;
+        border: 3px solid #f6b81a;
+        border-radius: 16px;
+        padding: 24px;
+        color: #ffffff;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+        max-width: 850px;
+        margin: 20px auto;
+    }
+    .spotter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid rgba(246, 184, 26, 0.3);
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+    }
+    .spotter-header h3 {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #f6b81a;
+        text-transform: uppercase;
+    }
+    .spotter-badge {
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 900;
+        padding: 4px 10px;
+        border-radius: 10px;
+        letter-spacing: 0.5px;
+    }
+    .spotter-desc {
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        margin-bottom: 16px;
+        font-weight: 600;
+    }
+    .category-tabs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+    @media (max-width: 700px) {
+        .category-tabs { grid-template-columns: repeat(2, 1fr); }
+    }
+    .tab-btn {
+        background: #1e293b;
+        color: #94a3b8;
+        border: 1.5px solid #334155;
+        padding: 10px 8px;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 0.75rem;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s;
+    }
+    .tab-btn.active {
+        background: #f6b81a;
+        color: #0b355d;
+        border-color: #f6b81a;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .tab-btn.storm-tab.active {
+        background: #ef4444;
+        color: #ffffff;
+        border-color: #f87171;
+    }
+    .spotter-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    @media (max-width: 600px) {
+        .spotter-grid { grid-template-columns: 1fr; }
+    }
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .form-field label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #fde047;
+        text-transform: uppercase;
+    }
+    .form-field input, .form-field select {
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 1.5px solid #cbd5e1;
+        background: #ffffff;
+        color: #0b355d;
+        font-weight: 700;
+        font-size: 0.85rem;
+        font-family: inherit;
+        outline: none;
+    }
+    .storm-checks {
+        display: flex;
+        gap: 20px;
+        background: #1e293b;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 1.5px solid #ef4444;
+        margin-top: 12px;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: #f87171;
+    }
+    .storm-checks label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        color: #fff;
+    }
+    .spotter-btn {
+        background: #f6b81a;
+        color: #0b355d;
+        border: none;
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 900;
+        font-size: 0.9rem;
+        cursor: pointer;
+        margin-top: 14px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .spotter-feed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        font-weight: 800;
+        border-top: 1px solid rgba(255,255,255,0.15);
+        padding-top: 14px;
+    }
+    .report-count {
+        background: rgba(255,255,255,0.15);
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+    }
+    .spotter-feed-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    .spotter-card {
+        background: #1e293b;
+        border: 1.5px solid rgba(246, 184, 26, 0.4);
+        padding: 12px 14px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .spotter-card.storm-card { border-color: #ef4444; background: #1e1b18; }
+    .spotter-card.flood-card { border-color: #38bdf8; }
+    .spotter-card.traffic-card { border-color: #fbbf24; }
+
+    .spotter-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .spotter-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .spotter-loc {
+        font-weight: 900;
+        font-size: 0.85rem;
+        color: #f6b81a;
+    }
+    .spotter-text {
+        font-size: 0.8rem;
+        color: #e2e8f0;
+        font-weight: 600;
+    }
+    .spotter-time {
+        font-size: 0.7rem;
+        color: #94a3b8;
+        white-space: nowrap;
+    }
+    .storm-tag-row {
+        display: flex;
+        gap: 8px;
+        font-size: 0.75rem;
+        font-weight: 800;
+    }
+    .tag-pill {
+        background: #ef4444;
+        color: #fff;
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+    .spotter-thumb {
+        width: 100%;
+        max-height: 180px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    .no-reports {
+        text-align: center;
+        color: #94a3b8;
+        font-style: italic;
+        font-size: 0.85rem;
+        padding: 15px;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", loadSpotterReports);
+
+    function switchTab(category, event) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById('reportCategory').value = category;
+
+        const condField = document.getElementById('categoryFieldContainer');
+        const stormChecks = document.getElementById('stormCheckboxes');
+        const condSelect = document.getElementById('spotterCondition');
+        const condLabel = document.getElementById('conditionLabel');
+
+        if (category === 'storm') {
+            condField.style.display = 'none';
+            stormChecks.style.display = 'flex';
+        } else {
+            condField.style.display = 'flex';
+            stormChecks.style.display = 'none';
+
+            if (category === 'weather') {
+                condLabel.innerText = 'Weather Condition';
+                condSelect.innerHTML = `
+                    <option value=" Bright & Sunny"> Bright & Sunny</option>
+                    <option value=" Sunny Intervals"> Sunny Intervals</option>
+                    <option value=" Heavy Downpour"> Heavy Downpour</option>
+                    <option value=" Strong Gusts"> Strong Gusts</option>
+                    <option value=" Dense Fog / Mist"> Dense Fog / Mist</option>
+                `;
+            } else if (category === 'flood') {
+                condLabel.innerText = 'Flood / Water Severity';
+                condSelect.innerHTML = `
+                    <option value=" Standing Water / Surface Flooding"> Standing Water / Surface Flooding</option>
+                    <option value=" Rising Brook / River Level"> Rising Brook / River Level</option>
+                    <option value=" Road Impassable Due to Water"> Road Impassable Due to Water</option>
+                    <option value=" Drains Overwhelming"> Drains Overwhelming</option>
+                `;
+            } else if (category === 'traffic') {
+                condLabel.innerText = 'Traffic / Road Status';
+                condSelect.innerHTML = `
+                    <option value=" Fallen Tree / Debris on Road"> Fallen Tree / Debris on Road</option>
+                    <option value=" Slow Traffic / Congestion"> Slow Traffic / Congestion</option>
+                    <option value=" Road Closed"> Road Closed</option>
+                    <option value=" Ice / Dangerous Driving Surface"> Ice / Dangerous Driving Surface</option>
+                `;
+            }
+        }
+    }
+
+    function submitSpotReport(event) {
+        event.preventDefault();
+        
+        const category = document.getElementById('reportCategory').value;
+        const location = document.getElementById('spotterLocation').value.trim();
+        const condition = category === 'storm' ? ' Thunderstorm Report' : document.getElementById('spotterCondition').value;
+        const lightning = document.getElementById('lightningSeen').checked;
+        const thunder = document.getElementById('thunderHeard').checked;
+        const note = document.getElementById('spotterNote').value.trim();
+        const photoInput = document.getElementById('spotterPhoto');
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-numeric', minute: '2-digit' });
+
+        if (photoInput.files && photoInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                saveAndRenderReport({ category, location, condition, lightning, thunder, note, photoData: e.target.result, timestamp });
+            };
+            reader.readAsDataURL(photoInput.files[0]);
+        } else {
+            saveAndRenderReport({ category, location, condition, lightning, thunder, note, photoData: null, timestamp });
+        }
+    }
+
+    function saveAndRenderReport(reportObj) {
+        let reports = JSON.parse(localStorage.getItem('gwh_incident_reports')) || [];
+        reports.unshift(reportObj);
+
+        if (reports.length > 15) reports.pop();
+
+        localStorage.setItem('gwh_incident_reports', JSON.stringify(reports));
+
+        document.getElementById('spotterForm').reset();
+        document.getElementById('reportCategory').value = 'weather';
+        // Reset to first tab view
+        document.querySelectorAll('.tab-btn').forEach((b, idx) => {
+            if(idx === 0) b.classList.add('active'); else b.classList.remove('active');
+        });
+        document.getElementById('categoryFieldContainer').style.display = 'flex';
+        document.getElementById('stormCheckboxes').style.display = 'none';
+
+        loadSpotterReports();
+    }
+
+    function loadSpotterReports() {
+        const feedList = document.getElementById('spotterFeedList');
+        const countBadge = document.getElementById('reportCount');
+        const reports = JSON.parse(localStorage.getItem('gwh_incident_reports')) || [];
+
+        countBadge.innerText = reports.length + (reports.length === 1 ? ' active' : ' active');
+
+        if (reports.length === 0) {
+            feedList.innerHTML = `<div class="no-reports">No active reports right now. Be the first to update the hub!</div>`;
+            return;
+        }
+
+        let html = '';
+        reports.forEach(r => {
+            let cardClass = 'spotter-card';
+            let catEmoji = '';
+            if (r.category === 'flood') { cardClass += ' flood-card'; catEmoji = ''; }
+            else if (r.category === 'traffic') { cardClass += ' traffic-card'; catEmoji = ''; }
+            else if (r.category === 'storm') { cardClass += ' storm-card'; catEmoji = ''; }
+
+            html += `
+                <div class="${cardClass}">
+                    <div class="spotter-card-top">
+                        <div class="spotter-info">
+                            <span class="spotter-loc"> ${escapeHtml(r.location)} — <span style="color:#fff;">${catEmoji} ${escapeHtml(r.condition)}</span></span>
+                            ${r.category === 'storm' ? `
+                                <div class="storm-tag-row" style="margin-top:4px;">
+                                    ${r.lightning ? '<span class="tag-pill"> Lightning Visible</span>' : ''}
+                                    ${r.thunder ? '<span class="tag-pill" style="background:#d97706;"> Thunder Heard</span>' : ''}
+                                </div>
+                            ` : ''}
+                            ${r.note ? `<span class="spotter-text" style="margin-top:4px;">${escapeHtml(r.note)}</span>` : ''}
+                        </div>
+                        <span class="spotter-time">${escapeHtml(r.timestamp)}</span>
+                    </div>
+                    ${r.photoData ? `<img src="${r.photoData}" class="spotter-thumb" alt="Report photo">` : ''}
+                </div>
+            `;
+        });
+        feedList.innerHTML = html;
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+</script>
