@@ -972,33 +972,6 @@
             });
         }
 
-        // Automated Warning Button Script
-        (async function() {
-          const apiKey = '490143351f02580359732b23b33a1233';
-          const lat = 51.9608;
-          const lon = -2.3064;
-          const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily&appid=${apiKey}`;
-
-          try {
-            const response = await fetch(url);
-            const data = await response.json();
-            const btn = document.getElementById('home-warning-btn');
-
-            if (data.alerts && data.alerts.length > 0) {
-              btn.style.backgroundColor = "#d90429";
-              btn.style.animation = "pulse 1.5s infinite";
-              btn.innerHTML = `🚨 SEVERE ALERT: ${data.alerts[0].event} — Click for Details`;
-              btn.href = "warningandalertsLIVE.html";
-            } else {
-              btn.style.backgroundColor = "#2a9d8f";
-              btn.innerHTML = "🛡️ County Weather Status: Normal";
-              btn.href = "https://gloucestershireweatherhub.co.uk/";
-            }
-          } catch (e) {
-            console.error("Could not check alert status for home page button", e);
-          }
-        })();
-
         window.onload = () => {
             initMap();
             requestUserLocation();
