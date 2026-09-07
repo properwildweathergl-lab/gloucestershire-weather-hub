@@ -4,7 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gloucestershire Weather HUB // Official Public Portal</title>
-
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "89b35aac-519a-45bc-87e7-151507a5d755",
+      safari_web_id: "web.onesignal.auto.32866db8-e87d-48d6-8bf4-a7b54cca5ee4",
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
+</script>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f4b82">
     <link rel="apple-touch-icon" href="icon-192.png">
