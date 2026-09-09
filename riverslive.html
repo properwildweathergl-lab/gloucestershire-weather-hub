@@ -799,7 +799,6 @@
   </a>
 
 </div>
-
 <script>
   function updateClock() {
     const now = new Date();
@@ -809,42 +808,52 @@
   updateClock();
 
   async function fetchLiveRiverLevels() {
-    const cards = document.querySelectorAll('.river-card');
-    
-    cards.forEach(async (card) => {
-      const stationId = card.getAttribute('data-station-id');
-      if (!stationId) return;
+    try {
+      // Single bulk request for all readings to avoid 429 rate-limit errors
+      const response = await fetch('https://environment.data.gov.uk/flood-monitoring/data/readings?latest');
+      if (!response.ok) throw new Error('Bulk API request failed');
+      
+      const data = await response.json();
+      if (data && data.items) {
+        const readingsMap = {};
+        data.items.forEach(item => {
+          if (item.station && item.value !== undefined) {
+            const parts = item.station.split('/');
+            const stationId = parts[parts.length - 1];
+            readingsMap[stationId] = {
+              value: item.value,
+              dateTime: new Date(item.dateTime)
+            };
+          }
+        });
 
-      try {
-        // Route through a free CORS proxy so GitHub Pages can read the EA feed safely
-        const targetUrl = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}/readings?latest`;
-        const response = await fetch(`https://api.allorigins.win/get?url=` + encodeURIComponent(targetUrl));
-        if (!response.ok) throw new Error('API request failed');
-        
-        const proxyData = await response.json();
-        const data = JSON.parse(proxyData.contents);
+        const cards = document.querySelectorAll('.river-card');
+        cards.forEach(card => {
+          const stationId = card.getAttribute('data-station-id');
+          if (!stationId) return;
 
-        if (data && data.items && data.items.length > 0) {
-          const latest = data.items[0];
-          const value = latest.value;
-          const dateTime = new Date(latest.dateTime);
-          const timeString = dateTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+          const reading = readingsMap[stationId];
+          if (reading) {
+            const levelEl = document.getElementById(`level-${stationId}`);
+            const timeEl = document.getElementById(`time-${stationId}`);
+            const statusEl = document.getElementById(`status-${stationId}`);
 
-          const levelEl = document.getElementById(`level-${stationId}`);
-          const timeEl = document.getElementById(`time-${stationId}`);
-
-          if (levelEl) levelEl.innerText = value.toFixed(2);
-          if (timeEl) timeEl.innerText = timeString;
-        }
-      } catch (err) {
-        console.warn(`Telemetry waiting for station ${stationId}`);
+            if (levelEl) levelEl.innerText = reading.value.toFixed(2);
+            if (timeEl) timeEl.innerText = reading.dateTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            if (statusEl) {
+              statusEl.innerText = "Live Normal";
+              statusEl.className = "status-normal";
+            }
+          }
+        });
       }
-    });
+    } catch (err) {
+      console.warn('Bulk river telemetry update pending:', err);
+    }
   }
 
   fetchLiveRiverLevels();
   setInterval(fetchLiveRiverLevels, 900000);
-
 </script>
 
 </body>
