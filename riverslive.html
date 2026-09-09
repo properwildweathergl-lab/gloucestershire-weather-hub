@@ -801,58 +801,11 @@
 </div>
 
 <script>
-  function updateClock() {
-    const now = new Date();
-    document.getElementById('live-time').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' BST';
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  async function fetchLiveRiverLevels() {
-    const cards = document.querySelectorAll('.river-card');
-    
-    cards.forEach(async (card) => {
-      const stationId = card.getAttribute('data-station-id');
-      if (!stationId) return;
-
-      try {
-        const response = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}/readings?latest`);
+const response = await fetch(`https://api.allorigins.win/get?url=` + encodeURIComponent(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}/readings?latest`));
         if (!response.ok) throw new Error('API request failed');
         
-        const data = await response.json();
-        if (data && data.items && data.items.length > 0) {
-          const latest = data.items[0];
-          const value = latest.value !== undefined ? latest.value : (latest.reading && latest.reading.value);
-          const dateTime = new Date(latest.dateTime);
-          
-          if (value !== undefined && !isNaN(value)) {
-            const timeString = dateTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-
-            const levelEl = document.getElementById(`level-${stationId}`);
-            const timeEl = document.getElementById(`time-${stationId}`);
-            const statusEl = document.getElementById(`status-${stationId}`);
-
-            if (levelEl) levelEl.innerText = value.toFixed(2);
-            if (timeEl) timeEl.innerText = timeString;
-            if (statusEl) {
-              statusEl.innerText = "Live Normal";
-              statusEl.className = "status-normal";
-            }
-          }
-        }
-      } catch (err) {
-        console.warn(`Station ${stationId} telemetry pending:`, err);
-        const statusEl = document.getElementById(`status-${stationId}`);
-        if (statusEl) {
-          statusEl.innerText = "Connecting...";
-          statusEl.style.color = "#d97706";
-        }
-      }
-    });
-  }
-
-  fetchLiveRiverLevels();
-  setInterval(fetchLiveRiverLevels, 900000);
+        const proxyData = await response.json();
+        const data = JSON.parse(proxyData.contents);
 </script>
 
 </body>
