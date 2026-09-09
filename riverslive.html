@@ -822,18 +822,31 @@
         const data = await response.json();
         if (data && data.items && data.items.length > 0) {
           const latest = data.items[0];
-          const value = latest.value;
+          const value = latest.value !== undefined ? latest.value : (latest.reading && latest.reading.value);
           const dateTime = new Date(latest.dateTime);
-          const timeString = dateTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+          
+          if (value !== undefined && !isNaN(value)) {
+            const timeString = dateTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
-          const levelEl = document.getElementById(`level-${stationId}`);
-          const timeEl = document.getElementById(`time-${stationId}`);
+            const levelEl = document.getElementById(`level-${stationId}`);
+            const timeEl = document.getElementById(`time-${stationId}`);
+            const statusEl = document.getElementById(`status-${stationId}`);
 
-          if (levelEl) levelEl.innerText = value.toFixed(2);
-          if (timeEl) timeEl.innerText = timeString;
+            if (levelEl) levelEl.innerText = value.toFixed(2);
+            if (timeEl) timeEl.innerText = timeString;
+            if (statusEl) {
+              statusEl.innerText = "Live Normal";
+              statusEl.className = "status-normal";
+            }
+          }
         }
       } catch (err) {
-        console.warn(`Telemetry waiting for station ${stationId}`);
+        console.warn(`Station ${stationId} telemetry pending:`, err);
+        const statusEl = document.getElementById(`status-${stationId}`);
+        if (statusEl) {
+          statusEl.innerText = "Connecting...";
+          statusEl.style.color = "#d97706";
+        }
       }
     });
   }
