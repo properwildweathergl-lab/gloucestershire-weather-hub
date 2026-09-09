@@ -809,44 +809,51 @@
   updateClock();
 
   async function fetchLiveRiverLevels() {
-    const cards = document.querySelectorAll('.river-card');
-    
-    cards.forEach(async (card) => {
-      const stationId = card.getAttribute('data-station-id');
-      if (!stationId) return;
+    try {
+      // Fetch all latest readings in one bulk request to avoid browser blockages and rate limits
+      const response = await fetch('https://environment.data.gov.uk/flood-monitoring/data/readings?latest');
+      if (!response.ok) throw new Error('Bulk API request failed');
+      
+      const data = await response.json();
+      if (data && data.items) {
+        // Map station reference IDs to their latest reading values
+        const readingsMap = {};
+        data.items.forEach(item => {
+          // The station ID is usually found in the measure URI string
+          if (item.station && item.value !== undefined) {
+            const parts = item.station.split('/');
+            const stationId = parts[parts.length - 1];
+            readingsMap[stationId] = {
+              value: item.value,
+              dateTime: new Date(item.dateTime)
+            };
+          }
+        });
 
-      try {
-        const response = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`);
-        if (!response.ok) throw new Error('API request failed');
-        
-        const data = await response.json();
-        if (data && data.items && data.items.measures) {
-          // Find the water level measure
-          const measures = Array.isArray(data.items.measures) ? data.items.measures : [data.items.measures];
-          const levelMeasure = measures.find(m => m.parameter === 'waterLevel' || m.qualifier === 'Stage');
-          
-          if (levelMeasure && levelMeasure.latestReading) {
-            const latest = levelMeasure.latestReading;
-            const value = latest.value;
-            const dateTime = new Date(latest.dateTime);
-            const timeString = dateTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        // Update all cards on the page using the map
+        const cards = document.querySelectorAll('.river-card');
+        cards.forEach(card => {
+          const stationId = card.getAttribute('data-station-id');
+          if (!stationId) return;
 
+          const reading = readingsMap[stationId];
+          if (reading) {
             const levelEl = document.getElementById(`level-${stationId}`);
             const timeEl = document.getElementById(`time-${stationId}`);
             const statusEl = document.getElementById(`status-${stationId}`);
 
-            if (levelEl) levelEl.innerText = value.toFixed(2);
-            if (timeEl) timeEl.innerText = timeString;
+            if (levelEl) levelEl.innerText = reading.value.toFixed(2);
+            if (timeEl) timeEl.innerText = reading.dateTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
             if (statusEl) {
               statusEl.innerText = "Live Normal";
               statusEl.className = "status-normal";
             }
           }
-        }
-      } cmatch (err) {
-        console.warn(`Station ${stationId} telemetry waiting`);
+        });
       }
-    });
+    } catch (err) {
+      console.warn('Bulk river telemetry update pending:', err);
+    }
   }
 
   fetchLiveRiverLevels();
