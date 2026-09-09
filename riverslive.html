@@ -799,7 +799,8 @@
   </a>
 
 </div>
-<script>
+
+  <script>
   function updateClock() {
     const now = new Date();
     document.getElementById('live-time').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' BST';
@@ -809,11 +810,14 @@
 
   async function fetchLiveRiverLevels() {
     try {
-      // Single bulk request for all readings to avoid 429 rate-limit errors
-      const response = await fetch('https://environment.data.gov.uk/flood-monitoring/data/readings?latest');
+      // Single bulk request for all readings to prevent server throttling
+      const targetUrl = 'https://environment.data.gov.uk/flood-monitoring/data/readings?latest';
+      const response = await fetch(`https://api.allorigins.win/get?url=` + encodeURIComponent(targetUrl));
       if (!response.ok) throw new Error('Bulk API request failed');
       
-      const data = await response.json();
+      const proxyData = await response.json();
+      const data = JSON.parse(proxyData.contents);
+
       if (data && data.items) {
         const readingsMap = {};
         data.items.forEach(item => {
