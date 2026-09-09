@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gloucestershire Weather Hub - Comprehensive Live River Levels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-cream: #0f4b82;
+    --card-white: #ffffff;
+    --navy-brand: #0f4b82;
+    --cobalt-accent: #1a6cb5;
+    --sun-yellow: #f6b81a;
+    --border-light: #e2e8f0;
+    --text-slate: #334155;
+    --text-muted: #64748b;
+    --river-blue: #0284c7;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html, body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: auto;
+  }
+
+  body {
+    background-color: var(--bg-cream);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-slate);
+    padding: 20px 16px 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .top-bar {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.04);
+  }
+
+  .brand-title {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .live-pill {
+    background: #0284c7;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .time-badge {
+    background: #fffbeb;
+    border: 1.5px solid var(--sun-yellow);
+    color: #b45309;
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 8px 14px;
+    border-radius: 12px;
+  }
+
+  .jump-nav {
+    background: var(--card-white);
+    border: 1.5px solid var(--sun-yellow);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 10px rgba(15, 75, 130, 0.03);
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+  }
+
+  .jump-label {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--navy-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .jump-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .jump-btn {
+    background: #f8fafc;
+    border: 1.5px solid var(--border-light);
+    color: var(--navy-brand);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .jump-btn:hover {
+    background: var(--navy-brand);
+    color: #ffffff;
+    border-color: var(--navy-brand);
+  }
+
+  .section-heading {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 36px 0 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    scroll-margin-top: 90px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .section-heading::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background: var(--sun-yellow);
+  }
+
+  .river-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .river-card {
+    background: var(--card-white);
+    border: 2px solid var(--sun-yellow);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(15, 75, 130, 0.15);
+  }
+
+  .river-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .river-name {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--navy-brand);
+    line-height: 1.1;
+  }
+
+  .station-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .river-level-box {
+    text-align: right;
+  }
+
+  .river-level {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--river-blue);
+    line-height: 1;
+  }
+
+  .river-level-unit {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .river-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-slate);
+  }
+
+  .river-metrics span {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .status-normal {
+    color: #16a34a;
+  }
+
+  .action-button {
+    display: block;
+    width: 100%;
+    background: var(--sun-yellow);
+    color: var(--navy-brand);
+    text-align: center;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 900;
+    font-size: 1.05rem;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    margin: 40px 0 10px;
+    border: 2px solid #ffffff;
+    transition: transform 0.15s ease;
+  }
+
+  .action-button:hover {
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="top-bar">
+    <div class="brand-title">
+      <span class="live-pill">LIVE</span> Full County River Levels
+    </div>
+    <div class="time-badge" id="live-time">Loading...</div>
+  </div>
+
+  <div class="jump-nav">
+    <div class="jump-label">Quick Jump by Watercourse (A–Z)</div>
+    <div class="jump-buttons">
+      <a href="#avon" class="jump-btn">Avon</a>
+      <a href="#cam" class="jump-btn">Cam</a>
+      <a href="#cannop" class="jump-btn">Cannop Brook</a>
+      <a href="#chelt" class="jump-btn">Chelt</a>
+      <a href="#churn" class="jump-btn">Churn</a>
+      <a href="#coln" class="jump-btn">Coln</a>
+      <a href="#colne" class="jump-btn">Colne Brook</a>
+      <a href="#dikler" class="jump-btn">Dikler</a>
+      <a href="#evenlode" class="jump-btn">Evenlode</a>
+      <a href="#frome" class="jump-btn">Frome</a>
+      <a href="#isbourne" class="jump-btn">Isbourne</a>
+      <a href="#leadon" class="jump-btn">Leadon</a>
+      <a href="#lyd" class="jump-btn">Lyd</a>
+      <a href="#plus" class="jump-btn">Plus Stream</a>
+      <a href="#severn" class="jump-btn">Severn</a>
+      <a href="#sherborne" class="jump-btn">Sherborne Brook</a>
+      <a href="#windrush" class="jump-btn">Windrush</a>
+      <a href="#wye" class="jump-btn">Wye</a>
+    </div>
+  </div>
+
+  <div class="section-heading" id="avon">🌊 River Avon</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="E1045">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Avon</div>
+          <div class="station-name">Tewkesbury Confluence</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-E1045">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-E1045">Live Feed</span></div>
+        <div>Updated: <span id="time-E1045">--:--</span></div>
+      </div>
+    </div>
+    <div class="river-card" data-station-id="4704TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Avon</div>
+          <div class="station-name">Evesham / Bredon Border</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4704TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4704TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4704TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="cam">🌿 River Cam</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="4108TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Cam</div>
+          <div class="station-name">Dursley / Cam Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4108TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4108TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4108TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="cannop">🌲 Cannop Brook</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="4526TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">Cannop Brook</div>
+          <div class="station-name">Cinderford / Cannop Ponds</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4526TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4526TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4526TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="chelt">☀️ River Chelt</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2608TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Chelt</div>
+          <div class="station-name">Cheltenham Station</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2608TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2608TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2608TH">--:--</span></div>
+      </div>
+    </div>
+    <div class="river-card" data-station-id="2609TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Chelt</div>
+          <div class="station-name">Uckington Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2609TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2609TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2609TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="churn">⛰️ River Churn</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2504TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Churn</div>
+          <div class="station-name">Cirencester Station</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2504TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2504TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2504TH">--:--</span></div>
+      </div>
+    </div>
+    <div class="river-card" data-station-id="2505TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Churn</div>
+          <div class="station-name">North Cerney Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2505TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2505TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2505TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="coln">⛰️ River Coln</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2506TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Coln</div>
+          <div class="station-name">Fairford Weir</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2506TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2506TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2506TH">--:--</span></div>
+      </div>
+    </div>
+    <div class="river-card" data-station-id="2507TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Coln</div>
+          <div class="station-name">Withington Station</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2507TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2507TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2507TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="colne">⛰️ Colne Brook / Tributaries</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2512TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">Colne Brook</div>
+          <div class="station-name">Chedworth Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2512TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2512TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2512TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="dikler">⛰️ River Dikler</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2510TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Dikler</div>
+          <div class="station-name">Bourton-on-the-Water Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2510TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2510TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2510TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="evenlode">⛰️ River Evenlode</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2805TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Evenlode</div>
+          <div class="station-name">Moreton-in-Marsh Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2805TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2805TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2805TH">--:--</span></div>
+      </div>
+    </div>
+    <div class="river-card" data-station-id="2806TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Evenlode</div>
+          <div class="station-name">Adlestrop / Lower Evenlode</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2806TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2806TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2806TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="frome">🌿 River Frome</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="4104TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Frome</div>
+          <div class="station-name">Stroud / Chalford</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4104TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4104TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4104TH">--:--</span></div>
+      </div>
+    </div>
+
+    <div class="river-card" data-station-id="4106TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Frome (Lower)</div>
+          <div class="station-name">Stonehouse Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4106TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4106TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4106TH">--:--</span></div>
+      </div>
+    </div>
+
+    <div class="river-card" data-station-id="4107TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Frome</div>
+          <div class="station-name">Ebley Mill Station</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4107TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4107TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4107TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="isbourne">☀️ River Isbourne</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2605TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Isbourne</div>
+          <div class="station-name">Winchcombe Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2605TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2605TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2605TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="leadon">🌿 River Leadon</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2704TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Leadon</div>
+          <div class="station-name">Newent / Dymock Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2704TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2704TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2704TH">--:--</span></div>
+      </div>
+    </div>
+
+    <div class="river-card" data-station-id="2706TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Leadon (Lower)</div>
+          <div class="station-name">Hartpury Station</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2706TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2706TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2706TH">--:--</span></div>
+      </div>
+    </div>
+
+    <div class="river-card" data-station-id="2708TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Leadon</div>
+          <div class="station-name">Ledbury Road Bridge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2708TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2708TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2708TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="lyd">🌲 River Lyd</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="4502TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Lyd</div>
+          <div class="station-name">Lydney Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4502TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4502TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4502TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="plus">💧 Plus Stream & Small Brooks</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="4515TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">Plus Stream</div>
+          <div class="station-name">Forest Outflow Gauge</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4515TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4515TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4515TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="severn">🌊 River Severn</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="E2001">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Severn</div>
+          <div class="station-name">Gloucester (Llanthony)</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-E2001">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-E2001">Live Feed</span></div>
+        <div>Updated: <span id="time-E2001">--:--</span></div>
+      </div>
+    </div>
+
+    <div class="river-card" data-station-id="4703TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Severn</div>
+          <div class="station-name">Tewkesbury Upper</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4703TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4703TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4703TH">--:--</span></div>
+      </div>
+    </div>
+
+    <div class="river-card" data-station-id="E2010">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Severn</div>
+          <div class="station-name">Minsterworth (Bore Point)</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-E2010">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-E2010">Live Feed</span></div>
+        <div>Updated: <span id="time-E2010">--:--</span></div>
+      </div>
+    </div>
+
+    <div class="river-card" data-station-id="4705TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Severn</div>
+          <div class="station-name">Sandhurst Monitoring Station</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4705TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4705TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4705TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="sherborne">⛰️ Sherborne Brook</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2520TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">Sherborne Brook</div>
+          <div class="station-name">Sherborne Station</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2520TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2520TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2520TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="windrush">⛰️ River Windrush</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="2514TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Windrush</div>
+          <div class="station-name">Bourton / Northleach</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2514TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2514TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2514TH">--:--</span></div>
+      </div>
+    </div>
+    <div class="river-card" data-station-id="2515TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Windrush</div>
+          <div class="station-name">Bourton-on-the-Water Lower</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-2515TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-2515TH">Live Feed</span></div>
+        <div>Updated: <span id="time-2515TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" id="wye">🌲 River Wye</div>
+  <div class="river-grid">
+    <div class="river-card" data-station-id="4580TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Wye (Border)</div>
+          <div class="station-name">Redbrook Station</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4580TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4580TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4580TH">--:--</span></div>
+      </div>
+    </div>
+    <div class="river-card" data-station-id="4581TH">
+      <div class="river-header">
+        <div>
+          <div class="river-name">River Wye</div>
+          <div class="station-name">Monmouth / Lydbrook Border</div>
+        </div>
+        <div class="river-level-box"><div class="river-level" id="level-4581TH">--</div><div class="river-level-unit">Meters</div></div>
+      </div>
+      <div class="river-metrics">
+        <div>Status: <span class="status-normal" id="status-4581TH">Live Feed</span></div>
+        <div>Updated: <span id="time-4581TH">--:--</span></div>
+      </div>
+    </div>
+  </div>
+
+  <a href="https://www.gloucestershireweatherhub.co.uk/video-wall" class="action-button">
+    Full County Video Wall & Guides on Main Site →
+  </a>
+
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('live-time').innerText = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' BST';
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  async function fetchLiveRiverLevels() {
+    const cards = document.querySelectorAll('.river-card');
+    
+    cards.forEach(async (card) => {
+      const stationId = card.getAttribute('data-station-id');
+      if (!stationId) return;
+
+      try {
+        const response = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}/readings?latest`);
+        if (!response.ok) throw new Error('API request failed');
+        
+        const data = await response.json();
+        if (data && data.items && data.items.length > 0) {
+          const latest = data.items[0];
+          const value = latest.value;
+          const dateTime = new Date(latest.dateTime);
+          const timeString = dateTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+          const levelEl = document.getElementById(`level-${stationId}`);
+          const timeEl = document.getElementById(`time-${stationId}`);
+
+          if (levelEl) levelEl.innerText = value.toFixed(2);
+          if (timeEl) timeEl.innerText = timeString;
+        }
+      } catch (err) {
+        console.warn(`Telemetry waiting for station ${stationId}`);
+      }
+    });
+  }
+
+  fetchLiveRiverLevels();
+  setInterval(fetchLiveRiverLevels, 900000);
+</script>
+
+</body>
+</html>
