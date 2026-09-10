@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gloucestershire Weather Hub - Interactive River Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body {
+      background-color: #0f4b82;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .header-card {
+      width: 100%;
+      max-width: 900px;
+      background: #ffffff;
+      color: #0f4b82;
+      padding: 18px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .map-container {
+      width: 100%;
+      max-width: 900px;
+      height: 70vh;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      border: 3px solid #ffffff;
+      background: #e2e8f0;
+    }
+    #riverMap {
+      width: 100%;
+      height: 100%;
+    }
+    /* Style the popups to match the brand */
+    .leaflet-popup-content-wrapper {
+      border-radius: 12px;
+    }
+    .leaflet-popup-content {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      color: #1e293b;
+      margin: 14px;
+    }
+    .popup-title {
+      color: #0f4b82;
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 4px;
+    }
+    .popup-station {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .popup-level {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f4b82;
+    }
+    .loading-text {
+      color: #16a34a;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-card">LIVE COUNTY WATERWAYS MAP</div>
+  
+  <div class="map-container">
+    <div id="riverMap"></div>
+  </div>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Initialize map centered on Gloucestershire 
+    const map = L.map('riverMap').setView([51.86, -2.24], 10);
+
+    // Add clean map styling
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors | EA Open Data'
+    }).addTo(map);
+
+    // Fetch all river stations within a 40km radius of the county center
+    async function loadStations() {
+      try {
+        const response = await fetch('https://environment.data.gov.uk/flood-monitoring/id/stations?lat=51.86&long=-2.24&dist=40&parameter=level');
+        const data = await response.json();
+        
+        if (data && data.items) {
+          data.items.forEach(station => {
+            if (station.lat && station.long) {
+              const marker = L.marker([station.lat, station.long]).addTo(map);
+              
+              const riverName = station.riverName || 'Local Watercourse';
+              
+              // Bind a popup window to each pin
+              marker.bindPopup(`
+                <div class="popup-title">${riverName}</div>
+                <div class="popup-station">${station.label}</div>
+                <div id="data-${station.stationReference}" class="loading-text" onclick="fetchLevel('${station.stationReference}')">
+                  Tap to load live level
+                </div>
+              `);
+            }
+          });
+        }
+      } catch (err) {
+        console.warn('Map points failed to load.', err);
+      }
+    }
+
+    // Safely fetch only the single station the user clicks on
+    window.fetchLevel = async function(stationRef) {
+      const displayEl = document.getElementById(`data-${stationRef}`);
+      displayEl.innerText = "Fetching live feed...";
+      displayEl.style.color = "#64748b";
+      
+      try {
+        const res = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationRef}/readings?latest`);
+        const json = await res.json();
+        
+        if (json && json.items && json.items.length > 0) {
+          const val = json.items[0].value.toFixed(2);
+          displayEl.outerHTML = \`<div class="popup-level">\${val} meters</div>\`;
+        } else {
+          displayEl.innerText = "Data unavailable";
+        }
+      } catch(e) {
+        displayEl.innerText = "Connection error";
+      }
+    }
+
+    loadStations();
+  </script>
+</body>
+</html>
