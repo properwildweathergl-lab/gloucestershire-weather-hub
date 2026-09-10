@@ -3,157 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gloucestershire Weather Hub - Interactive River Map</title>
+  <title>Gloucestershire Weather Hub - River Map</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
-  <!-- Leaflet Map CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     body {
       background-color: #0f4b82;
       font-family: 'Plus Jakarta Sans', sans-serif;
       margin: 0;
-      padding: 16px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      box-sizing: border-box;
     }
     .header-card {
       width: 100%;
-      max-width: 900px;
+      max-width: 600px;
       background: #ffffff;
       color: #0f4b82;
-      padding: 18px;
-      border-radius: 14px;
+      padding: 14px;
+      border-radius: 12px;
       text-align: center;
       font-weight: 800;
-      font-size: 1.25rem;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
-    .map-container {
+    .map-frame {
       width: 100%;
-      max-width: 900px;
-      height: 70vh;
-      border-radius: 16px;
+      max-width: 600px;
+      height: 480px;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
       border: 3px solid #ffffff;
-      background: #e2e8f0;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
-    #riverMap {
+    #map {
       width: 100%;
       height: 100%;
     }
-    /* Style the popups to match the brand */
-    .leaflet-popup-content-wrapper {
-      border-radius: 12px;
-    }
     .leaflet-popup-content {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.95rem;
       color: #1e293b;
-      margin: 14px;
+      font-size: 0.9rem;
     }
     .popup-title {
-      color: #0f4b82;
       font-weight: 800;
-      font-size: 1.1rem;
-      margin-bottom: 4px;
+      color: #0f4b82;
+      font-size: 1rem;
       border-bottom: 2px solid #e2e8f0;
       padding-bottom: 4px;
+      margin-bottom: 6px;
     }
-    .popup-station {
-      font-size: 0.85rem;
-      color: #64748b;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-    .popup-level {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #0f4b82;
-    }
-    .loading-text {
-      color: #16a34a;
-      font-weight: 800;
+    .load-btn {
+      background: #0f4b82;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 700;
       cursor: pointer;
-      font-size: 0.95rem;
+      margin-top: 6px;
     }
   </style>
 </head>
 <body>
 
-  <div class="header-card">LIVE COUNTY WATERWAYS MAP</div>
+  <div class="header-card">GLOUCESTERSHIRE RIVER MAP</div>
   
-  <div class="map-container">
-    <div id="riverMap"></div>
+  <div class="map-frame">
+    <div id="map"></div>
   </div>
 
-  <!-- Leaflet Map JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // Initialize map centered on Gloucestershire 
-    const map = L.map('riverMap').setView([51.86, -2.24], 10);
+    // Center map precisely over Gloucestershire coordinate bounds
+    const map = L.map('map').setView([51.865, -2.245], 10);
 
-    // Add clean map styling
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 18,
-      attribution: '&copy; OpenStreetMap contributors | EA Open Data'
+      attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-    // Fetch all river stations within a 40km radius of the county center
-    async function loadStations() {
+    // Fetch stations within a local radius of Gloucestershire
+    async function initCountyMap() {
       try {
-        const response = await fetch('https://environment.data.gov.uk/flood-monitoring/id/stations?lat=51.86&long=-2.24&dist=40&parameter=level');
-        const data = await response.json();
+        const res = await fetch('https://environment.data.gov.uk/flood-monitoring/id/stations?lat=51.865&long=-2.245&dist=35&parameter=level');
+        const data = await res.json();
         
         if (data && data.items) {
-          data.items.forEach(station => {
-            if (station.lat && station.long) {
-              const marker = L.marker([station.lat, station.long]).addTo(map);
+          data.items.forEach(st => {
+            if (st.lat && st.long) {
+              const marker = L.marker([st.lat, st.long]).addTo(map);
+              const river = st.riverName || 'Watercourse';
               
-              const riverName = station.riverName || 'Local Watercourse';
-              
-              // Bind a popup window to each pin
               marker.bindPopup(`
-                <div class="popup-title">${riverName}</div>
-                <div class="popup-station">${station.label}</div>
-                <div id="data-${station.stationReference}" class="loading-text" onclick="fetchLevel('${station.stationReference}')">
-                  Tap to load live level
+                <div class="popup-title">${river}</div>
+                <div><b>Station:</b> ${st.label}</div>
+                <div id="box-${st.stationReference}" style="margin-top:8px;">
+                  <button class="load-btn" onclick="getReading('${st.stationReference}')">View Level</button>
                 </div>
               `);
             }
           });
         }
-      } catch (err) {
-        console.warn('Map points failed to load.', err);
+      } catch (e) {
+        console.error("Map load error", e);
       }
     }
 
-    // Safely fetch only the single station the user clicks on
-    window.fetchLevel = async function(stationRef) {
-      const displayEl = document.getElementById(`data-${stationRef}`);
-      displayEl.innerText = "Fetching live feed...";
-      displayEl.style.color = "#64748b";
-      
+    window.getReading = async function(ref) {
+      const container = document.getElementById(`box-${ref}`);
+      container.innerHTML = "Loading live data...";
       try {
-        const res = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationRef}/readings?latest`);
+        const res = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${ref}/readings?latest`);
         const json = await res.json();
-        
         if (json && json.items && json.items.length > 0) {
           const val = json.items[0].value.toFixed(2);
-          displayEl.outerHTML = \`<div class="popup-level">\${val} meters</div>\`;
+          container.innerHTML = `<div style="font-size:1.1rem; font-weight:800; color:#0f4b82; margin-top:4px;">Current Level: ${val} meters</div>`;
         } else {
-          displayEl.innerText = "Data unavailable";
+          container.innerHTML = "No recent data available.";
         }
-      } catch(e) {
-        displayEl.innerText = "Connection error";
+      } catch (err) {
+        container.innerHTML = "Failed to fetch level.";
       }
     }
 
-    loadStations();
+    initCountyMap();
   </script>
 </body>
 </html>
