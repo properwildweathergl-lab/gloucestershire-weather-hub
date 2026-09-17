@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#071a3a" />
   <title>Weather Hub</title>
 
@@ -13,6 +13,7 @@
     * { box-sizing: border-box; }
 
     html, body {
+      padding-bottom: env(safe-area-inset-bottom);
       width: 100%;
       height: 100%;
       margin: 0;
@@ -135,7 +136,7 @@
 <body class="flex min-h-screen items-center justify-center p-3 sm:p-5">
 
   <main
-    class="app-glass flex h-[calc(100vh-24px)] w-full max-w-[430px] flex-col rounded-[32px] p-5 text-white sm:h-[720px] sm:max-h-[calc(100vh-40px)]"
+    class="app-glass flex h-[calc(100dvh-24px-env(safe-area-inset-bottom))] w-full max-w-[430px] flex-col rounded-[32px] p-5 text-white sm:h-[720px] sm:max-h-[calc(100vh-40px)]"
   >
 
     <!-- HEADER / HERO -->
